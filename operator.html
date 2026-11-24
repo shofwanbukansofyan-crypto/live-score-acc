@@ -25,7 +25,32 @@
     rel="stylesheet">
 
   <!-- CSS -->
-  <link rel="stylesheet" href="/css/operator.css">
+  <link rel="stylesheet" href="/css/operator.css?v=20261124_v70">
+
+  <!-- Cache-Control & Auto-Purge Cache Stale Worker -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <script>
+    (function () {
+      try {
+        var APP_VER = "20261124_v70";
+        if (localStorage.getItem("acc_livescore_version") !== APP_VER) {
+          localStorage.setItem("acc_livescore_version", APP_VER);
+          if ('caches' in window) {
+            caches.keys().then(function (names) {
+              names.forEach(function (name) { caches.delete(name); });
+            });
+          }
+          if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function (regs) {
+              regs.forEach(function (reg) { reg.unregister(); });
+            });
+          }
+        }
+      } catch (e) { }
+    })();
+  </script>
 
   <!-- Supabase JS v2 Client -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -91,6 +116,12 @@
           style="background: var(--color-primary); color: #000; font-weight: 800; justify-content: center;"
           onclick="operatorConsole.loadSelectedPreset(document.getElementById('selectMatchPreset').value)">
           ⚡ Muat ke Layar TV
+        </button>
+        <button type="button" class="btn-nav" id="btnSyncAcc"
+          style="background: #1e293b; color: #38bdf8; border: 1px solid #38bdf8; font-weight: 700;"
+          onclick="operatorConsole.manualSyncAccData()"
+          title="Sinkronkan ulang daftar laga dan pemain langsung dari database accfutsal2026">
+          🔄 Sinkron accfutsal2026
         </button>
         <button type="button" class="btn-reset-match"
           onclick="operatorConsole.resetCurrentMatch()"
@@ -424,11 +455,11 @@
   </div>
 
   <!-- JAVASCRIPT LOGIC -->
-  <script src="/js/config.js"></script>
-  <script src="/js/teams.js"></script>
-  <script src="/js/matches.js"></script>
-  <script src="/js/supabase-sync.js"></script>
-  <script src="/js/app-operator.js"></script>
+  <script src="/js/config.js?v=20261124_v70"></script>
+  <script src="/js/teams.js?v=20261124_v70"></script>
+  <script src="/js/matches.js?v=20261124_v70"></script>
+  <script src="/js/supabase-sync.js?v=20261124_v70"></script>
+  <script src="/js/app-operator.js?v=20261124_v70"></script>
 
   <!-- PWA SERVICE WORKER REGISTRATION -->
   <script>

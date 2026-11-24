@@ -3991,4 +3991,5 @@ const ACC_TEAMS = [
     ]
   }
 ];
+if (typeof window !== 'undefined') window.ACC_TEAMS = ACC_TEAMS;
 if (typeof module !== 'undefined') module.exports = ACC_TEAMS;

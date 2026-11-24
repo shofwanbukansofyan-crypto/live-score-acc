@@ -4573,4 +4573,5 @@ const ACC_MATCHES = [
     "cards": []
   }
 ];
+if (typeof window !== 'undefined') window.ACC_MATCHES = ACC_MATCHES;
 if (typeof module !== 'undefined') module.exports = ACC_MATCHES;

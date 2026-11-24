@@ -78,6 +78,9 @@ class OperatorConsole {
       }
 
       if (Array.isArray(resMatches) && resMatches.length > 0) {
+        // Urutkan jadwal secara berurutan dan teratur: M_SMP_01..33, M_SD_01..32
+        resMatches.sort((a, b) => (a.id || '').localeCompare(b.id || '', undefined, { numeric: true }));
+
         window.ACC_MATCHES = resMatches.map(m => {
           const homeTeam = (window.ACC_TEAMS || []).find(t => t.id === (m.home_id || m.homeId));
           const awayTeam = (window.ACC_TEAMS || []).find(t => t.id === (m.away_id || m.awayId));
@@ -114,6 +117,27 @@ class OperatorConsole {
       }
     } catch (e) {
       console.warn("Live sync accfutsal notice:", e);
+      throw e;
+    }
+  }
+
+  async manualSyncAccData() {
+    const btn = document.getElementById("btnSyncAcc");
+    const origHtml = btn ? btn.innerHTML : "";
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = "⏳ Menyinkronkan...";
+    }
+    try {
+      await this.fetchLiveAccTournamentData();
+      alert("✅ Berhasil! 64 Jadwal Pertandingan & 32 Tim Skuad Resmi berhasil disinkronkan langsung dari server accfutsal2026.");
+    } catch (err) {
+      alert("⚠️ Gagal sinkronisasi data online: " + (err.message || err) + "\nSilakan periksa koneksi internet.");
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = origHtml || "🔄 Sinkron accfutsal2026";
+      }
     }
   }
 
