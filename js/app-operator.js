@@ -16,20 +16,17 @@ class OperatorConsole {
     // 1. Periksa PIN Kunci Masuk
     this.checkPinAuth();
 
-    // 2. Populasi Daftar Pertandingan dari Preset
+    // 2. Populasi Daftar Pertandingan dari matches.js resmi
     this.populateMatchesDropdown();
 
-    // 3. Sinkronkan data pertandingan terbaru secara langsung dari database accfutsal2026
-    this.fetchLiveAccTournamentData();
-
-    // 4. Subscribe ke Realtime Sync Engine
+    // 3. Subscribe ke Realtime Sync Engine
     window.syncEngine.subscribe((state, events, conn) => {
       this.currentState = state;
       this.currentEvents = events;
       this.renderUI(state, events);
     });
 
-    // 5. Timer loop lokal untuk tampilan kontrol operator
+    // 4. Timer loop lokal untuk tampilan kontrol operator
     this.startLocalTimerLoop();
   }
 
@@ -187,17 +184,20 @@ class OperatorConsole {
     const optGroupSD = document.createElement("optgroup");
     optGroupSD.label = "⚽ KATEGORI SD (32 Laga Resmi)";
 
-    matchesList.forEach((m, idx) => {
+    matchesList.forEach((m) => {
       const opt = document.createElement("option");
       opt.value = m.id;
 
       const homeTeam = teamsList.find(t => t.id === (m.homeId || m.home_id));
       const awayTeam = teamsList.find(t => t.id === (m.awayId || m.away_id));
 
-      const homeName = (homeTeam && homeTeam.name) || m.homeName || m.home_placeholder || m.home_name || "TBD";
-      const awayName = (awayTeam && awayTeam.name) || m.awayName || m.away_placeholder || m.away_name || "TBD";
+      const homeName = m.homeName || (homeTeam && homeTeam.name) || m.home_placeholder || m.home_name || "TBD";
+      const awayName = m.awayName || (awayTeam && awayTeam.name) || m.away_placeholder || m.away_name || "TBD";
+      const stageInfo = m.stage || m.round_name || 'Babak';
+      const timeInfo = m.time ? ` • ${m.time}` : '';
+      const dateInfo = m.date ? ` • ${m.date}` : '';
 
-      opt.textContent = `[${m.id}] ${homeName} vs ${awayName} (${m.stage || 'Babak'} • ${m.date || ''} ${m.time || ''})`;
+      opt.textContent = `[${m.id}] ${homeName} vs ${awayName} (${stageInfo}${dateInfo}${timeInfo})`;
 
       if ((m.category || "SMP") === "SD") {
         optGroupSD.appendChild(opt);
@@ -221,34 +221,40 @@ class OperatorConsole {
     const homeTeam = teamsList.find(t => t.id === (m.homeId || m.home_id)) || {};
     const awayTeam = teamsList.find(t => t.id === (m.awayId || m.away_id)) || {};
 
-    const homeName = homeTeam.name || m.homeName || m.home_name || m.home_placeholder || 'TIM HOME';
-    const awayName = awayTeam.name || m.awayName || m.away_name || m.away_placeholder || 'TIM AWAY';
+    const homeName = m.homeName || homeTeam.name || m.home_name || m.home_placeholder || 'TIM HOME';
+    const awayName = m.awayName || awayTeam.name || m.away_name || m.away_placeholder || 'TIM AWAY';
+    const homeShort = m.homeShort || homeTeam.shortName || homeName.substring(0, 5);
+    const awayShort = m.awayShort || awayTeam.shortName || awayName.substring(0, 5);
+    const homeLogo = m.homeLogo || homeTeam.logo || "/assets/logo.png";
+    const awayLogo = m.awayLogo || awayTeam.logo || "/assets/logo.png";
+    const cat = m.category || "SMP";
+    const homeColor = m.homeColor || homeTeam.badgeColor || (cat === 'SD' ? "#3b82f6" : "#10b981");
+    const awayColor = m.awayColor || awayTeam.badgeColor || "#f59e0b";
 
     if (!confirm(`Muat pertandingan "${m.id}: ${homeName} vs ${awayName}" ke layar TV?\n(Skor dan timer saat ini akan di-reset untuk laga ini)`)) {
       return;
     }
 
-    const cat = m.category || "SMP";
     const targetDuration = cat === "SD" ? CONFIG.DEFAULT_HALF_DURATION_SD : CONFIG.DEFAULT_HALF_DURATION_SMP;
 
     const updates = {
       category: cat,
       stage: m.stage ? m.stage.toUpperCase() : "FASE GRUP",
       pitch: m.pitch || "Lapangan Utama",
-      home_id: homeTeam.id || m.homeId || m.home_id || "HOME",
+      home_id: m.homeId || homeTeam.id || "HOME",
       home_name: homeName,
-      home_short: homeTeam.shortName || homeName.substring(0, 5),
-      home_logo: homeTeam.logo || "/assets/logo.png",
-      home_color: homeTeam.badgeColor || (cat === 'SD' ? "#3b82f6" : "#10b981"),
+      home_short: homeShort,
+      home_logo: homeLogo,
+      home_color: homeColor,
       home_score: 0,
       home_penalties: null,
       home_fouls: 0,
       home_timeout: false,
-      away_id: awayTeam.id || m.awayId || m.away_id || "AWAY",
+      away_id: m.awayId || awayTeam.id || "AWAY",
       away_name: awayName,
-      away_short: awayTeam.shortName || awayName.substring(0, 5),
-      away_logo: awayTeam.logo || "/assets/logo.png",
-      away_color: awayTeam.badgeColor || "#f59e0b",
+      away_short: awayShort,
+      away_logo: awayLogo,
+      away_color: awayColor,
       away_score: 0,
       away_penalties: null,
       away_fouls: 0,
