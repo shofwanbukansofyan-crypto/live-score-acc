@@ -624,7 +624,7 @@ class OperatorConsole {
       if (ev.type === "card_red") icon = "🟥";
       if (ev.type === "timeout") icon = "⏱️";
 
-      const teamName = ev.team === "home" 
+      const teamName = ev.team === "home"
         ? (this.currentState ? (this.currentState.home_short || this.currentState.home_name) : "HOME")
         : (this.currentState ? (this.currentState.away_short || this.currentState.away_name) : "AWAY");
 
