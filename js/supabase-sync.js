@@ -76,7 +76,7 @@ class SyncEngine {
   }
 
   initSupabase() {
-    let url = typeof cleanSupabaseUrl === "function" 
+    let url = typeof cleanSupabaseUrl === "function"
       ? cleanSupabaseUrl(CONFIG.SUPABASE_URL || localStorage.getItem("acc_supabase_url"))
       : (CONFIG.SUPABASE_URL || "").trim().replace(/\/rest\/v1\/?$/i, '').replace(/\/+$/, '');
     let key = (CONFIG.SUPABASE_ANON_KEY || localStorage.getItem("acc_supabase_key") || "").trim();
@@ -103,11 +103,11 @@ class SyncEngine {
       // Muat dari localStorage jika ada
       const saved = localStorage.getItem("acc_live_state");
       if (saved) {
-        try { this.cachedState = JSON.parse(saved); } catch (_) {}
+        try { this.cachedState = JSON.parse(saved); } catch (_) { }
       }
       const savedEv = localStorage.getItem("acc_live_events");
       if (savedEv) {
-        try { this.cachedEvents = JSON.parse(savedEv); } catch (_) {}
+        try { this.cachedEvents = JSON.parse(savedEv); } catch (_) { }
       }
       this.notifyListeners(this.cachedState, this.cachedEvents);
     }
@@ -215,7 +215,7 @@ class SyncEngine {
           type: "STATE_UPDATE",
           payload: this.cachedState
         });
-      } catch (_) {}
+      } catch (_) { }
     }
 
     // 3. Beri tahu listener internal
@@ -255,7 +255,7 @@ class SyncEngine {
           type: "EVENTS_UPDATE",
           payload: this.cachedEvents
         });
-      } catch (_) {}
+      } catch (_) { }
     }
 
     this.notifyListeners(this.cachedState, this.cachedEvents);
@@ -290,7 +290,7 @@ class SyncEngine {
           type: "EVENTS_UPDATE",
           payload: this.cachedEvents
         });
-      } catch (_) {}
+      } catch (_) { }
     }
 
     this.notifyListeners(this.cachedState, this.cachedEvents);
@@ -317,7 +317,7 @@ class SyncEngine {
           type: "EVENTS_UPDATE",
           payload: []
         });
-      } catch (_) {}
+      } catch (_) { }
     }
 
     this.notifyListeners(this.cachedState, this.cachedEvents);
@@ -338,7 +338,7 @@ class SyncEngine {
     try {
       if (state) localStorage.setItem("acc_live_state", JSON.stringify(state));
       if (events) localStorage.setItem("acc_live_events", JSON.stringify(events));
-    } catch (_) {}
+    } catch (_) { }
   }
 
   subscribe(listener) {

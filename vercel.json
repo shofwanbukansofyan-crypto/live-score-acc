@@ -16,13 +16,13 @@
       ]
     },
     {
-      "source": "/(index\\.html|operator\\.html|js/.*\\.js)",
+      "source": "/(index\\.html|operator\\.html|js/.*\\.js|sw\\.js)",
       "headers": [
         { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
       ]
     },
     {
-      "source": "/assets/(.*)",
+      "source": "/(manifest\\.json|assets/(.*))",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=86400, stale-while-revalidate=604800" }
       ]

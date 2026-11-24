@@ -7,13 +7,22 @@
   <title>KONSOL OPERATOR - LIVE SCORE ACC 2026</title>
   <meta name="description" content="Panel Penginput Resmi Skor & Timer Pertandingan Al-Fayyadh Champions Cup 2026.">
 
-  <!-- Favicon -->
+  <!-- Favicon & PWA App Manifest -->
   <link rel="icon" type="image/png" href="/assets/favicon.png">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#0b0f19">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="ACC Operator">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@700;800;900&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@700;800;900&display=swap"
+    rel="stylesheet">
 
   <!-- CSS -->
   <link rel="stylesheet" href="/css/operator.css">
@@ -36,7 +45,8 @@
         Buka Akses Konsol
       </button>
       <div style="margin-top: 14px;">
-        <a href="/" style="color: #94a3b8; font-size: 0.82rem; text-decoration: none;">← Kembali ke Tampilan Layar TV</a>
+        <a href="/" style="color: #94a3b8; font-size: 0.82rem; text-decoration: none;">← Kembali ke Tampilan Layar
+          TV</a>
       </div>
     </div>
   </div>
@@ -57,7 +67,8 @@
         <a href="/" target="_blank" class="btn-nav" title="Buka Mode Display di Tab/Layar Baru">
           🖥️ Buka Layar TV
         </a>
-        <button type="button" class="btn-nav" onclick="operatorConsole.openSettingsModal()" title="Pengaturan Database Supabase">
+        <button type="button" class="btn-nav" onclick="operatorConsole.openSettingsModal()"
+          title="Pengaturan Database Supabase">
           ⚙️ Supabase
         </button>
       </div>
@@ -73,7 +84,8 @@
         <select id="selectMatchPreset" class="select-input">
           <option value="">-- Memuat Jadwal Pertandingan... --</option>
         </select>
-        <button type="button" class="btn-nav" style="background: var(--color-primary); color: #000; font-weight: 800; justify-content: center;"
+        <button type="button" class="btn-nav"
+          style="background: var(--color-primary); color: #000; font-weight: 800; justify-content: center;"
           onclick="operatorConsole.loadSelectedPreset(document.getElementById('selectMatchPreset').value)">
           ⚡ Muat ke Layar TV
         </button>
@@ -97,29 +109,35 @@
             <button type="button" class="btn-timer-primary" id="btnTimerToggle" onclick="operatorConsole.toggleTimer()">
               ▶️ JALANKAN TIMER
             </button>
-            <button type="button" class="btn-timer-sub" onclick="operatorConsole.adjustTimer(60)" title="Tambah 1 Menit">
+            <button type="button" class="btn-timer-sub" onclick="operatorConsole.adjustTimer(60)"
+              title="Tambah 1 Menit">
               +1m
             </button>
-            <button type="button" class="btn-timer-sub" onclick="operatorConsole.adjustTimer(-60)" title="Kurang 1 Menit">
+            <button type="button" class="btn-timer-sub" onclick="operatorConsole.adjustTimer(-60)"
+              title="Kurang 1 Menit">
               -1m
             </button>
-            <button type="button" class="btn-timer-sub" onclick="operatorConsole.adjustTimer(10)" title="Tambah 10 Detik">
+            <button type="button" class="btn-timer-sub" onclick="operatorConsole.adjustTimer(10)"
+              title="Tambah 10 Detik">
               +10s
             </button>
-            <button type="button" class="btn-timer-sub" onclick="operatorConsole.resetTimer()" title="Reset Menjadi 00:00" style="color: #ef4444;">
+            <button type="button" class="btn-timer-sub" onclick="operatorConsole.resetTimer()"
+              title="Reset Menjadi 00:00" style="color: #ef4444;">
               🔄
             </button>
           </div>
 
           <!-- SHORTCUT PILIH BABAK -->
           <div class="period-buttons-grid">
-            <button type="button" class="btn-period" data-period="upcoming" onclick="operatorConsole.setPeriod('upcoming')">
+            <button type="button" class="btn-period" data-period="upcoming"
+              onclick="operatorConsole.setPeriod('upcoming')">
               Belum Mulai
             </button>
             <button type="button" class="btn-period" data-period="1st" onclick="operatorConsole.setPeriod('1st')">
               Babak 1
             </button>
-            <button type="button" class="btn-period" data-period="halftime" onclick="operatorConsole.setPeriod('halftime')">
+            <button type="button" class="btn-period" data-period="halftime"
+              onclick="operatorConsole.setPeriod('halftime')">
               Istirahat (HT)
             </button>
             <button type="button" class="btn-period" data-period="2nd" onclick="operatorConsole.setPeriod('2nd')">
@@ -128,28 +146,35 @@
             <button type="button" class="btn-period" data-period="et" onclick="operatorConsole.setPeriod('et')">
               Extra Time
             </button>
-            <button type="button" class="btn-period" data-period="penalties" onclick="operatorConsole.setPeriod('penalties')">
+            <button type="button" class="btn-period" data-period="penalties"
+              onclick="operatorConsole.setPeriod('penalties')">
               Adu Penalti
             </button>
-            <button type="button" class="btn-period" data-period="finished" onclick="operatorConsole.setPeriod('finished')" style="grid-column: span 3; color: #ef4444; border-color: rgba(239, 68, 68, 0.4);">
+            <button type="button" class="btn-period" data-period="finished"
+              onclick="operatorConsole.setPeriod('finished')"
+              style="grid-column: span 3; color: #ef4444; border-color: rgba(239, 68, 68, 0.4);">
               🏁 Selesai Pertandingan (FT)
             </button>
           </div>
         </div>
 
         <!-- TIMEOUT CONTROLLER -->
-        <div style="margin-top: 16px; background: rgba(0,0,0,0.25); padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+        <div
+          style="margin-top: 16px; background: rgba(0,0,0,0.25); padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
           <div style="font-size: 0.8rem; font-weight: 800; color: var(--text-muted); margin-bottom: 8px;">
             ⏱️ KONTROL TIME OUT (1 MENIT HITUNG MUNDUR DI LAYAR TV)
           </div>
           <div style="display: flex; gap: 8px;">
-            <button type="button" class="btn-action-cyan" id="btnHomeTimeout" style="flex: 1; padding: 10px;" onclick="operatorConsole.startTimeout('home')">
+            <button type="button" class="btn-action-cyan" id="btnHomeTimeout" style="flex: 1; padding: 10px;"
+              onclick="operatorConsole.startTimeout('home')">
               TO Tim Home
             </button>
-            <button type="button" class="btn-action-cyan" id="btnAwayTimeout" style="flex: 1; padding: 10px;" onclick="operatorConsole.startTimeout('away')">
+            <button type="button" class="btn-action-cyan" id="btnAwayTimeout" style="flex: 1; padding: 10px;"
+              onclick="operatorConsole.startTimeout('away')">
               TO Tim Away
             </button>
-            <button type="button" class="btn-timer-sub" style="color: #ef4444;" onclick="operatorConsole.cancelTimeout()" title="Batalkan Countdown Timeout">
+            <button type="button" class="btn-timer-sub" style="color: #ef4444;"
+              onclick="operatorConsole.cancelTimeout()" title="Batalkan Countdown Timeout">
               Batal TO
             </button>
           </div>
@@ -160,7 +185,8 @@
       <section class="operator-card">
         <div class="card-title">
           <span>⚽ 3. Skor, Pelanggaran (Fouls) &amp; Kartu</span>
-          <button type="button" class="btn-nav" style="padding: 4px 10px; font-size: 0.75rem;" onclick="operatorConsole.resetFouls()">
+          <button type="button" class="btn-nav" style="padding: 4px 10px; font-size: 0.75rem;"
+            onclick="operatorConsole.resetFouls()">
             Reset Fouls
           </button>
         </div>
@@ -171,11 +197,13 @@
           <div class="team-ctrl-box home">
             <div class="team-ctrl-header">
               <span class="team-ctrl-name" id="ctrlHomeName">SMP 1 MANDAI</span>
-              <span style="font-size: 0.72rem; color: #10b981; font-weight: 800; background: rgba(16,185,129,0.15); padding: 2px 6px; border-radius: 4px;">HOME</span>
+              <span
+                style="font-size: 0.72rem; color: #10b981; font-weight: 800; background: rgba(16,185,129,0.15); padding: 2px 6px; border-radius: 4px;">HOME</span>
             </div>
 
             <!-- DETAIL OFISIAL TIM HOME -->
-            <div class="team-officials-sub" style="font-size: 0.72rem; color: #94a3b8; background: rgba(0,0,0,0.2); padding: 6px 10px; border-radius: 6px; display: flex; flex-direction: column; gap: 2px;">
+            <div class="team-officials-sub"
+              style="font-size: 0.72rem; color: #94a3b8; background: rgba(0,0,0,0.2); padding: 6px 10px; border-radius: 6px; display: flex; flex-direction: column; gap: 2px;">
               <div>👨‍💼 Manajer: <strong id="ctrlHomeManager" style="color: #e2e8f0;">-</strong></div>
               <div>📋 Pelatih: <strong id="ctrlHomeCoach" style="color: #e2e8f0;">-</strong></div>
             </div>
@@ -184,10 +212,12 @@
             <div class="team-ctrl-score-row">
               <div class="score-display-box" id="ctrlHomeScore">0</div>
               <div class="score-btn-group">
-                <button type="button" class="btn-score-plus" onclick="operatorConsole.changeScore('home', 1)" title="Tambah 1 Gol">
+                <button type="button" class="btn-score-plus" onclick="operatorConsole.changeScore('home', 1)"
+                  title="Tambah 1 Gol">
                   +1 GOL
                 </button>
-                <button type="button" class="btn-score-minus" onclick="operatorConsole.changeScore('home', -1)" title="Kurang 1 Gol">
+                <button type="button" class="btn-score-minus" onclick="operatorConsole.changeScore('home', -1)"
+                  title="Kurang 1 Gol">
                   -1
                 </button>
               </div>
@@ -205,13 +235,16 @@
 
             <!-- DETAIL GOL & KARTU -->
             <div class="quick-action-grid">
-              <button type="button" class="btn-action-green" onclick="operatorConsole.openAddEventModal('goal', 'home')">
+              <button type="button" class="btn-action-green"
+                onclick="operatorConsole.openAddEventModal('goal', 'home')">
                 ⚽ + Gol Detail
               </button>
-              <button type="button" class="btn-action-yellow" onclick="operatorConsole.openAddEventModal('card_yellow', 'home')">
+              <button type="button" class="btn-action-yellow"
+                onclick="operatorConsole.openAddEventModal('card_yellow', 'home')">
                 🟨 + Kartu Kuning
               </button>
-              <button type="button" class="btn-action-red" onclick="operatorConsole.openAddEventModal('card_red', 'home')">
+              <button type="button" class="btn-action-red"
+                onclick="operatorConsole.openAddEventModal('card_red', 'home')">
                 🟥 + Kartu Merah
               </button>
             </div>
@@ -221,11 +254,13 @@
           <div class="team-ctrl-box away">
             <div class="team-ctrl-header">
               <span class="team-ctrl-name" id="ctrlAwayName">SMP 2 MANDAI</span>
-              <span style="font-size: 0.72rem; color: #3b82f6; font-weight: 800; background: rgba(59,130,246,0.15); padding: 2px 6px; border-radius: 4px;">AWAY</span>
+              <span
+                style="font-size: 0.72rem; color: #3b82f6; font-weight: 800; background: rgba(59,130,246,0.15); padding: 2px 6px; border-radius: 4px;">AWAY</span>
             </div>
 
             <!-- DETAIL OFISIAL TIM AWAY -->
-            <div class="team-officials-sub" style="font-size: 0.72rem; color: #94a3b8; background: rgba(0,0,0,0.2); padding: 6px 10px; border-radius: 6px; display: flex; flex-direction: column; gap: 2px;">
+            <div class="team-officials-sub"
+              style="font-size: 0.72rem; color: #94a3b8; background: rgba(0,0,0,0.2); padding: 6px 10px; border-radius: 6px; display: flex; flex-direction: column; gap: 2px;">
               <div>👨‍💼 Manajer: <strong id="ctrlAwayManager" style="color: #e2e8f0;">-</strong></div>
               <div>📋 Pelatih: <strong id="ctrlAwayCoach" style="color: #e2e8f0;">-</strong></div>
             </div>
@@ -234,10 +269,12 @@
             <div class="team-ctrl-score-row">
               <div class="score-display-box" id="ctrlAwayScore">0</div>
               <div class="score-btn-group">
-                <button type="button" class="btn-score-plus" onclick="operatorConsole.changeScore('away', 1)" title="Tambah 1 Gol">
+                <button type="button" class="btn-score-plus" onclick="operatorConsole.changeScore('away', 1)"
+                  title="Tambah 1 Gol">
                   +1 GOL
                 </button>
-                <button type="button" class="btn-score-minus" onclick="operatorConsole.changeScore('away', -1)" title="Kurang 1 Gol">
+                <button type="button" class="btn-score-minus" onclick="operatorConsole.changeScore('away', -1)"
+                  title="Kurang 1 Gol">
                   -1
                 </button>
               </div>
@@ -255,13 +292,16 @@
 
             <!-- DETAIL GOL & KARTU -->
             <div class="quick-action-grid">
-              <button type="button" class="btn-action-green" onclick="operatorConsole.openAddEventModal('goal', 'away')">
+              <button type="button" class="btn-action-green"
+                onclick="operatorConsole.openAddEventModal('goal', 'away')">
                 ⚽ + Gol Detail
               </button>
-              <button type="button" class="btn-action-yellow" onclick="operatorConsole.openAddEventModal('card_yellow', 'away')">
+              <button type="button" class="btn-action-yellow"
+                onclick="operatorConsole.openAddEventModal('card_yellow', 'away')">
                 🟨 + Kartu Kuning
               </button>
-              <button type="button" class="btn-action-red" onclick="operatorConsole.openAddEventModal('card_red', 'away')">
+              <button type="button" class="btn-action-red"
+                onclick="operatorConsole.openAddEventModal('card_red', 'away')">
                 🟥 + Kartu Merah
               </button>
             </div>
@@ -278,7 +318,8 @@
         <span>📜 4. Log Riwayat Kejadian (Gol, Kartu, Timeout)</span>
       </div>
       <div class="events-log-container" id="eventsLogList">
-        <div style="font-size: 0.85rem; color: var(--text-muted); text-align: center; padding: 12px;">Memuat data kejadian...</div>
+        <div style="font-size: 0.85rem; color: var(--text-muted); text-align: center; padding: 12px;">Memuat data
+          kejadian...</div>
       </div>
     </section>
 
@@ -287,13 +328,15 @@
   <!-- MODAL TAMBAH EVENT (GOL / KARTU) -->
   <div class="modal-overlay" id="addEventModal">
     <div class="modal-content">
-      <h3 id="addEventModalTitle" style="color: #fff; margin-bottom: 14px; font-size: 1.15rem; font-weight: 800;">Catat Kejadian</h3>
+      <h3 id="addEventModalTitle" style="color: #fff; margin-bottom: 14px; font-size: 1.15rem; font-weight: 800;">Catat
+        Kejadian</h3>
 
       <input type="hidden" id="hiddenEventType">
       <input type="hidden" id="hiddenEventTeam">
 
       <div style="margin-bottom: 12px;">
-        <label style="display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; font-weight: 700;">
+        <label
+          style="display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; font-weight: 700;">
           Pilih Pemain dari Skuad Resmi:
         </label>
         <select id="selectEventPlayer" class="select-input">
@@ -302,14 +345,16 @@
       </div>
 
       <div style="margin-bottom: 12px;">
-        <label style="display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; font-weight: 700;">
+        <label
+          style="display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; font-weight: 700;">
           Atau Ketik Nama Pemain / Nomor Punggung Manual:
         </label>
         <input type="text" id="inputCustomPlayer" class="text-input" placeholder="Contoh: Ahmad (#10)">
       </div>
 
       <div style="margin-bottom: 18px;">
-        <label style="display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; font-weight: 700;">
+        <label
+          style="display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; font-weight: 700;">
           Menit Kejadian:
         </label>
         <input type="text" id="inputEventMinute" class="text-input" placeholder="Contoh: 14'">
@@ -317,7 +362,8 @@
 
       <div style="display: flex; gap: 10px; justify-content: flex-end;">
         <button type="button" class="btn-nav" onclick="operatorConsole.closeAddEventModal()">Batal</button>
-        <button type="button" class="btn-nav" style="background: var(--color-primary); color: #000; font-weight: 800;" onclick="operatorConsole.saveEventFromModal()">
+        <button type="button" class="btn-nav" style="background: var(--color-primary); color: #000; font-weight: 800;"
+          onclick="operatorConsole.saveEventFromModal()">
           Simpan Kejadian
         </button>
       </div>
@@ -327,27 +373,33 @@
   <!-- MODAL PENGATURAN SUPABASE & PIN -->
   <div class="modal-overlay" id="settingsModal">
     <div class="modal-content">
-      <h3 style="color: #fff; margin-bottom: 8px; font-size: 1.15rem; font-weight: 800;">⚙️ Pengaturan Supabase &amp; Keamanan</h3>
+      <h3 style="color: #fff; margin-bottom: 8px; font-size: 1.15rem; font-weight: 800;">⚙️ Pengaturan Supabase &amp;
+        Keamanan</h3>
       <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 14px;">
-        Masukkan URL &amp; Anon Key dari project Supabase baru Anda untuk mengaktifkan sinkronisasi cloud real-time antar perangkat.
+        Masukkan URL &amp; Anon Key dari project Supabase baru Anda untuk mengaktifkan sinkronisasi cloud real-time
+        antar perangkat.
       </p>
 
       <div style="margin-bottom: 12px;">
-        <label style="display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; font-weight: 700;">
+        <label
+          style="display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; font-weight: 700;">
           Supabase Project URL:
         </label>
         <input type="text" id="settingSupabaseUrl" class="text-input" placeholder="https://xyzcompany.supabase.co">
       </div>
 
       <div style="margin-bottom: 12px;">
-        <label style="display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; font-weight: 700;">
+        <label
+          style="display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; font-weight: 700;">
           Supabase Anon / Public Key:
         </label>
-        <input type="password" id="settingSupabaseKey" class="text-input" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...">
+        <input type="password" id="settingSupabaseKey" class="text-input"
+          placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...">
       </div>
 
       <div style="margin-bottom: 18px;">
-        <label style="display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; font-weight: 700;">
+        <label
+          style="display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; font-weight: 700;">
           PIN Akses Operator Baru (Opsional):
         </label>
         <input type="text" id="settingOperatorPin" class="text-input" placeholder="ACCdisplay2026">
@@ -355,7 +407,8 @@
 
       <div style="display: flex; gap: 10px; justify-content: flex-end;">
         <button type="button" class="btn-nav" onclick="operatorConsole.closeSettingsModal()">Batal</button>
-        <button type="button" class="btn-nav" style="background: var(--color-primary); color: #000; font-weight: 800;" onclick="operatorConsole.saveSettings()">
+        <button type="button" class="btn-nav" style="background: var(--color-primary); color: #000; font-weight: 800;"
+          onclick="operatorConsole.saveSettings()">
           Simpan Pengaturan
         </button>
       </div>
@@ -363,11 +416,22 @@
   </div>
 
   <!-- JAVASCRIPT LOGIC -->
-  <script src="/js/config.js?v=20261124_v5"></script>
-  <script src="/js/teams.js?v=20261124_v5"></script>
-  <script src="/js/matches.js?v=20261124_v5"></script>
-  <script src="/js/supabase-sync.js?v=20261124_v5"></script>
-  <script src="/js/app-operator.js?v=20261124_v5"></script>
+  <script src="/js/config.js"></script>
+  <script src="/js/teams.js"></script>
+  <script src="/js/matches.js"></script>
+  <script src="/js/supabase-sync.js"></script>
+  <script src="/js/app-operator.js"></script>
+
+  <!-- PWA SERVICE WORKER REGISTRATION -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(err => {
+          console.warn('PWA Service Worker reg error:', err);
+        });
+      });
+    }
+  </script>
 
 </body>
 

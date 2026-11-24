@@ -1,0 +1,54 @@
+{
+  "id": "/?source=pwa",
+  "name": "ACC Futsal Cup 2026 - Live Score & Scoreboard",
+  "short_name": "ACC Score",
+  "description": "Sistem Live Scoreboard TV & Konsol Operator Al-Fayyadh Champions Cup 2026",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#06090e",
+  "theme_color": "#06090e",
+  "icons": [
+    {
+      "src": "/assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/assets/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Scoreboard TV",
+      "short_name": "Layar TV",
+      "description": "Buka Tampilan Scoreboard TV Lapangan",
+      "url": "/",
+      "icons": [{ "src": "/assets/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Konsol Operator",
+      "short_name": "Operator",
+      "description": "Buka Konsol Penginput Skor Meja Wasit",
+      "url": "/operator.html",
+      "icons": [{ "src": "/assets/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
