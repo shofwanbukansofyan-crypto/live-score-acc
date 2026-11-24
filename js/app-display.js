@@ -255,10 +255,10 @@ class ScoreboardDisplay {
               defaultLabel = "Kartu Merah";
             }
 
-            let playerName = ev.player_name || defaultLabel;
-            if (isOG) {
-              playerName = playerName.replace(/\s*\(GBD\)/gi, '').trim() || "Gol Bunuh Diri";
-            }
+            const rawPlayer = ev.player_name || defaultLabel;
+            const displayName = isOG
+              ? (rawPlayer.replace(/\s*\(GBD\)/gi, '').trim() || "Gol Bunuh Diri")
+              : rawPlayer;
 
             const minuteText = ev.minute ? `<span class="chip-minute">${ev.minute}'</span>` : "";
 
@@ -267,7 +267,7 @@ class ScoreboardDisplay {
                 <div class="event-chip ${chipClass}">
                   <span class="chip-icon">${icon}</span>
                   ${minuteText}
-                  <span class="chip-player">${playerName}</span>
+                  <span class="chip-player">${displayName}</span>
                   ${ogTag}
                 </div>
               </div>

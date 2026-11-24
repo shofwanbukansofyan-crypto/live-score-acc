@@ -299,7 +299,7 @@ class OperatorConsole {
 
   resetCurrentMatch() {
     const state = this.currentState;
-    const matchName = state && state.home_name && state.away_name 
+    const matchName = state && state.home_name && state.away_name
       ? `"${state.home_name} vs ${state.away_name}"`
       : "pertandingan yang sedang aktif";
 
@@ -319,8 +319,8 @@ class OperatorConsole {
     if (!isConfirmed) return;
 
     const cat = state ? (state.category || "SMP") : "SMP";
-    const targetDuration = cat === "SD" 
-      ? (CONFIG.DEFAULT_HALF_DURATION_SD || 600) 
+    const targetDuration = cat === "SD"
+      ? (CONFIG.DEFAULT_HALF_DURATION_SD || 600)
       : (CONFIG.DEFAULT_HALF_DURATION_SMP || 900);
 
     const resetPayload = {
@@ -712,7 +712,7 @@ class OperatorConsole {
         const num = p.no ?? p.number ?? '-';
         const pos = p.pos ?? p.position ?? 'Pemain';
         opt.value = isOwnGoal ? `${pName} (GBD)` : pName;
-        opt.textContent = isOwnGoal 
+        opt.textContent = isOwnGoal
           ? `[${teamName}] #${num} ${pName} (GBD)`
           : `#${num} ${pName} (${pos})`;
         selectPlayer.appendChild(opt);
@@ -791,7 +791,7 @@ class OperatorConsole {
       if (p !== undefined) {
         p.catch(e => console.log("Audio play notice:", e));
       }
-    } catch (_) {}
+    } catch (_) { }
   }
 
   getCurrentMatchMinute() {

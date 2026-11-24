@@ -151,7 +151,7 @@ class SyncEngine {
             event: "EVENTS_UPDATE",
             payload: this.cachedEvents
           });
-        } catch (_) {}
+        } catch (_) { }
       }
     });
 
@@ -188,7 +188,7 @@ class SyncEngine {
             event: "SYNC_REQUEST",
             payload: {}
           });
-        } catch (_) {}
+        } catch (_) { }
       }
     });
   }
@@ -273,7 +273,7 @@ class SyncEngine {
           event: "STATE_UPDATE",
           payload: this.cachedState
         });
-      } catch (_) {}
+      } catch (_) { }
     }
 
     // 3. Beri tahu listener internal
@@ -323,7 +323,7 @@ class SyncEngine {
           event: "EVENTS_UPDATE",
           payload: this.cachedEvents
         });
-      } catch (_) {}
+      } catch (_) { }
     }
 
     this.notifyListeners(this.cachedState, this.cachedEvents);
@@ -368,7 +368,7 @@ class SyncEngine {
           event: "EVENTS_UPDATE",
           payload: this.cachedEvents
         });
-      } catch (_) {}
+      } catch (_) { }
     }
 
     this.notifyListeners(this.cachedState, this.cachedEvents);
@@ -405,7 +405,7 @@ class SyncEngine {
           event: "EVENTS_UPDATE",
           payload: []
         });
-      } catch (_) {}
+      } catch (_) { }
     }
 
     this.notifyListeners(this.cachedState, this.cachedEvents);
