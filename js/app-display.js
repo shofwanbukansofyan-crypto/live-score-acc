@@ -90,29 +90,54 @@ class ScoreboardDisplay {
     // Render Data Fase Turnamen
     this.updateText("stagePillText", state.stage || "FASE GRUP");
 
+    // Resolusi Logo Tim Resmi (Gunakan logo tim asli dari ACC_TEAMS jika logo masih default)
+    let homeLogo = state.home_logo;
+    let homeColor = state.home_color;
+    if (typeof ACC_TEAMS !== "undefined" && Array.isArray(ACC_TEAMS)) {
+      const ht = ACC_TEAMS.find(x => x.id === state.home_id || x.name === state.home_name);
+      if (ht) {
+        if (!homeLogo || homeLogo === "/assets/logo.png" || homeLogo.includes("acc_logo")) {
+          homeLogo = ht.logo;
+        }
+        if (!homeColor) homeColor = ht.badgeColor;
+      }
+    }
+
+    let awayLogo = state.away_logo;
+    let awayColor = state.away_color;
+    if (typeof ACC_TEAMS !== "undefined" && Array.isArray(ACC_TEAMS)) {
+      const at = ACC_TEAMS.find(x => x.id === state.away_id || x.name === state.away_name);
+      if (at) {
+        if (!awayLogo || awayLogo === "/assets/logo.png" || awayLogo.includes("acc_logo")) {
+          awayLogo = at.logo;
+        }
+        if (!awayColor) awayColor = at.badgeColor;
+      }
+    }
+
     // Render Data Tim Home
     this.updateText("homeTeamName", state.home_name || "TIM HOME");
     this.updateText("homeScoreDigits", state.home_score ?? 0);
-    this.updateTeamLogo("homeTeamLogo", "homeTeamFallback", state.home_logo, state.home_short || state.home_name);
+    this.updateTeamLogo("homeTeamLogo", "homeTeamFallback", homeLogo, state.home_short || state.home_name, homeColor);
     this.renderFouls("homeFoulsContainer", state.home_fouls || 0);
     this.updateTimeoutTag("homeTimeoutTag", state.home_timeout);
 
     // Set warna border tim home jika ada
     const homeCard = document.getElementById("homeCard");
-    if (homeCard && state.home_color) {
-      homeCard.style.setProperty("--team-color", state.home_color);
+    if (homeCard && homeColor) {
+      homeCard.style.setProperty("--team-color", homeColor);
     }
 
     // Render Data Tim Away
     this.updateText("awayTeamName", state.away_name || "TIM AWAY");
     this.updateText("awayScoreDigits", state.away_score ?? 0);
-    this.updateTeamLogo("awayTeamLogo", "awayTeamFallback", state.away_logo, state.away_short || state.away_name);
+    this.updateTeamLogo("awayTeamLogo", "awayTeamFallback", awayLogo, state.away_short || state.away_name, awayColor);
     this.renderFouls("awayFoulsContainer", state.away_fouls || 0);
     this.updateTimeoutTag("awayTimeoutTag", state.away_timeout);
 
     const awayCard = document.getElementById("awayCard");
-    if (awayCard && state.away_color) {
-      awayCard.style.setProperty("--team-color", state.away_color);
+    if (awayCard && awayColor) {
+      awayCard.style.setProperty("--team-color", awayColor);
     }
 
     // Render Adu Penalti jika ada
@@ -294,10 +319,15 @@ class ScoreboardDisplay {
     }
   }
 
-  updateTeamLogo(imgId, fallbackId, logoUrl, teamName) {
+  updateTeamLogo(imgId, fallbackId, logoUrl, teamName, badgeColor) {
     const imgEl = document.getElementById(imgId);
     const fallEl = document.getElementById(fallbackId);
     if (!imgEl || !fallEl) return;
+
+    const container = imgEl.parentElement;
+    if (container && badgeColor) {
+      container.style.borderColor = badgeColor + '55';
+    }
 
     if (logoUrl && logoUrl.trim() !== "") {
       imgEl.src = logoUrl;
@@ -305,13 +335,21 @@ class ScoreboardDisplay {
       fallEl.style.display = "none";
       imgEl.onerror = () => {
         imgEl.style.display = "none";
-        fallEl.style.display = "block";
-        fallEl.textContent = (teamName || "TBD").substring(0, 3).toUpperCase();
+        fallEl.style.display = "flex";
+        const cleanName = (teamName || "TBD").replace(/^(SMP|SDIT|SDN|SD|UPTD|UPT SPF)\s*/i, '').trim();
+        fallEl.textContent = cleanName.substring(0, 4).toUpperCase();
+        if (container && badgeColor) {
+          container.style.background = `radial-gradient(circle, ${badgeColor}55 0%, rgba(0, 0, 0, 0.7) 100%)`;
+        }
       };
     } else {
       imgEl.style.display = "none";
-      fallEl.style.display = "block";
-      fallEl.textContent = (teamName || "TBD").substring(0, 3).toUpperCase();
+      fallEl.style.display = "flex";
+      const cleanName = (teamName || "TBD").replace(/^(SMP|SDIT|SDN|SD|UPTD|UPT SPF)\s*/i, '').trim();
+      fallEl.textContent = cleanName.substring(0, 4).toUpperCase();
+      if (container && badgeColor) {
+        container.style.background = `radial-gradient(circle, ${badgeColor}55 0%, rgba(0, 0, 0, 0.7) 100%)`;
+      }
     }
   }
 

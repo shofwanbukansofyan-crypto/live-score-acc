@@ -248,8 +248,8 @@ class OperatorConsole {
     const awayName = m.awayName || awayTeam.name || m.away_name || m.away_placeholder || 'TIM AWAY';
     const homeShort = m.homeShort || homeTeam.shortName || homeName.substring(0, 5);
     const awayShort = m.awayShort || awayTeam.shortName || awayName.substring(0, 5);
-    const homeLogo = m.homeLogo || homeTeam.logo || "/assets/logo.png";
-    const awayLogo = m.awayLogo || awayTeam.logo || "/assets/logo.png";
+    const homeLogo = m.homeLogo || homeTeam.logo || "/assets/acc_logo.png";
+    const awayLogo = m.awayLogo || awayTeam.logo || "/assets/acc_logo.png";
     const cat = m.category || "SMP";
     const homeColor = m.homeColor || homeTeam.badgeColor || (cat === 'SD' ? "#3b82f6" : "#10b981");
     const awayColor = m.awayColor || awayTeam.badgeColor || "#f59e0b";
@@ -352,9 +352,13 @@ class OperatorConsole {
   renderUI(state, events) {
     if (!state) return;
 
-    // Nama Tim & Skor
+    // Nama Tim, Logo & Skor
     this.setText("ctrlHomeName", state.home_name || "TIM HOME");
     this.setText("ctrlAwayName", state.away_name || "TIM AWAY");
+    const homeLogoEl = document.getElementById("ctrlHomeLogo");
+    if (homeLogoEl && state.home_logo) homeLogoEl.src = state.home_logo;
+    const awayLogoEl = document.getElementById("ctrlAwayLogo");
+    if (awayLogoEl && state.away_logo) awayLogoEl.src = state.away_logo;
     this.setText("ctrlHomeScore", state.home_score ?? 0);
     this.setText("ctrlAwayScore", state.away_score ?? 0);
 

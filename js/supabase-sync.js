@@ -116,9 +116,46 @@ class SyncEngine {
   setupRealtimeSubscription() {
     if (!this.supabase) return;
 
-    const channel = this.supabase.channel(CONFIG.REALTIME_CHANNEL);
+    const channel = this.supabase.channel(CONFIG.REALTIME_CHANNEL, {
+      config: { broadcast: { self: false } }
+    });
+    this.realtimeChannel = channel;
 
-    // Dengar perubahan tabel live_match
+    // 1. Supabase WebSocket Broadcast: Komunikasi instan antar-perangkat (HP Operator <-> TV Laptop)
+    channel.on("broadcast", { event: "STATE_UPDATE" }, ({ payload }) => {
+      if (payload) {
+        this.cachedState = Object.assign({}, this.cachedState, payload);
+        this.saveLocalBackup(this.cachedState, null);
+        this.notifyListeners(this.cachedState, this.cachedEvents);
+      }
+    });
+
+    channel.on("broadcast", { event: "EVENTS_UPDATE" }, ({ payload }) => {
+      if (payload && Array.isArray(payload)) {
+        this.cachedEvents = payload;
+        this.saveLocalBackup(null, this.cachedEvents);
+        this.notifyListeners(this.cachedState, this.cachedEvents);
+      }
+    });
+
+    channel.on("broadcast", { event: "SYNC_REQUEST" }, () => {
+      if (this.cachedState && this.realtimeChannel) {
+        try {
+          this.realtimeChannel.send({
+            type: "broadcast",
+            event: "STATE_UPDATE",
+            payload: this.cachedState
+          });
+          this.realtimeChannel.send({
+            type: "broadcast",
+            event: "EVENTS_UPDATE",
+            payload: this.cachedEvents
+          });
+        } catch (_) {}
+      }
+    });
+
+    // 2. Dengar perubahan tabel live_match (PostgreSQL Realtime fallback)
     channel.on(
       "postgres_changes",
       { event: "*", schema: "public", table: "live_match" },
@@ -143,6 +180,16 @@ class SyncEngine {
     channel.subscribe((status) => {
       this.isConnected = (status === "SUBSCRIBED");
       this.notifyConnection(this.isConnected, this.isUsingSupabase);
+      if (this.isConnected) {
+        // Minta state terkini dari operator yang aktif jika ini layar TV
+        try {
+          channel.send({
+            type: "broadcast",
+            event: "SYNC_REQUEST",
+            payload: {}
+          });
+        } catch (_) {}
+      }
     });
   }
 
@@ -218,6 +265,17 @@ class SyncEngine {
       } catch (_) { }
     }
 
+    // 2b. Broadcast ke channel Supabase Realtime (Lintas-Perangkat: HP Operator -> Laptop TV)
+    if (this.realtimeChannel && this.isConnected) {
+      try {
+        this.realtimeChannel.send({
+          type: "broadcast",
+          event: "STATE_UPDATE",
+          payload: this.cachedState
+        });
+      } catch (_) {}
+    }
+
     // 3. Beri tahu listener internal
     this.notifyListeners(this.cachedState, this.cachedEvents);
 
@@ -258,6 +316,16 @@ class SyncEngine {
       } catch (_) { }
     }
 
+    if (this.realtimeChannel && this.isConnected) {
+      try {
+        this.realtimeChannel.send({
+          type: "broadcast",
+          event: "EVENTS_UPDATE",
+          payload: this.cachedEvents
+        });
+      } catch (_) {}
+    }
+
     this.notifyListeners(this.cachedState, this.cachedEvents);
 
     if (this.supabase && this.isUsingSupabase) {
@@ -293,6 +361,16 @@ class SyncEngine {
       } catch (_) { }
     }
 
+    if (this.realtimeChannel && this.isConnected) {
+      try {
+        this.realtimeChannel.send({
+          type: "broadcast",
+          event: "EVENTS_UPDATE",
+          payload: this.cachedEvents
+        });
+      } catch (_) {}
+    }
+
     this.notifyListeners(this.cachedState, this.cachedEvents);
 
     if (this.supabase && this.isUsingSupabase) {
@@ -318,6 +396,16 @@ class SyncEngine {
           payload: []
         });
       } catch (_) { }
+    }
+
+    if (this.realtimeChannel && this.isConnected) {
+      try {
+        this.realtimeChannel.send({
+          type: "broadcast",
+          event: "EVENTS_UPDATE",
+          payload: []
+        });
+      } catch (_) {}
     }
 
     this.notifyListeners(this.cachedState, this.cachedEvents);
