@@ -1,12 +1,11 @@
 /* ==============================================================================
-   DISPLAY.CSS - ACC FUTSAL CUP 2026 SCOREBOARD TV DISPLAY (BIG SCREEN STADIUM)
+   DISPLAY.CSS - ACC FUTSAL CUP 2026 SCOREBOARD TV DISPLAY (MINIMALIST STADIUM)
    ============================================================================== */
 
 :root {
   --bg-main: #06090e;
-  --bg-card: rgba(18, 24, 38, 0.85);
-  --bg-card-glow: rgba(30, 41, 59, 0.6);
-  --border-card: rgba(255, 255, 255, 0.08);
+  --bg-card: rgba(15, 23, 42, 0.5);
+  --border-subtle: rgba(255, 255, 255, 0.07);
   --accent-gold: #f59e0b;
   --accent-cyan: #06b6d4;
   --accent-green: #10b981;
@@ -15,7 +14,7 @@
   --text-secondary: #94a3b8;
   --text-muted: #64748b;
   --font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Roboto Mono', monospace, monospace;
+  --font-mono: 'JetBrains Mono', 'Roboto Mono', monospace;
 }
 
 * {
@@ -25,219 +24,100 @@
   -webkit-font-smoothing: antialiased;
 }
 
-html, body {
+html,
+body {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
   background-color: var(--bg-main);
-  background-image: 
-    radial-gradient(circle at 50% 20%, rgba(16, 185, 129, 0.08) 0%, transparent 60%),
-    radial-gradient(circle at 10% 80%, rgba(59, 130, 246, 0.06) 0%, transparent 50%),
-    radial-gradient(circle at 90% 80%, rgba(245, 158, 11, 0.06) 0%, transparent 50%),
-    linear-gradient(180deg, #090d16 0%, #05070b 100%);
+  background-image:
+    radial-gradient(circle at 50% 15%, rgba(245, 158, 11, 0.07) 0%, transparent 55%),
+    radial-gradient(circle at 15% 50%, rgba(16, 185, 129, 0.05) 0%, transparent 45%),
+    radial-gradient(circle at 85% 50%, rgba(59, 130, 246, 0.05) 0%, transparent 45%),
+    linear-gradient(180deg, #080d16 0%, #04060a 100%);
   color: var(--text-primary);
   font-family: var(--font-family);
   user-select: none;
 }
 
-/* CONTAINER UTAMA LAYAR TV */
+/* CONTAINER UTAMA LAYAR TV (100vh NO SCROLL) */
 .tv-scoreboard-container {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 100vw;
   height: 100vh;
-  padding: clamp(12px, 2vh, 24px) clamp(16px, 2.5vw, 40px);
+  padding: clamp(14px, 2vh, 26px) clamp(20px, 3vw, 50px);
 }
 
 /* ==============================================================================
-   1. TOP BROADCAST HEADER
+   1. TOP CENTER LOGO & STAGE (CLEAN & PROMINENT)
    ============================================================================== */
-.tv-header {
+.tv-top-center {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  background: var(--bg-card);
-  backdrop-filter: blur(16px);
-  border: 1px solid var(--border-card);
-  border-radius: 20px;
-  padding: clamp(8px, 1.2vh, 16px) clamp(16px, 2vw, 32px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  gap: 8px;
   position: relative;
   z-index: 10;
 }
 
-.tv-header-left {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.tv-logo-badge {
-  width: clamp(40px, 4.5vh, 60px);
-  height: clamp(40px, 4.5vh, 60px);
+.tv-tournament-logo {
+  width: clamp(75px, 10vh, 120px);
+  height: clamp(75px, 10vh, 120px);
   object-fit: contain;
-  filter: drop-shadow(0 4px 12px rgba(245, 158, 11, 0.3));
+  filter: drop-shadow(0 6px 20px rgba(245, 158, 11, 0.35));
+  transition: transform 0.3s ease;
 }
 
-.tv-title-wrap h1 {
-  font-size: clamp(1rem, 1.8vh, 1.4rem);
-  font-weight: 900;
-  letter-spacing: 1px;
-  background: linear-gradient(135deg, #ffffff 30%, #f59e0b 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-transform: uppercase;
-}
-
-.tv-title-wrap p {
-  font-size: clamp(0.7rem, 1.2vh, 0.85rem);
-  color: var(--text-secondary);
-  font-weight: 600;
-  margin-top: 2px;
-}
-
-.tv-header-center {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.header-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: clamp(0.75rem, 1.3vh, 0.95rem);
+.tv-stage-indicator {
+  font-size: clamp(0.75rem, 1.25vh, 0.95rem);
   font-weight: 800;
-  padding: 6px 16px;
-  border-radius: 999px;
+  letter-spacing: 3px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.pill-category {
-  background: linear-gradient(135deg, #0284c7, #0369a1);
-  color: #ffffff;
-  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
-}
-
-.pill-stage {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: #f1f5f9;
-}
-
-.pill-pitch {
-  background: rgba(16, 185, 129, 0.15);
-  border: 1px solid rgba(16, 185, 129, 0.4);
-  color: #34d399;
-}
-
-.tv-header-right {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.live-indicator-pill {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(239, 68, 68, 0.2);
-  border: 1px solid rgba(239, 68, 68, 0.6);
-  color: #fca5a5;
-  padding: 6px 14px;
-  border-radius: 999px;
-  font-size: clamp(0.75rem, 1.3vh, 0.9rem);
-  font-weight: 900;
-  letter-spacing: 1px;
-}
-
-.pulse-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background-color: #ef4444;
-  box-shadow: 0 0 10px #ef4444;
-  animation: pulseLive 1.5s infinite;
-}
-
-@keyframes pulseLive {
-  0% { transform: scale(0.9); opacity: 0.8; }
-  50% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 16px #ef4444; }
-  100% { transform: scale(0.9); opacity: 0.8; }
-}
-
-.tv-btn-action {
+  color: #e2e8f0;
   background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: #cbd5e1;
-  padding: 6px 12px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 0.85rem;
-  font-weight: 700;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.tv-btn-action:hover {
-  background: rgba(255, 255, 255, 0.15);
-  color: #ffffff;
-  transform: translateY(-1px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 4px 18px;
+  border-radius: 999px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 /* ==============================================================================
-   2. MAIN SCOREBOARD ARENA (TENGAH LAYAR TV)
+   2. MAIN SCOREBOARD ARENA (MINIMALIST, NO HEAVY BOXES)
    ============================================================================== */
 .tv-main-arena {
   display: grid;
-  grid-template-columns: 1fr minmax(360px, 1.2fr) 1fr;
-  gap: clamp(16px, 2.5vw, 40px);
+  grid-template-columns: 1fr minmax(320px, 1.15fr) 1fr;
+  gap: clamp(16px, 2.5vw, 44px);
   align-items: center;
   margin: auto 0;
   width: 100%;
 }
 
-/* CARD TIM (HOME & AWAY) */
-.team-scoreboard-card {
-  background: var(--bg-card);
-  backdrop-filter: blur(24px);
-  border: 2px solid var(--border-card);
-  border-radius: 28px;
-  padding: clamp(20px, 3.5vh, 44px) clamp(20px, 2.5vw, 36px);
+/* PANEL TIM (HOME & AWAY) - MINIMALIST BORDERLESS FEEL */
+.team-panel {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
+  padding: clamp(10px, 1.8vh, 24px);
   position: relative;
-  overflow: hidden;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-  transition: transform 0.3s ease, border-color 0.3s ease;
-}
-
-.team-scoreboard-card.home {
-  border-left: 8px solid var(--team-color, #10b981);
-}
-
-.team-scoreboard-card.away {
-  border-right: 8px solid var(--team-color, #3b82f6);
 }
 
 .team-logo-container {
-  width: clamp(110px, 15vh, 180px);
-  height: clamp(110px, 15vh, 180px);
+  width: clamp(100px, 15vh, 175px);
+  height: clamp(100px, 15vh, 175px);
   border-radius: 50%;
-  padding: 12px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, rgba(0, 0, 0, 0.4) 100%);
-  border: 3px solid rgba(255, 255, 255, 0.15);
+  padding: 10px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.06) 0%, rgba(0, 0, 0, 0.4) 100%);
+  border: 2px solid rgba(255, 255, 255, 0.12);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
-  margin-bottom: clamp(12px, 2vh, 20px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  margin-bottom: clamp(10px, 1.5vh, 18px);
   position: relative;
 }
 
@@ -245,7 +125,7 @@ html, body {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.5));
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.6));
 }
 
 .team-logo-fallback {
@@ -256,12 +136,12 @@ html, body {
 }
 
 .team-name {
-  font-size: clamp(1.4rem, 3vh, 2.4rem);
+  font-size: clamp(1.3rem, 2.8vh, 2.3rem);
   font-weight: 900;
   color: #ffffff;
   line-height: 1.15;
   text-transform: uppercase;
-  max-width: 90%;
+  max-width: 95%;
   min-height: 2.3em;
   display: flex;
   align-items: center;
@@ -273,19 +153,18 @@ html, body {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-top: 14px;
+  margin-top: 12px;
 }
 
-/* FOULS ACCUMULATION INDICATOR (FUTSAL 5 FOULS LIMIT) */
+/* FOULS (FUTSAL 5 REGULATION DOTS) */
 .futsal-fouls-meter {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 6px;
-  background: rgba(0, 0, 0, 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 8px 16px;
-  border-radius: 16px;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 6px 14px;
+  border-radius: 12px;
 }
 
 .fouls-label {
@@ -298,13 +177,13 @@ html, body {
 
 .fouls-dots-wrap {
   display: flex;
-  gap: 6px;
+  gap: 5px;
   align-items: center;
 }
 
 .foul-dot {
-  width: clamp(12px, 1.6vh, 18px);
-  height: clamp(12px, 1.6vh, 18px);
+  width: clamp(11px, 1.5vh, 16px);
+  height: clamp(11px, 1.5vh, 16px);
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -323,8 +202,15 @@ html, body {
 }
 
 @keyframes pulseCritical {
-  from { transform: scale(1); box-shadow: 0 0 10px #ef4444; }
-  to { transform: scale(1.2); box-shadow: 0 0 20px #ef4444; }
+  from {
+    transform: scale(1);
+    box-shadow: 0 0 8px #ef4444;
+  }
+
+  to {
+    transform: scale(1.25);
+    box-shadow: 0 0 18px #ef4444;
+  }
 }
 
 .timeout-tag {
@@ -335,19 +221,19 @@ html, body {
   font-weight: 800;
   padding: 6px 12px;
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   color: #94a3b8;
 }
 
 .timeout-tag.used {
-  background: rgba(239, 68, 68, 0.2);
-  border-color: rgba(239, 68, 68, 0.5);
+  background: rgba(239, 68, 68, 0.18);
+  border-color: rgba(239, 68, 68, 0.45);
   color: #f87171;
 }
 
 /* ==============================================================================
-   3. CENTER HUB: CLOCK, SCORE, & STATUS
+   3. CENTER HUB: DIGITAL CLOCK & GIANT SCORE (NO UNNECESSARY STATUS TEXT)
    ============================================================================== */
 .tv-center-hub {
   display: flex;
@@ -355,59 +241,38 @@ html, body {
   align-items: center;
   justify-content: center;
   text-align: center;
-  background: var(--bg-card);
-  backdrop-filter: blur(28px);
-  border: 2px solid rgba(245, 158, 11, 0.25);
-  border-radius: 36px;
-  padding: clamp(20px, 3vh, 36px) clamp(24px, 3vw, 48px);
-  box-shadow: 
-    0 24px 60px rgba(0, 0, 0, 0.7),
-    inset 0 0 40px rgba(245, 158, 11, 0.05);
   position: relative;
+  padding: clamp(10px, 1.5vh, 20px);
 }
 
-/* RUNNING PERIOD BADGE */
-.period-status-badge {
-  font-size: clamp(0.9rem, 1.6vh, 1.25rem);
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  color: #f59e0b;
-  background: rgba(245, 158, 11, 0.15);
-  border: 1px solid rgba(245, 158, 11, 0.4);
-  padding: 8px 24px;
-  border-radius: 999px;
-  margin-bottom: clamp(12px, 1.8vh, 20px);
-  box-shadow: 0 4px 16px rgba(245, 158, 11, 0.2);
-}
-
-/* GIANT DIGITAL TIMER */
+/* DIGITAL CLOCK (HANYA LIVE MINUTE) */
 .tv-digital-clock-wrap {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: clamp(12px, 2vh, 24px);
+  margin-bottom: clamp(6px, 1vh, 14px);
 }
 
 .tv-digital-clock {
   font-family: var(--font-mono);
-  font-size: clamp(3.2rem, 7vh, 5.8rem);
+  font-size: clamp(3rem, 6.8vh, 5.2rem);
   font-weight: 900;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
   color: #ffffff;
-  text-shadow: 0 0 24px rgba(255, 255, 255, 0.35);
-  background: rgba(0, 0, 0, 0.5);
-  border: 2px solid rgba(255, 255, 255, 0.12);
-  padding: clamp(4px, 1vh, 12px) clamp(20px, 3vw, 36px);
-  border-radius: 20px;
-  min-width: clamp(240px, 30vw, 360px);
-  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: clamp(4px, 0.8vh, 10px) clamp(20px, 2.5vw, 36px);
+  border-radius: 18px;
+  min-width: clamp(220px, 26vw, 340px);
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.6);
+  transition: all 0.3s ease;
 }
 
 .tv-digital-clock.running {
-  border-color: rgba(16, 185, 129, 0.6);
-  color: #34d399;
-  text-shadow: 0 0 30px rgba(52, 211, 153, 0.6);
+  border-color: rgba(16, 185, 129, 0.5);
+  color: #10b981;
+  text-shadow: 0 0 28px rgba(16, 185, 129, 0.6);
 }
 
 /* GIANT SCOREBOARD NUMBERS */
@@ -415,42 +280,42 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: clamp(16px, 3vw, 36px);
+  gap: clamp(12px, 2.5vw, 32px);
 }
 
 .score-digit {
   font-family: var(--font-mono);
-  font-size: clamp(5.5rem, 14vh, 11rem);
+  font-size: clamp(5.5rem, 13vh, 10.5rem);
   font-weight: 900;
   line-height: 0.95;
   color: #ffffff;
-  text-shadow: 
+  text-shadow:
     0 10px 30px rgba(0, 0, 0, 0.9),
-    0 0 40px rgba(245, 158, 11, 0.35);
-  min-width: clamp(70px, 9vw, 130px);
+    0 0 35px rgba(245, 158, 11, 0.3);
+  min-width: clamp(65px, 8.5vw, 120px);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .score-divider {
-  font-size: clamp(3rem, 8vh, 6rem);
+  font-size: clamp(3rem, 7vh, 5.5rem);
   font-weight: 900;
-  color: rgba(255, 255, 255, 0.3);
-  margin-top: -10px;
+  color: rgba(255, 255, 255, 0.25);
+  margin-top: -8px;
 }
 
-/* PENALTY SHOOTOUT SUB-ROW */
+/* PENALTY SHOOTOUT BANNER */
 .penalty-shootout-banner {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-top: 14px;
+  gap: 10px;
+  margin-top: 10px;
   background: rgba(234, 179, 8, 0.15);
   border: 1px solid rgba(234, 179, 8, 0.4);
-  padding: 6px 18px;
+  padding: 4px 16px;
   border-radius: 12px;
-  font-size: clamp(0.8rem, 1.4vh, 1.05rem);
+  font-size: clamp(0.8rem, 1.3vh, 1rem);
   font-weight: 800;
   color: #facc15;
 }
@@ -464,12 +329,13 @@ html, body {
   right: 0;
   bottom: 0;
   background: rgba(220, 38, 38, 0.95);
-  border-radius: 34px;
+  border-radius: 28px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   z-index: 50;
   animation: fadeIn 0.3s ease;
+  box-shadow: 0 10px 40px rgba(220, 38, 38, 0.5);
 }
 
 .timeout-active-overlay.active {
@@ -477,7 +343,7 @@ html, body {
 }
 
 .timeout-active-overlay h2 {
-  font-size: clamp(1.8rem, 4vh, 3rem);
+  font-size: clamp(1.8rem, 4vh, 2.8rem);
   font-weight: 900;
   letter-spacing: 2px;
   color: #ffffff;
@@ -486,89 +352,128 @@ html, body {
 
 .timeout-countdown-clock {
   font-family: var(--font-mono);
-  font-size: clamp(3.5rem, 8vh, 6.5rem);
+  font-size: clamp(3.2rem, 7.5vh, 6rem);
   font-weight: 900;
   color: #fef08a;
-  margin-top: 6px;
+  margin-top: 4px;
 }
 
 /* ==============================================================================
-   4. BOTTOM BROADCAST TICKER & MOMENTS STRIP
+   4. MATCH MOMENTUM SECTION (CENTER TITLE & SPLIT COLUMNS)
    ============================================================================== */
-.tv-bottom-bar {
-  background: var(--bg-card);
-  backdrop-filter: blur(16px);
-  border: 1px solid var(--border-card);
-  border-radius: 20px;
-  padding: clamp(8px, 1.2vh, 14px) clamp(16px, 2vw, 28px);
+.tv-momentum-section {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-  gap: 20px;
+  width: 100%;
+  padding-bottom: clamp(6px, 1.2vh, 16px);
 }
 
-.events-ticker-container {
+.momentum-header {
   display: flex;
   align-items: center;
-  gap: 14px;
-  flex: 1;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-.ticker-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: clamp(0.75rem, 1.2vh, 0.9rem);
-  font-weight: 900;
-  color: #f59e0b;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  padding-right: 12px;
-  border-right: 2px solid rgba(255, 255, 255, 0.15);
-}
-
-.ticker-scroll-track {
-  display: flex;
+  justify-content: center;
   gap: 16px;
+  width: 100%;
+  max-width: 960px;
+  margin-bottom: 8px;
+}
+
+.momentum-title {
+  font-size: clamp(0.75rem, 1.25vh, 0.95rem);
+  font-weight: 900;
+  letter-spacing: 4px;
+  color: var(--accent-gold);
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-shadow: 0 0 12px rgba(245, 158, 11, 0.4);
+}
+
+.momentum-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(245, 158, 11, 0.3), transparent);
+}
+
+.momentum-columns {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: clamp(12px, 2vw, 30px);
+  width: 100%;
+  max-width: 1200px;
   align-items: center;
-  overflow-x: auto;
-  scrollbar-width: none;
 }
 
-.ticker-scroll-track::-webkit-scrollbar {
-  display: none;
+.momentum-col {
+  display: flex;
+  flex-direction: column;
+  min-height: 38px;
+  justify-content: center;
 }
 
+.momentum-col.home {
+  align-items: flex-end;
+}
+
+.momentum-col.away {
+  align-items: flex-start;
+}
+
+.momentum-events-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.momentum-col.home .momentum-events-list {
+  justify-content: flex-end;
+}
+
+.momentum-col.away .momentum-events-list {
+  justify-content: flex-start;
+}
+
+.momentum-divider {
+  width: 1px;
+  height: clamp(24px, 3vh, 36px);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.momentum-empty {
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+/* EVENT CHIP (GOAL & CARDS) */
 .event-chip {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  padding: 4px 14px;
+  gap: 6px;
+  padding: 3px 12px;
   border-radius: 999px;
-  font-size: clamp(0.75rem, 1.2vh, 0.88rem);
+  font-size: clamp(0.72rem, 1.1vh, 0.85rem);
   font-weight: 700;
   color: #f1f5f9;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease;
 }
 
 .event-chip.goal {
-  border-color: rgba(16, 185, 129, 0.5);
+  border: 1px solid rgba(16, 185, 129, 0.5);
   background: rgba(16, 185, 129, 0.12);
   color: #6ee7b7;
 }
 
 .event-chip.card-yellow {
-  border-color: rgba(234, 179, 8, 0.5);
+  border: 1px solid rgba(234, 179, 8, 0.5);
   background: rgba(234, 179, 8, 0.12);
   color: #fde047;
 }
 
 .event-chip.card-red {
-  border-color: rgba(239, 68, 68, 0.5);
+  border: 1px solid rgba(239, 68, 68, 0.5);
   background: rgba(239, 68, 68, 0.12);
   color: #fca5a5;
 }
@@ -576,91 +481,63 @@ html, body {
 .chip-minute {
   font-family: var(--font-mono);
   font-weight: 800;
-  color: var(--text-secondary);
-  font-size: 0.8em;
+  color: #cbd5e1;
+  font-size: 0.85em;
 }
 
-/* STATUS FOOTER RIGHT */
-.status-indicator {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: clamp(0.7rem, 1.1vh, 0.82rem);
-  font-weight: 700;
-  color: var(--text-secondary);
-}
-
-.status-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: #64748b;
-}
-
-.status-indicator.online .status-dot {
-  background-color: #10b981;
-  box-shadow: 0 0 10px #10b981;
-}
-
-.status-indicator.connecting .status-dot {
-  background-color: #f59e0b;
-  box-shadow: 0 0 10px #f59e0b;
-}
-
-.status-indicator.local .status-dot {
-  background-color: #06b6d4;
-  box-shadow: 0 0 10px #06b6d4;
-}
-
-/* ==============================================================================
-   5. GOAL CELEBRATION POPUP OVERLAY
-   ============================================================================== */
-.goal-celebration-banner {
-  display: none;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0.8);
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.95), rgba(5, 150, 105, 0.95));
-  border: 4px solid #ffffff;
-  border-radius: 36px;
-  padding: 30px 60px;
-  text-align: center;
-  color: #ffffff;
-  box-shadow: 0 20px 80px rgba(0, 0, 0, 0.8), 0 0 60px rgba(16, 185, 129, 0.8);
-  z-index: 1000;
-  opacity: 0;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.goal-celebration-banner.show {
-  display: block;
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(1);
-}
-
-.goal-celebration-banner h1 {
-  font-size: clamp(3rem, 8vh, 6rem);
-  font-weight: 900;
-  letter-spacing: 4px;
-  text-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
-  margin-bottom: 8px;
-}
-
-.goal-celebration-banner p {
-  font-size: clamp(1.2rem, 2.5vh, 2rem);
+.chip-player {
   font-weight: 800;
 }
 
 /* ==============================================================================
-   6. RESPONSIVE TV SIZES (720P, 1080P, 4K)
+   5. SELEBRASI GOL POPUP OVERLAY
    ============================================================================== */
-@media (max-width: 900px) {
-  .tv-main-arena {
-    grid-template-columns: 1fr;
-    gap: 16px;
+.goal-celebration-banner {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.6);
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.95), rgba(5, 150, 105, 0.95));
+  border: 3px solid #34d399;
+  border-radius: 36px;
+  padding: clamp(24px, 5vh, 48px) clamp(36px, 6vw, 72px);
+  text-align: center;
+  box-shadow: 0 20px 80px rgba(16, 185, 129, 0.6);
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.goal-celebration-banner.show {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+}
+
+.goal-celebration-banner h1 {
+  font-size: clamp(2.5rem, 6vh, 4.5rem);
+  font-weight: 900;
+  letter-spacing: 4px;
+  color: #ffffff;
+  text-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+}
+
+.goal-celebration-banner p {
+  font-size: clamp(1.2rem, 2.5vh, 1.8rem);
+  font-weight: 800;
+  color: #d1fae5;
+  margin-top: 8px;
+}
+
+/* ANIMASI KEYFRAMES */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
   }
-  .tv-center-hub {
-    order: -1;
+
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }

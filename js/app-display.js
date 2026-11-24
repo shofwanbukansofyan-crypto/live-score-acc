@@ -8,8 +8,6 @@ class ScoreboardDisplay {
     this.currentEvents = [];
     this.timerAnimationId = null;
     this.timeoutAnimationId = null;
-    this.lastHomeScore = null;
-    this.lastAwayScore = null;
     this.wakeLock = null;
 
     this.init();
@@ -17,10 +15,12 @@ class ScoreboardDisplay {
 
   init() {
     // 1. Subscribe ke Realtime Sync Engine
-    window.syncEngine.subscribe((state, events, conn) => {
-      this.handleStateUpdate(state);
-      this.handleEventsUpdate(events);
-    });
+    if (window.syncEngine) {
+      window.syncEngine.subscribe((state, events) => {
+        this.handleStateUpdate(state);
+        this.handleEventsUpdate(events);
+      });
+    }
 
     // 2. Minta Screen Wake Lock agar layar TV tidak mati/sleep
     this.requestWakeLock();
@@ -30,17 +30,16 @@ class ScoreboardDisplay {
   }
 
   setupListeners() {
-    // Tombol Layar Penuh (Fullscreen)
-    const btnFs = document.getElementById("btnFullscreen");
-    if (btnFs) {
-      btnFs.addEventListener("click", () => this.toggleFullscreen());
-    }
-
-    // Keyboard shortcut F atau F11 untuk fullscreen
+    // Keyboard shortcut F atau F11 untuk layar penuh
     document.addEventListener("keydown", (e) => {
       if (e.key === "f" || e.key === "F") {
         this.toggleFullscreen();
       }
+    });
+
+    // Klik dua kali (double click) di mana saja pada layar TV untuk fullscreen
+    document.addEventListener("dblclick", () => {
+      this.toggleFullscreen();
     });
 
     // Re-request wake lock jika tab kembali terlihat
@@ -88,10 +87,8 @@ class ScoreboardDisplay {
       }
     }
 
-    // Render Data Teks Header
-    this.updateText("catPillText", state.category === "SD" ? "KATEGORI SD / MI" : "KATEGORI SMP / MTs");
+    // Render Data Fase Turnamen
     this.updateText("stagePillText", state.stage || "FASE GRUP");
-    this.updateText("pitchPillText", state.pitch || "Lapangan Utama");
 
     // Render Data Tim Home
     this.updateText("homeTeamName", state.home_name || "TIM HOME");
@@ -118,9 +115,6 @@ class ScoreboardDisplay {
       awayCard.style.setProperty("--team-color", state.away_color);
     }
 
-    // Render Status Babak
-    this.updateText("periodBadge", state.period_label || "BELUM DIMULAI");
-
     // Render Adu Penalti jika ada
     const penRow = document.getElementById("penaltyShootoutRow");
     if (penRow) {
@@ -142,46 +136,49 @@ class ScoreboardDisplay {
 
   handleEventsUpdate(events) {
     this.currentEvents = events || [];
-    const container = document.getElementById("eventsTickerTrack");
-    if (!container) return;
+    const homeContainer = document.getElementById("momentumHomeEvents");
+    const awayContainer = document.getElementById("momentumAwayEvents");
+    if (!homeContainer || !awayContainer) return;
 
-    if (this.currentEvents.length === 0) {
-      container.innerHTML = '<span style="font-size: 0.82rem; color: var(--text-muted);">Belum ada gol atau kartu tercatat dalam pertandingan ini.</span>';
-      return;
-    }
+    // Filter kejadian berdasarkan tim
+    const homeEvents = this.currentEvents.filter(ev => ev.team === "home");
+    const awayEvents = this.currentEvents.filter(ev => ev.team === "away");
 
-    // Urutkan event dari yang terbaru ke terlama
-    const sorted = [...this.currentEvents].reverse();
-
-    container.innerHTML = sorted.map(ev => {
-      let icon = "⚽";
-      let chipClass = "goal";
-      let typeText = "GOL";
-
-      if (ev.type === "card_yellow") {
-        icon = "🟨";
-        chipClass = "card-yellow";
-        typeText = "KK";
-      } else if (ev.type === "card_red") {
-        icon = "🟥";
-        chipClass = "card-red";
-        typeText = "KM";
+    const renderEventChips = (list) => {
+      if (!list || list.length === 0) {
+        return '<span class="momentum-empty">-</span>';
       }
 
-      const teamName = ev.team === "home" 
-        ? (this.currentState ? (this.currentState.home_short || this.currentState.home_name) : "HOME")
-        : (this.currentState ? (this.currentState.away_short || this.currentState.away_name) : "AWAY");
+      return list.map(ev => {
+        let icon = "⚽";
+        let chipClass = "goal";
+        let defaultLabel = "Gol";
 
-      return `
-        <div class="event-chip ${chipClass}">
-          <span>${icon}</span>
-          <strong>${teamName}</strong>
-          <span>•</span>
-          <span>${ev.player_name || typeText}</span>
-          ${ev.minute ? `<span class="chip-minute">(${ev.minute})</span>` : ''}
-        </div>
-      `;
-    }).join("");
+        if (ev.type === "card_yellow") {
+          icon = "🟨";
+          chipClass = "card-yellow";
+          defaultLabel = "Kartu Kuning";
+        } else if (ev.type === "card_red") {
+          icon = "🟥";
+          chipClass = "card-red";
+          defaultLabel = "Kartu Merah";
+        }
+
+        const playerName = ev.player_name || defaultLabel;
+        const minuteText = ev.minute ? `<span class="chip-minute">${ev.minute}'</span>` : "";
+
+        return `
+          <div class="event-chip ${chipClass}">
+            <span>${icon}</span>
+            ${minuteText}
+            <span class="chip-player">${playerName}</span>
+          </div>
+        `;
+      }).join("");
+    };
+
+    homeContainer.innerHTML = renderEventChips(homeEvents);
+    awayContainer.innerHTML = renderEventChips(awayEvents);
   }
 
   syncTimerLoop() {
@@ -257,7 +254,7 @@ class ScoreboardDisplay {
     const el = document.getElementById(containerId);
     if (!el) return;
 
-    const limit = CONFIG.MAX_FOULS_LIMIT || 5;
+    const limit = (typeof CONFIG !== "undefined" && CONFIG.MAX_FOULS_LIMIT) ? CONFIG.MAX_FOULS_LIMIT : 5;
     let html = '';
     for (let i = 1; i <= limit; i++) {
       let className = 'foul-dot';
@@ -337,7 +334,7 @@ class ScoreboardDisplay {
 
       osc.start();
       osc.stop(audioCtx.currentTime + 0.6);
-    } catch (_) {}
+    } catch (_) { }
   }
 
   updateText(id, text) {
