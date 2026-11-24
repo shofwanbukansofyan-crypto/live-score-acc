@@ -25,7 +25,7 @@
     rel="stylesheet">
 
   <!-- CSS -->
-  <link rel="stylesheet" href="/css/operator.css?v=20261124_v204">
+  <link rel="stylesheet" href="/css/operator.css?v=20261124_v205">
 
   <!-- Cache-Control & Auto-Purge Cache Stale Worker -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -34,7 +34,7 @@
   <script>
     (function () {
       try {
-        var APP_VER = "20261124_v204";
+        var APP_VER = "20261124_v205";
         if (localStorage.getItem("acc_livescore_version") !== APP_VER) {
           localStorage.setItem("acc_livescore_version", APP_VER);
           if ('caches' in window) {
@@ -381,8 +381,34 @@
       <input type="hidden" id="hiddenEventType">
       <input type="hidden" id="hiddenEventTeam">
 
+      <!-- OPSI GOL BUNUH DIRI (OWN GOAL / GBD) -->
+      <div id="ownGoalContainer" style="display: none; margin-bottom: 14px; background: rgba(249, 115, 22, 0.12); border: 1px solid rgba(249, 115, 22, 0.35); border-radius: 8px; padding: 10px 12px;">
+        <label style="display: flex; align-items: center; gap: 8px; font-size: 0.88rem; color: #fdba74; font-weight: 700; cursor: pointer;">
+          <input type="checkbox" id="checkIsOwnGoal" style="width: 18px; height: 18px; cursor: pointer; accent-color: #ea580c;" onchange="operatorConsole.toggleOwnGoal(this.checked)">
+          ⚽ Gol Bunuh Diri (Own Goal / GBD)
+        </label>
+        <div id="ownGoalDetails" style="display: none; margin-top: 10px; font-size: 0.82rem; color: #fed7aa;">
+          <div style="margin-bottom: 6px; font-weight: 700;">
+            Poin skor (+1) diberikan kepada tim yang diuntungkan:
+          </div>
+          <div style="display: flex; gap: 14px; margin-bottom: 8px;">
+            <label style="display: flex; align-items: center; gap: 6px; font-size: 0.82rem; cursor: pointer;">
+              <input type="radio" name="ogAwardTeam" id="ogAwardHome" value="home" onchange="operatorConsole.onOgAwardTeamChange()">
+              <span id="ogAwardHomeLabel">Tim Home (+1)</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 6px; font-size: 0.82rem; cursor: pointer;">
+              <input type="radio" name="ogAwardTeam" id="ogAwardAway" value="away" onchange="operatorConsole.onOgAwardTeamChange()">
+              <span id="ogAwardAwayLabel">Tim Away (+1)</span>
+            </label>
+          </div>
+          <div style="font-size: 0.78rem; color: #cbd5e1; line-height: 1.4;">
+            💡 Pilih pemain dari skuad tim yang melakukan kesalahan gol di bawah. Catatan di papan TV akan otomatis diberi tanda <strong>(GBD)</strong>.
+          </div>
+        </div>
+      </div>
+
       <div style="margin-bottom: 12px;">
-        <label
+        <label id="selectPlayerLabel"
           style="display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; font-weight: 700;">
           Pilih Pemain dari Skuad Resmi:
         </label>
@@ -463,11 +489,11 @@
   </div>
 
   <!-- JAVASCRIPT LOGIC -->
-  <script src="/js/config.js?v=20261124_v204"></script>
-  <script src="/js/teams.js?v=20261124_v204"></script>
-  <script src="/js/matches.js?v=20261124_v204"></script>
-  <script src="/js/supabase-sync.js?v=20261124_v204"></script>
-  <script src="/js/app-operator.js?v=20261124_v204"></script>
+  <script src="/js/config.js?v=20261124_v205"></script>
+  <script src="/js/teams.js?v=20261124_v205"></script>
+  <script src="/js/matches.js?v=20261124_v205"></script>
+  <script src="/js/supabase-sync.js?v=20261124_v205"></script>
+  <script src="/js/app-operator.js?v=20261124_v205"></script>
 
   <!-- PWA SERVICE WORKER REGISTRATION -->
   <script>

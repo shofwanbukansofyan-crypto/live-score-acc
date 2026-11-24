@@ -502,6 +502,30 @@ body {
   color: #6ee7b7;
 }
 
+.event-chip.goal.own-goal {
+  border: 1px solid rgba(249, 115, 22, 0.6);
+  background: rgba(249, 115, 22, 0.16);
+  color: #fdba74;
+}
+
+.event-chip.goal.own-goal .chip-icon {
+  filter: drop-shadow(0 0 4px rgba(249, 115, 22, 0.6));
+}
+
+.chip-og-tag {
+  background: #ea580c;
+  color: #ffffff;
+  font-size: 0.7em;
+  font-weight: 900;
+  padding: 1px 5px;
+  border-radius: 4px;
+  margin-left: 5px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  display: inline-block;
+  line-height: 1.2;
+}
+
 .event-chip.card-yellow {
   border: 1px solid rgba(234, 179, 8, 0.5);
   background: rgba(234, 179, 8, 0.12);

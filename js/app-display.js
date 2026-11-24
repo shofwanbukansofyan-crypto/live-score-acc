@@ -238,8 +238,14 @@ class ScoreboardDisplay {
             let icon = "⚽";
             let chipClass = "goal";
             let defaultLabel = "Gol";
+            let ogTag = "";
 
-            if (ev.type === "card_yellow") {
+            const isOG = ev.type === "own_goal" || ev.is_own_goal || (ev.player_name && ev.player_name.includes("(GBD)"));
+            if (isOG) {
+              chipClass = "goal own-goal";
+              defaultLabel = "Gol Bunuh Diri";
+              ogTag = '<span class="chip-og-tag">GBD</span>';
+            } else if (ev.type === "card_yellow") {
               icon = "🟨";
               chipClass = "card-yellow";
               defaultLabel = "Kartu Kuning";
@@ -249,7 +255,11 @@ class ScoreboardDisplay {
               defaultLabel = "Kartu Merah";
             }
 
-            const playerName = ev.player_name || defaultLabel;
+            let playerName = ev.player_name || defaultLabel;
+            if (isOG) {
+              playerName = playerName.replace(/\s*\(GBD\)/gi, '').trim() || "Gol Bunuh Diri";
+            }
+
             const minuteText = ev.minute ? `<span class="chip-minute">${ev.minute}'</span>` : "";
 
             rows.push(`
@@ -258,6 +268,7 @@ class ScoreboardDisplay {
                   <span class="chip-icon">${icon}</span>
                   ${minuteText}
                   <span class="chip-player">${playerName}</span>
+                  ${ogTag}
                 </div>
               </div>
             `);
