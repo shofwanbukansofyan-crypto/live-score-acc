@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ACC FUTSAL CUP 2026 - LIVE SCOREBOARD TV</title>
+  <meta name="description" content="Sistem Live Scoreboard TV Layar Besar Al-Fayyadh Champions Cup 2026. Real-time updates via Supabase.">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/assets/favicon.png">
+
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@700;800;900&display=swap" rel="stylesheet">
+
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="/css/display.css">
+
+  <!-- Supabase JS v2 Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+  <!-- CONTAINER UTAMA LAYAR TV -->
+  <main class="tv-scoreboard-container">
+
+    <!-- 1. HEADER ATAS (BROADCAST META) -->
+    <header class="tv-header">
+      <div class="tv-header-left">
+        <img src="/assets/acc_logo.png" alt="ACC 2026 Logo" class="tv-logo-badge" onerror="this.src='/assets/logo.png'">
+        <div class="tv-title-wrap">
+          <h1>AL-FAYYADH CHAMPIONS CUP 2026</h1>
+          <p>GOR Futsal Ma'had Al-Fayyadh • Sulawesi Selatan</p>
+        </div>
+      </div>
+
+      <div class="tv-header-center">
+        <span class="header-pill pill-category" id="catPillText">KATEGORI SMP / MTs</span>
+        <span class="header-pill pill-stage" id="stagePillText">FASE GRUP</span>
+        <span class="header-pill pill-pitch" id="pitchPillText">LAPANGAN UTAMA</span>
+      </div>
+
+      <div class="tv-header-right">
+        <div class="live-indicator-pill">
+          <span class="pulse-dot"></span>
+          <span>LIVE SCORE</span>
+        </div>
+        <button type="button" class="tv-btn-action" id="btnFullscreen" title="Layar Penuh TV (F11)">
+          🖥️ Layar Penuh
+        </button>
+        <a href="/operator.html" class="tv-btn-action" title="Buka Panel Penginput Operator" style="text-decoration: none;">
+          ⚙️ Operator
+        </a>
+      </div>
+    </header>
+
+    <!-- 2. MAIN SCOREBOARD ARENA -->
+    <section class="tv-main-arena">
+
+      <!-- CARD TIM HOME (KIRI) -->
+      <article class="team-scoreboard-card home" id="homeCard">
+        <div class="team-logo-container">
+          <img src="/assets/logo.png" alt="Home Team Logo" class="team-logo-img" id="homeTeamLogo">
+          <span class="team-logo-fallback" id="homeTeamFallback" style="display: none;">HOM</span>
+        </div>
+        <h2 class="team-name" id="homeTeamName">SMP 1 MANDAI</h2>
+
+        <div class="team-submeta">
+          <!-- FOULS (FUTSAL 5 LIMIT) -->
+          <div class="futsal-fouls-meter">
+            <span class="fouls-label">Pelanggaran (Foul)</span>
+            <div class="fouls-dots-wrap" id="homeFoulsContainer">
+              <div class="foul-dot"></div>
+              <div class="foul-dot"></div>
+              <div class="foul-dot"></div>
+              <div class="foul-dot"></div>
+              <div class="foul-dot"></div>
+            </div>
+          </div>
+          <!-- TIMEOUT TAG -->
+          <div class="timeout-tag" id="homeTimeoutTag">TO: ADA</div>
+        </div>
+      </article>
+
+      <!-- CENTER HUB: SCORE, DIGITAL CLOCK, STATUS (TENGAH) -->
+      <div class="tv-center-hub">
+        <!-- PERIOD STATUS BADGE -->
+        <div class="period-status-badge" id="periodBadge">BABAK 1</div>
+
+        <!-- DIGITAL TIMER -->
+        <div class="tv-digital-clock-wrap">
+          <div class="tv-digital-clock" id="tvDigitalClock">00:00</div>
+        </div>
+
+        <!-- GIANT SCORE -->
+        <div class="tv-score-display">
+          <div class="score-digit" id="homeScoreDigits">0</div>
+          <div class="score-divider">:</div>
+          <div class="score-digit" id="awayScoreDigits">0</div>
+        </div>
+
+        <!-- PENALTY SHOOTOUT ROW (MUNCUL JIKA ADU PENALTI) -->
+        <div class="penalty-shootout-banner" id="penaltyShootoutRow" style="display: none;">
+          <span>🎯 ADU PENALTI:</span>
+          <span>(<strong id="homePenScore">0</strong>)</span>
+          <span>-</span>
+          <span>(<strong id="awayPenScore">0</strong>)</span>
+        </div>
+
+        <!-- TIMEOUT COUNTDOWN OVERLAY (MUNCUL JIKA TIMEOUT BERJALAN) -->
+        <div class="timeout-active-overlay" id="timeoutActiveOverlay">
+          <h2>⏱️ TIME OUT</h2>
+          <div class="timeout-countdown-clock" id="timeoutCountdownClock">00:60</div>
+        </div>
+      </div>
+
+      <!-- CARD TIM AWAY (KANAN) -->
+      <article class="team-scoreboard-card away" id="awayCard">
+        <div class="team-logo-container">
+          <img src="/assets/logo.png" alt="Away Team Logo" class="team-logo-img" id="awayTeamLogo">
+          <span class="team-logo-fallback" id="awayTeamFallback" style="display: none;">AWY</span>
+        </div>
+        <h2 class="team-name" id="awayTeamName">SMP 2 MANDAI</h2>
+
+        <div class="team-submeta">
+          <!-- FOULS (FUTSAL 5 LIMIT) -->
+          <div class="futsal-fouls-meter">
+            <span class="fouls-label">Pelanggaran (Foul)</span>
+            <div class="fouls-dots-wrap" id="awayFoulsContainer">
+              <div class="foul-dot"></div>
+              <div class="foul-dot"></div>
+              <div class="foul-dot"></div>
+              <div class="foul-dot"></div>
+              <div class="foul-dot"></div>
+            </div>
+          </div>
+          <!-- TIMEOUT TAG -->
+          <div class="timeout-tag" id="awayTimeoutTag">TO: ADA</div>
+        </div>
+      </article>
+
+    </section>
+
+    <!-- 3. FOOTER STRIP / EVENT TICKER (BAWAH) -->
+    <footer class="tv-bottom-bar">
+      <div class="events-ticker-container">
+        <span class="ticker-label">⚡ Kejadian Laga</span>
+        <div class="ticker-scroll-track" id="eventsTickerTrack">
+          <span style="font-size: 0.82rem; color: var(--text-muted);">Menunggu pertandingan dimulai...</span>
+        </div>
+      </div>
+
+      <div class="status-indicator online" id="connectionStatusPill">
+        <span class="status-dot"></span>
+        <span>Menghubungkan...</span>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- SELEBRASI GOL POPUP OVERLAY -->
+  <div class="goal-celebration-banner" id="goalCelebrationBanner">
+    <h1>⚽ GOOOOOOL!</h1>
+    <p id="goalTeamName">TIM NAMA</p>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script src="/js/config.js"></script>
+  <script src="/js/supabase-sync.js"></script>
+  <script src="/js/app-display.js"></script>
+
+</body>
+
+</html>

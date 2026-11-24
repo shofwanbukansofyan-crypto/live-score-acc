@@ -1,0 +1,666 @@
+/* ==============================================================================
+   DISPLAY.CSS - ACC FUTSAL CUP 2026 SCOREBOARD TV DISPLAY (BIG SCREEN STADIUM)
+   ============================================================================== */
+
+:root {
+  --bg-main: #06090e;
+  --bg-card: rgba(18, 24, 38, 0.85);
+  --bg-card-glow: rgba(30, 41, 59, 0.6);
+  --border-card: rgba(255, 255, 255, 0.08);
+  --accent-gold: #f59e0b;
+  --accent-cyan: #06b6d4;
+  --accent-green: #10b981;
+  --accent-red: #ef4444;
+  --text-primary: #ffffff;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Roboto Mono', monospace, monospace;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+}
+
+html, body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: var(--bg-main);
+  background-image: 
+    radial-gradient(circle at 50% 20%, rgba(16, 185, 129, 0.08) 0%, transparent 60%),
+    radial-gradient(circle at 10% 80%, rgba(59, 130, 246, 0.06) 0%, transparent 50%),
+    radial-gradient(circle at 90% 80%, rgba(245, 158, 11, 0.06) 0%, transparent 50%),
+    linear-gradient(180deg, #090d16 0%, #05070b 100%);
+  color: var(--text-primary);
+  font-family: var(--font-family);
+  user-select: none;
+}
+
+/* CONTAINER UTAMA LAYAR TV */
+.tv-scoreboard-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100vw;
+  height: 100vh;
+  padding: clamp(12px, 2vh, 24px) clamp(16px, 2.5vw, 40px);
+}
+
+/* ==============================================================================
+   1. TOP BROADCAST HEADER
+   ============================================================================== */
+.tv-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border-card);
+  border-radius: 20px;
+  padding: clamp(8px, 1.2vh, 16px) clamp(16px, 2vw, 32px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  position: relative;
+  z-index: 10;
+}
+
+.tv-header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.tv-logo-badge {
+  width: clamp(40px, 4.5vh, 60px);
+  height: clamp(40px, 4.5vh, 60px);
+  object-fit: contain;
+  filter: drop-shadow(0 4px 12px rgba(245, 158, 11, 0.3));
+}
+
+.tv-title-wrap h1 {
+  font-size: clamp(1rem, 1.8vh, 1.4rem);
+  font-weight: 900;
+  letter-spacing: 1px;
+  background: linear-gradient(135deg, #ffffff 30%, #f59e0b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-transform: uppercase;
+}
+
+.tv-title-wrap p {
+  font-size: clamp(0.7rem, 1.2vh, 0.85rem);
+  color: var(--text-secondary);
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.tv-header-center {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: clamp(0.75rem, 1.3vh, 0.95rem);
+  font-weight: 800;
+  padding: 6px 16px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.pill-category {
+  background: linear-gradient(135deg, #0284c7, #0369a1);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+}
+
+.pill-stage {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #f1f5f9;
+}
+
+.pill-pitch {
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: #34d399;
+}
+
+.tv-header-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.live-indicator-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.6);
+  color: #fca5a5;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: clamp(0.75rem, 1.3vh, 0.9rem);
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.pulse-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #ef4444;
+  box-shadow: 0 0 10px #ef4444;
+  animation: pulseLive 1.5s infinite;
+}
+
+@keyframes pulseLive {
+  0% { transform: scale(0.9); opacity: 0.8; }
+  50% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 16px #ef4444; }
+  100% { transform: scale(0.9); opacity: 0.8; }
+}
+
+.tv-btn-action {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #cbd5e1;
+  padding: 6px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 700;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tv-btn-action:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+/* ==============================================================================
+   2. MAIN SCOREBOARD ARENA (TENGAH LAYAR TV)
+   ============================================================================== */
+.tv-main-arena {
+  display: grid;
+  grid-template-columns: 1fr minmax(360px, 1.2fr) 1fr;
+  gap: clamp(16px, 2.5vw, 40px);
+  align-items: center;
+  margin: auto 0;
+  width: 100%;
+}
+
+/* CARD TIM (HOME & AWAY) */
+.team-scoreboard-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(24px);
+  border: 2px solid var(--border-card);
+  border-radius: 28px;
+  padding: clamp(20px, 3.5vh, 44px) clamp(20px, 2.5vw, 36px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.team-scoreboard-card.home {
+  border-left: 8px solid var(--team-color, #10b981);
+}
+
+.team-scoreboard-card.away {
+  border-right: 8px solid var(--team-color, #3b82f6);
+}
+
+.team-logo-container {
+  width: clamp(110px, 15vh, 180px);
+  height: clamp(110px, 15vh, 180px);
+  border-radius: 50%;
+  padding: 12px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, rgba(0, 0, 0, 0.4) 100%);
+  border: 3px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+  margin-bottom: clamp(12px, 2vh, 20px);
+  position: relative;
+}
+
+.team-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.5));
+}
+
+.team-logo-fallback {
+  font-size: clamp(2rem, 4vh, 3.5rem);
+  font-weight: 900;
+  color: #f8fafc;
+  letter-spacing: 2px;
+}
+
+.team-name {
+  font-size: clamp(1.4rem, 3vh, 2.4rem);
+  font-weight: 900;
+  color: #ffffff;
+  line-height: 1.15;
+  text-transform: uppercase;
+  max-width: 90%;
+  min-height: 2.3em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-shadow: 0 4px 14px rgba(0, 0, 0, 0.8);
+}
+
+.team-submeta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+/* FOULS ACCUMULATION INDICATOR (FUTSAL 5 FOULS LIMIT) */
+.futsal-fouls-meter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 8px 16px;
+  border-radius: 16px;
+}
+
+.fouls-label {
+  font-size: clamp(0.65rem, 1vh, 0.75rem);
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+}
+
+.fouls-dots-wrap {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.foul-dot {
+  width: clamp(12px, 1.6vh, 18px);
+  height: clamp(12px, 1.6vh, 18px);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.foul-dot.active {
+  background: #f59e0b;
+  box-shadow: 0 0 10px #f59e0b;
+}
+
+.foul-dot.critical {
+  background: #ef4444;
+  box-shadow: 0 0 14px #ef4444;
+  animation: pulseCritical 0.8s infinite alternate;
+}
+
+@keyframes pulseCritical {
+  from { transform: scale(1); box-shadow: 0 0 10px #ef4444; }
+  to { transform: scale(1.2); box-shadow: 0 0 20px #ef4444; }
+}
+
+.timeout-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: clamp(0.7rem, 1.1vh, 0.8rem);
+  font-weight: 800;
+  padding: 6px 12px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #94a3b8;
+}
+
+.timeout-tag.used {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.5);
+  color: #f87171;
+}
+
+/* ==============================================================================
+   3. CENTER HUB: CLOCK, SCORE, & STATUS
+   ============================================================================== */
+.tv-center-hub {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: var(--bg-card);
+  backdrop-filter: blur(28px);
+  border: 2px solid rgba(245, 158, 11, 0.25);
+  border-radius: 36px;
+  padding: clamp(20px, 3vh, 36px) clamp(24px, 3vw, 48px);
+  box-shadow: 
+    0 24px 60px rgba(0, 0, 0, 0.7),
+    inset 0 0 40px rgba(245, 158, 11, 0.05);
+  position: relative;
+}
+
+/* RUNNING PERIOD BADGE */
+.period-status-badge {
+  font-size: clamp(0.9rem, 1.6vh, 1.25rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  padding: 8px 24px;
+  border-radius: 999px;
+  margin-bottom: clamp(12px, 1.8vh, 20px);
+  box-shadow: 0 4px 16px rgba(245, 158, 11, 0.2);
+}
+
+/* GIANT DIGITAL TIMER */
+.tv-digital-clock-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: clamp(12px, 2vh, 24px);
+}
+
+.tv-digital-clock {
+  font-family: var(--font-mono);
+  font-size: clamp(3.2rem, 7vh, 5.8rem);
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: #ffffff;
+  text-shadow: 0 0 24px rgba(255, 255, 255, 0.35);
+  background: rgba(0, 0, 0, 0.5);
+  border: 2px solid rgba(255, 255, 255, 0.12);
+  padding: clamp(4px, 1vh, 12px) clamp(20px, 3vw, 36px);
+  border-radius: 20px;
+  min-width: clamp(240px, 30vw, 360px);
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+}
+
+.tv-digital-clock.running {
+  border-color: rgba(16, 185, 129, 0.6);
+  color: #34d399;
+  text-shadow: 0 0 30px rgba(52, 211, 153, 0.6);
+}
+
+/* GIANT SCOREBOARD NUMBERS */
+.tv-score-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(16px, 3vw, 36px);
+}
+
+.score-digit {
+  font-family: var(--font-mono);
+  font-size: clamp(5.5rem, 14vh, 11rem);
+  font-weight: 900;
+  line-height: 0.95;
+  color: #ffffff;
+  text-shadow: 
+    0 10px 30px rgba(0, 0, 0, 0.9),
+    0 0 40px rgba(245, 158, 11, 0.35);
+  min-width: clamp(70px, 9vw, 130px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.score-divider {
+  font-size: clamp(3rem, 8vh, 6rem);
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.3);
+  margin-top: -10px;
+}
+
+/* PENALTY SHOOTOUT SUB-ROW */
+.penalty-shootout-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
+  background: rgba(234, 179, 8, 0.15);
+  border: 1px solid rgba(234, 179, 8, 0.4);
+  padding: 6px 18px;
+  border-radius: 12px;
+  font-size: clamp(0.8rem, 1.4vh, 1.05rem);
+  font-weight: 800;
+  color: #facc15;
+}
+
+/* TIMEOUT ACTIVE OVERLAY BANNER */
+.timeout-active-overlay {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(220, 38, 38, 0.95);
+  border-radius: 34px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  animation: fadeIn 0.3s ease;
+}
+
+.timeout-active-overlay.active {
+  display: flex;
+}
+
+.timeout-active-overlay h2 {
+  font-size: clamp(1.8rem, 4vh, 3rem);
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.timeout-countdown-clock {
+  font-family: var(--font-mono);
+  font-size: clamp(3.5rem, 8vh, 6.5rem);
+  font-weight: 900;
+  color: #fef08a;
+  margin-top: 6px;
+}
+
+/* ==============================================================================
+   4. BOTTOM BROADCAST TICKER & MOMENTS STRIP
+   ============================================================================== */
+.tv-bottom-bar {
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border-card);
+  border-radius: 20px;
+  padding: clamp(8px, 1.2vh, 14px) clamp(16px, 2vw, 28px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  gap: 20px;
+}
+
+.events-ticker-container {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.ticker-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: clamp(0.75rem, 1.2vh, 0.9rem);
+  font-weight: 900;
+  color: #f59e0b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding-right: 12px;
+  border-right: 2px solid rgba(255, 255, 255, 0.15);
+}
+
+.ticker-scroll-track {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.ticker-scroll-track::-webkit-scrollbar {
+  display: none;
+}
+
+.event-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 4px 14px;
+  border-radius: 999px;
+  font-size: clamp(0.75rem, 1.2vh, 0.88rem);
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+.event-chip.goal {
+  border-color: rgba(16, 185, 129, 0.5);
+  background: rgba(16, 185, 129, 0.12);
+  color: #6ee7b7;
+}
+
+.event-chip.card-yellow {
+  border-color: rgba(234, 179, 8, 0.5);
+  background: rgba(234, 179, 8, 0.12);
+  color: #fde047;
+}
+
+.event-chip.card-red {
+  border-color: rgba(239, 68, 68, 0.5);
+  background: rgba(239, 68, 68, 0.12);
+  color: #fca5a5;
+}
+
+.chip-minute {
+  font-family: var(--font-mono);
+  font-weight: 800;
+  color: var(--text-secondary);
+  font-size: 0.8em;
+}
+
+/* STATUS FOOTER RIGHT */
+.status-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: clamp(0.7rem, 1.1vh, 0.82rem);
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #64748b;
+}
+
+.status-indicator.online .status-dot {
+  background-color: #10b981;
+  box-shadow: 0 0 10px #10b981;
+}
+
+.status-indicator.connecting .status-dot {
+  background-color: #f59e0b;
+  box-shadow: 0 0 10px #f59e0b;
+}
+
+.status-indicator.local .status-dot {
+  background-color: #06b6d4;
+  box-shadow: 0 0 10px #06b6d4;
+}
+
+/* ==============================================================================
+   5. GOAL CELEBRATION POPUP OVERLAY
+   ============================================================================== */
+.goal-celebration-banner {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.95), rgba(5, 150, 105, 0.95));
+  border: 4px solid #ffffff;
+  border-radius: 36px;
+  padding: 30px 60px;
+  text-align: center;
+  color: #ffffff;
+  box-shadow: 0 20px 80px rgba(0, 0, 0, 0.8), 0 0 60px rgba(16, 185, 129, 0.8);
+  z-index: 1000;
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.goal-celebration-banner.show {
+  display: block;
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.goal-celebration-banner h1 {
+  font-size: clamp(3rem, 8vh, 6rem);
+  font-weight: 900;
+  letter-spacing: 4px;
+  text-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+  margin-bottom: 8px;
+}
+
+.goal-celebration-banner p {
+  font-size: clamp(1.2rem, 2.5vh, 2rem);
+  font-weight: 800;
+}
+
+/* ==============================================================================
+   6. RESPONSIVE TV SIZES (720P, 1080P, 4K)
+   ============================================================================== */
+@media (max-width: 900px) {
+  .tv-main-arena {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .tv-center-hub {
+    order: -1;
+  }
+}
