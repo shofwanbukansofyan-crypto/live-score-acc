@@ -25,7 +25,7 @@
     rel="stylesheet">
 
   <!-- CSS -->
-  <link rel="stylesheet" href="/css/operator.css?v=20261124_v70">
+  <link rel="stylesheet" href="/css/operator.css?v=20261124_v200">
 
   <!-- Cache-Control & Auto-Purge Cache Stale Worker -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -34,7 +34,7 @@
   <script>
     (function () {
       try {
-        var APP_VER = "20261124_v70";
+        var APP_VER = "20261124_v200";
         if (localStorage.getItem("acc_livescore_version") !== APP_VER) {
           localStorage.setItem("acc_livescore_version", APP_VER);
           if ('caches' in window) {
@@ -119,11 +119,11 @@
           onclick="operatorConsole.loadSelectedPreset(document.getElementById('selectMatchPreset').value)">
           ⚡ Muat ke Layar TV
         </button>
-        <button type="button" class="btn-nav" id="btnSyncAcc"
-          style="background: #1e293b; color: #38bdf8; border: 1px solid #38bdf8; font-weight: 700;"
-          onclick="operatorConsole.manualSyncAccData()"
-          title="Sinkronkan ulang daftar laga dan pemain langsung dari database accfutsal2026">
-          🔄 Sinkron accfutsal2026
+        <button type="button" class="btn-nav" id="btnForceReload"
+          style="background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid #38bdf8; font-weight: 800;"
+          onclick="operatorConsole.forceReloadOfficialData()"
+          title="Hapus cache HP & muat ulang 64 laga resmi turnamen">
+          ⚡ Muat 64 Laga Resmi
         </button>
         <button type="button" class="btn-reset-match" onclick="operatorConsole.resetCurrentMatch()"
           title="Reset Skor (0-0), Timer (00:00), Fouls & Riwayat Pertandingan Ini">
@@ -456,11 +456,11 @@
   </div>
 
   <!-- JAVASCRIPT LOGIC -->
-  <script src="/js/config.js?v=20261124_v70"></script>
-  <script src="/js/teams.js?v=20261124_v70"></script>
-  <script src="/js/matches.js?v=20261124_v70"></script>
-  <script src="/js/supabase-sync.js?v=20261124_v70"></script>
-  <script src="/js/app-operator.js?v=20261124_v70"></script>
+  <script src="/js/config.js?v=20261124_v200"></script>
+  <script src="/js/teams.js?v=20261124_v200"></script>
+  <script src="/js/matches.js?v=20261124_v200"></script>
+  <script src="/js/supabase-sync.js?v=20261124_v200"></script>
+  <script src="/js/app-operator.js?v=20261124_v200"></script>
 
   <!-- PWA SERVICE WORKER REGISTRATION -->
   <script>

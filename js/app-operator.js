@@ -138,6 +138,29 @@ class OperatorConsole {
     }
   }
 
+  forceReloadOfficialData() {
+    const btn = document.getElementById("btnForceReload");
+    if (btn) btn.innerHTML = "⏳ Membersihkan Cache...";
+    if ('caches' in window) {
+      caches.keys().then(names => {
+        return Promise.all(names.map(name => caches.delete(name)));
+      }).then(() => {
+        this.doReload();
+      }).catch(() => this.doReload());
+    } else {
+      this.doReload();
+    }
+  }
+
+  doReload() {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(regs => {
+        for (let r of regs) r.unregister();
+      });
+    }
+    window.location.href = window.location.origin + window.location.pathname + '?force_purge=' + Date.now();
+  }
+
   checkPinAuth() {
     const unlocked = sessionStorage.getItem("acc_operator_unlocked");
     const modal = document.getElementById("pinGateModal");

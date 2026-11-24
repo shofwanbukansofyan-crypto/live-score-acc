@@ -2,7 +2,7 @@
 // SERVICE WORKER - ACC FUTSAL CUP 2026 PWA APP
 // ==============================================================================
 
-const CACHE_NAME = 'acc-score-v70';
+const CACHE_NAME = 'acc-score-v200-final';
 const PRECACHE_ASSETS = [
   '/',
   '/index.html',
