@@ -1,8 +1,6 @@
 {
-  "version": 2,
   "cleanUrls": true,
   "rewrites": [
-    { "source": "/", "destination": "/index.html" },
     { "source": "/display", "destination": "/index.html" },
     { "source": "/operator", "destination": "/operator.html" }
   ],
@@ -12,19 +10,8 @@
       "headers": [
         { "key": "X-Content-Type-Options", "value": "nosniff" },
         { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
-        { "key": "X-XSS-Protection", "value": "1; mode=block" }
-      ]
-    },
-    {
-      "source": "/(index\\.html|operator\\.html|js/.*\\.js|sw\\.js)",
-      "headers": [
+        { "key": "X-XSS-Protection", "value": "1; mode=block" },
         { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
-      ]
-    },
-    {
-      "source": "/(manifest\\.json|assets/(.*))",
-      "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=86400, stale-while-revalidate=604800" }
       ]
     }
   ]
