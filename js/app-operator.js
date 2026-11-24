@@ -244,6 +244,58 @@ class OperatorConsole {
     window.syncEngine.clearAllEvents();
   }
 
+  resetCurrentMatch() {
+    const state = this.currentState;
+    const matchName = state && state.home_name && state.away_name 
+      ? `"${state.home_name} vs ${state.away_name}"`
+      : "pertandingan yang sedang aktif";
+
+    const isConfirmed = confirm(
+      `⚠️ KONFIRMASI RESET PERTANDINGAN\n\n` +
+      `Apakah Anda yakin ingin me-reset ${matchName}?\n\n` +
+      `Tindakan ini akan:\n` +
+      `• Mengembalikan skor menjadi 0 - 0\n` +
+      `• Menghentikan dan mengembalikan timer ke 00:00\n` +
+      `• Me-reset akumulasi fouls kedua tim menjadi 0\n` +
+      `• Mengembalikan jatah Time Out (TO: ADA)\n` +
+      `• Menghapus seluruh riwayat gol & kartu di Match Momentum\n` +
+      `• Mengembalikan status babak ke BELUM DIMULAI\n\n` +
+      `Tekan OK untuk mereset laga.`
+    );
+
+    if (!isConfirmed) return;
+
+    const cat = state ? (state.category || "SMP") : "SMP";
+    const targetDuration = cat === "SD" 
+      ? (CONFIG.DEFAULT_HALF_DURATION_SD || 600) 
+      : (CONFIG.DEFAULT_HALF_DURATION_SMP || 900);
+
+    const resetPayload = {
+      home_score: 0,
+      away_score: 0,
+      home_fouls: 0,
+      away_fouls: 0,
+      home_timeout: false,
+      away_timeout: false,
+      home_penalties: null,
+      away_penalties: null,
+      period: "upcoming",
+      period_label: "BELUM DIMULAI",
+      timer_seconds: 0,
+      target_duration: targetDuration,
+      is_running: false,
+      timer_started_at: null,
+      timeout_running: false,
+      timeout_seconds: 60,
+      timeout_started_at: null
+    };
+
+    window.syncEngine.updateState(resetPayload);
+    window.syncEngine.clearAllEvents();
+
+    alert("✅ Pertandingan berhasil di-reset ke kondisi awal (0-0, waktu 00:00, Match Momentum bersih).");
+  }
+
   renderUI(state, events) {
     if (!state) return;
 

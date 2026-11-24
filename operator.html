@@ -64,6 +64,9 @@
       </div>
 
       <div class="nav-actions">
+        <button type="button" class="btn-nav" style="background: rgba(239, 68, 68, 0.18); border-color: rgba(239, 68, 68, 0.45); color: #fca5a5;" onclick="operatorConsole.resetCurrentMatch()" title="Reset Seluruh Skor, Timer & Kejadian Laga Ini">
+          🔄 Reset Laga
+        </button>
         <a href="/" target="_blank" class="btn-nav" title="Buka Mode Display di Tab/Layar Baru">
           🖥️ Buka Layar TV
         </a>
@@ -88,6 +91,11 @@
           style="background: var(--color-primary); color: #000; font-weight: 800; justify-content: center;"
           onclick="operatorConsole.loadSelectedPreset(document.getElementById('selectMatchPreset').value)">
           ⚡ Muat ke Layar TV
+        </button>
+        <button type="button" class="btn-reset-match"
+          onclick="operatorConsole.resetCurrentMatch()"
+          title="Reset Skor (0-0), Timer (00:00), Fouls & Riwayat Pertandingan Ini">
+          🔄 Reset Laga
         </button>
       </div>
     </section>

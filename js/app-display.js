@@ -144,41 +144,57 @@ class ScoreboardDisplay {
     const homeEvents = this.currentEvents.filter(ev => ev.team === "home");
     const awayEvents = this.currentEvents.filter(ev => ev.team === "away");
 
-    const renderEventChips = (list) => {
-      if (!list || list.length === 0) {
-        return '<span class="momentum-empty">-</span>';
+    const renderEventChips = (list, alignRight = false) => {
+      const rows = [];
+      const eventItems = list || [];
+      // Minimal 3 baris tampilan sesuai permintaan user
+      const totalRows = Math.max(3, eventItems.length);
+
+      for (let i = 0; i < totalRows; i++) {
+        const ev = eventItems[i];
+        if (ev) {
+          let icon = "⚽";
+          let chipClass = "goal";
+          let defaultLabel = "Gol";
+
+          if (ev.type === "card_yellow") {
+            icon = "🟨";
+            chipClass = "card-yellow";
+            defaultLabel = "Kartu Kuning";
+          } else if (ev.type === "card_red") {
+            icon = "🟥";
+            chipClass = "card-red";
+            defaultLabel = "Kartu Merah";
+          }
+
+          const playerName = ev.player_name || defaultLabel;
+          const minuteText = ev.minute ? `<span class="chip-minute">${ev.minute}'</span>` : "";
+
+          rows.push(`
+            <div class="momentum-row ${alignRight ? 'align-right' : 'align-left'}">
+              <div class="event-chip ${chipClass}">
+                <span class="chip-icon">${icon}</span>
+                ${minuteText}
+                <span class="chip-player">${playerName}</span>
+              </div>
+            </div>
+          `);
+        } else {
+          rows.push(`
+            <div class="momentum-row empty ${alignRight ? 'align-right' : 'align-left'}">
+              <div class="event-chip empty-slot">
+                <span class="empty-dash">-</span>
+              </div>
+            </div>
+          `);
+        }
       }
 
-      return list.map(ev => {
-        let icon = "⚽";
-        let chipClass = "goal";
-        let defaultLabel = "Gol";
-
-        if (ev.type === "card_yellow") {
-          icon = "🟨";
-          chipClass = "card-yellow";
-          defaultLabel = "Kartu Kuning";
-        } else if (ev.type === "card_red") {
-          icon = "🟥";
-          chipClass = "card-red";
-          defaultLabel = "Kartu Merah";
-        }
-
-        const playerName = ev.player_name || defaultLabel;
-        const minuteText = ev.minute ? `<span class="chip-minute">${ev.minute}'</span>` : "";
-
-        return `
-          <div class="event-chip ${chipClass}">
-            <span>${icon}</span>
-            ${minuteText}
-            <span class="chip-player">${playerName}</span>
-          </div>
-        `;
-      }).join("");
+      return rows.join("");
     };
 
-    homeContainer.innerHTML = renderEventChips(homeEvents);
-    awayContainer.innerHTML = renderEventChips(awayEvents);
+    homeContainer.innerHTML = renderEventChips(homeEvents, true);
+    awayContainer.innerHTML = renderEventChips(awayEvents, false);
   }
 
   syncTimerLoop() {
