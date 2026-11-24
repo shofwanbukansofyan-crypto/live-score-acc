@@ -64,10 +64,10 @@ body {
 }
 
 .tv-tournament-logo {
-  width: clamp(120px, 16vh, 190px);
-  height: clamp(120px, 16vh, 190px);
+  width: clamp(110px, 15vh, 180px);
+  height: clamp(110px, 15vh, 180px);
   object-fit: contain;
-  filter: drop-shadow(0 8px 28px rgba(245, 158, 11, 0.45));
+  filter: drop-shadow(0 6px 20px rgba(245, 158, 11, 0.35));
   transition: transform 0.3s ease;
 }
 
