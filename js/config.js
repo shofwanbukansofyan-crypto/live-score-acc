@@ -2,10 +2,34 @@
 // CONFIG.JS - Konfigurasi Supabase & Live Score ACC Futsal Cup 2026
 // ==============================================================================
 
+function cleanSupabaseUrl(rawUrl) {
+  if (!rawUrl) return "";
+  let url = rawUrl.trim();
+  url = url.replace(/\/rest\/v1\/?$/i, '').replace(/\/+$/, '');
+  if (!url.startsWith('http://') && !url.startsWith('https://')) {
+    url = 'https://' + url;
+  }
+  return url;
+}
+
+const defaultUrl = "https://lomckvgwqlfuxtucfwtn.supabase.co";
+const defaultKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxvbWNrdmd3cWxmdXh0dWNmd3RuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTU1MDEzOTMsImV4cCI6MjExMTA3NzM5M30.gjEIGKm8KR9uCK4m8xDOuJq7CHcVeSSTVKtlO_sRaWo";
+
+let rawSavedUrl = null;
+try { rawSavedUrl = localStorage.getItem("acc_supabase_url"); } catch (_) {}
+let activeUrl = cleanSupabaseUrl(rawSavedUrl) || defaultUrl;
+if (rawSavedUrl && rawSavedUrl !== activeUrl) {
+  try { localStorage.setItem("acc_supabase_url", activeUrl); } catch (_) {}
+}
+
 const CONFIG = {
   // Masukkan kredensial Supabase baru Anda di sini atau lewat form Pengaturan di UI
-  SUPABASE_URL: localStorage.getItem("acc_supabase_url") || "https://lomckvgwqlfuxtucfwtn.supabase.co",
-  SUPABASE_ANON_KEY: localStorage.getItem("acc_supabase_key") || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxvbWNrdmd3cWxmdXh0dWNmd3RuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTU1MDEzOTMsImV4cCI6MjExMTA3NzM5M30.gjEIGKm8KR9uCK4m8xDOuJq7CHcVeSSTVKtlO_sRaWo",
+  SUPABASE_URL: activeUrl,
+  SUPABASE_ANON_KEY: (function () {
+    let k = null;
+    try { k = localStorage.getItem("acc_supabase_key"); } catch (_) {}
+    return (k && k.trim()) ? k.trim() : defaultKey;
+  })(),
 
   // PIN default untuk akses Operator Console (bisa diubah sesuai keinginan)
   OPERATOR_PIN: localStorage.getItem("acc_operator_pin") || "ACCdisplay2026",

@@ -76,8 +76,10 @@ class SyncEngine {
   }
 
   initSupabase() {
-    const url = CONFIG.SUPABASE_URL || localStorage.getItem("acc_supabase_url");
-    const key = CONFIG.SUPABASE_ANON_KEY || localStorage.getItem("acc_supabase_key");
+    let url = typeof cleanSupabaseUrl === "function" 
+      ? cleanSupabaseUrl(CONFIG.SUPABASE_URL || localStorage.getItem("acc_supabase_url"))
+      : (CONFIG.SUPABASE_URL || "").trim().replace(/\/rest\/v1\/?$/i, '').replace(/\/+$/, '');
+    let key = (CONFIG.SUPABASE_ANON_KEY || localStorage.getItem("acc_supabase_key") || "").trim();
 
     if (url && key && typeof window.supabase !== "undefined") {
       try {
