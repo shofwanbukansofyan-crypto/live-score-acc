@@ -170,52 +170,80 @@ class ScoreboardDisplay {
     const awayEvents = this.currentEvents.filter(ev => ev.team === "away");
 
     const renderEventChips = (list, alignRight = false) => {
-      const rows = [];
       const eventItems = list || [];
-      // Minimal 3 baris tampilan sesuai permintaan user
-      const totalRows = Math.max(3, eventItems.length);
+      const MAX_ROWS = 5; // Maksimal 5 baris per kolom sesuai permintaan user
 
-      for (let i = 0; i < totalRows; i++) {
-        const ev = eventItems[i];
-        if (ev) {
-          let icon = "⚽";
-          let chipClass = "goal";
-          let defaultLabel = "Gol";
-
-          if (ev.type === "card_yellow") {
-            icon = "🟨";
-            chipClass = "card-yellow";
-            defaultLabel = "Kartu Kuning";
-          } else if (ev.type === "card_red") {
-            icon = "🟥";
-            chipClass = "card-red";
-            defaultLabel = "Kartu Merah";
-          }
-
-          const playerName = ev.player_name || defaultLabel;
-          const minuteText = ev.minute ? `<span class="chip-minute">${ev.minute}'</span>` : "";
-
-          rows.push(`
-            <div class="momentum-row ${alignRight ? 'align-right' : 'align-left'}">
-              <div class="event-chip ${chipClass}">
-                <span class="chip-icon">${icon}</span>
-                ${minuteText}
-                <span class="chip-player">${playerName}</span>
-              </div>
-            </div>
-          `);
-        } else {
-          rows.push(`
-            <div class="momentum-row empty ${alignRight ? 'align-right' : 'align-left'}">
-              <div class="event-chip empty-slot">
-                <span class="empty-dash">-</span>
-              </div>
-            </div>
-          `);
-        }
+      if (eventItems.length === 0) {
+        // Tampilkan 1 kolom dengan 3 slot kosong jika belum ada kejadian
+        return `
+          <div class="momentum-subcol ${alignRight ? 'align-right' : 'align-left'}">
+            <div class="momentum-row empty ${alignRight ? 'align-right' : 'align-left'}"><div class="event-chip empty-slot"><span class="empty-dash">-</span></div></div>
+            <div class="momentum-row empty ${alignRight ? 'align-right' : 'align-left'}"><div class="event-chip empty-slot"><span class="empty-dash">-</span></div></div>
+            <div class="momentum-row empty ${alignRight ? 'align-right' : 'align-left'}"><div class="event-chip empty-slot"><span class="empty-dash">-</span></div></div>
+          </div>
+        `;
       }
 
-      return rows.join("");
+      // Bagi daftar kejadian menjadi sub-kolom (maksimal 5 kejadian per sub-kolom)
+      const subcols = [];
+      for (let i = 0; i < eventItems.length; i += MAX_ROWS) {
+        subcols.push(eventItems.slice(i, i + MAX_ROWS));
+      }
+
+      // Bangun elemen per sub-kolom
+      const subcolsHtml = subcols.map((chunk) => {
+        // Jika hanya ada 1 kolom dan kejadiannya kurang dari 3, pad ke 3 baris
+        const rowCount = subcols.length === 1 ? Math.max(3, chunk.length) : chunk.length;
+        const rows = [];
+
+        for (let i = 0; i < rowCount; i++) {
+          const ev = chunk[i];
+          if (ev) {
+            let icon = "⚽";
+            let chipClass = "goal";
+            let defaultLabel = "Gol";
+
+            if (ev.type === "card_yellow") {
+              icon = "🟨";
+              chipClass = "card-yellow";
+              defaultLabel = "Kartu Kuning";
+            } else if (ev.type === "card_red") {
+              icon = "🟥";
+              chipClass = "card-red";
+              defaultLabel = "Kartu Merah";
+            }
+
+            const playerName = ev.player_name || defaultLabel;
+            const minuteText = ev.minute ? `<span class="chip-minute">${ev.minute}'</span>` : "";
+
+            rows.push(`
+              <div class="momentum-row ${alignRight ? 'align-right' : 'align-left'}">
+                <div class="event-chip ${chipClass}">
+                  <span class="chip-icon">${icon}</span>
+                  ${minuteText}
+                  <span class="chip-player">${playerName}</span>
+                </div>
+              </div>
+            `);
+          } else {
+            rows.push(`
+              <div class="momentum-row empty ${alignRight ? 'align-right' : 'align-left'}">
+                <div class="event-chip empty-slot">
+                  <span class="empty-dash">-</span>
+                </div>
+              </div>
+            `);
+          }
+        }
+
+        return `
+          <div class="momentum-subcol ${alignRight ? 'align-right' : 'align-left'}">
+            ${rows.join("")}
+          </div>
+        `;
+      });
+
+      return subcolsHtml.join("");
     };
 
     homeContainer.innerHTML = renderEventChips(homeEvents, true);

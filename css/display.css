@@ -400,7 +400,7 @@ body {
   grid-template-columns: 1fr auto 1fr;
   gap: clamp(12px, 2vw, 30px);
   width: 100%;
-  max-width: 1200px;
+  max-width: min(1500px, 98%);
   align-items: stretch;
 }
 
@@ -414,16 +414,38 @@ body {
 
 .momentum-events-list {
   display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: clamp(8px, 1.2vw, 16px);
+  width: 100%;
+}
+
+.momentum-col.home .momentum-events-list {
+  justify-content: flex-end;
+}
+
+.momentum-col.away .momentum-events-list {
+  justify-content: flex-start;
+}
+
+.momentum-subcol {
+  display: flex;
   flex-direction: column;
   gap: clamp(4px, 0.7vh, 8px);
-  width: 100%;
+}
+
+.momentum-subcol.align-right {
+  align-items: flex-end;
+}
+
+.momentum-subcol.align-left {
+  align-items: flex-start;
 }
 
 .momentum-row {
   display: flex;
   align-items: center;
   min-height: clamp(26px, 3.5vh, 34px);
-  width: 100%;
 }
 
 .momentum-row.align-right {
