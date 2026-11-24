@@ -25,7 +25,7 @@
     rel="stylesheet">
 
   <!-- CSS -->
-  <link rel="stylesheet" href="/css/operator.css?v=20261124_v200">
+  <link rel="stylesheet" href="/css/operator.css?v=20261124_v204">
 
   <!-- Cache-Control & Auto-Purge Cache Stale Worker -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -34,7 +34,7 @@
   <script>
     (function () {
       try {
-        var APP_VER = "20261124_v200";
+        var APP_VER = "20261124_v204";
         if (localStorage.getItem("acc_livescore_version") !== APP_VER) {
           localStorage.setItem("acc_livescore_version", APP_VER);
           if ('caches' in window) {
@@ -93,6 +93,11 @@
           style="background: rgba(239, 68, 68, 0.18); border-color: rgba(239, 68, 68, 0.45); color: #fca5a5;"
           onclick="operatorConsole.resetCurrentMatch()" title="Reset Seluruh Skor, Timer & Kejadian Laga Ini">
           🔄 Reset Laga
+        </button>
+        <button type="button" class="btn-nav"
+          style="background: rgba(234, 179, 8, 0.18); border-color: rgba(234, 179, 8, 0.45); color: #fef08a;"
+          onclick="operatorConsole.playSiuSound()" title="Tes Mainkan Sound Effect Siu Ronaldo">
+          🔊 Tes Siuu
         </button>
         <a href="/" target="_blank" class="btn-nav" title="Buka Mode Display di Tab/Layar Baru">
           🖥️ Buka Layar TV
@@ -458,11 +463,11 @@
   </div>
 
   <!-- JAVASCRIPT LOGIC -->
-  <script src="/js/config.js?v=20261124_v202"></script>
-  <script src="/js/teams.js?v=20261124_v202"></script>
-  <script src="/js/matches.js?v=20261124_v202"></script>
-  <script src="/js/supabase-sync.js?v=20261124_v202"></script>
-  <script src="/js/app-operator.js?v=20261124_v202"></script>
+  <script src="/js/config.js?v=20261124_v204"></script>
+  <script src="/js/teams.js?v=20261124_v204"></script>
+  <script src="/js/matches.js?v=20261124_v204"></script>
+  <script src="/js/supabase-sync.js?v=20261124_v204"></script>
+  <script src="/js/app-operator.js?v=20261124_v204"></script>
 
   <!-- PWA SERVICE WORKER REGISTRATION -->
   <script>

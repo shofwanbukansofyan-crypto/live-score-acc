@@ -694,12 +694,26 @@ class OperatorConsole {
       minute: minute
     });
 
-    // 2. Jika tipe adalah gol, otomatis tambahkan skor tim!
+    // 2. Jika tipe adalah gol, otomatis tambahkan skor tim & bunyikan selebrasi Siuu!
     if (type === "goal") {
       this.changeScore(team, 1);
+      this.playSiuSound();
     }
 
     this.closeAddEventModal();
+  }
+
+  playSiuSound() {
+    try {
+      if (!this.siuAudio) {
+        this.siuAudio = new Audio("/assets/sounds/siu.mp3?v=20261124");
+      }
+      this.siuAudio.currentTime = 0;
+      const p = this.siuAudio.play();
+      if (p !== undefined) {
+        p.catch(e => console.log("Audio play notice:", e));
+      }
+    } catch (_) {}
   }
 
   getCurrentMatchMinute() {

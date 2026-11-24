@@ -9,12 +9,17 @@ class ScoreboardDisplay {
     this.timerAnimationId = null;
     this.timeoutAnimationId = null;
     this.wakeLock = null;
+    this.siuAudio = null;
+    this.audioUnlocked = false;
 
     this.init();
   }
 
   init() {
-    // 1. Subscribe ke Realtime Sync Engine
+    // 1. Inisialisasi Audio Selebrasi Ronaldo Siu
+    this.initAudio();
+
+    // 2. Subscribe ke Realtime Sync Engine
     if (window.syncEngine) {
       window.syncEngine.subscribe((state, events) => {
         this.handleStateUpdate(state);
@@ -22,11 +27,42 @@ class ScoreboardDisplay {
       });
     }
 
-    // 2. Minta Screen Wake Lock agar layar TV tidak mati/sleep
+    // 3. Minta Screen Wake Lock agar layar TV tidak mati/sleep
     this.requestWakeLock();
 
-    // 3. Setup event listeners
+    // 4. Setup event listeners
     this.setupListeners();
+  }
+
+  initAudio() {
+    try {
+      this.siuAudio = new Audio("/assets/sounds/siu.mp3?v=20261124");
+      this.siuAudio.preload = "auto";
+
+      // Buka kunci AudioContext / Autoplay saat ada interaksi pertama di layar TV
+      const unlock = () => {
+        if (this.audioUnlocked) return;
+        this.audioUnlocked = true;
+        if (this.siuAudio) {
+          const playPromise = this.siuAudio.play();
+          if (playPromise !== undefined) {
+            playPromise.then(() => {
+              this.siuAudio.pause();
+              this.siuAudio.currentTime = 0;
+            }).catch(() => {});
+          }
+        }
+        document.removeEventListener("click", unlock);
+        document.removeEventListener("keydown", unlock);
+        document.removeEventListener("touchstart", unlock);
+      };
+
+      document.addEventListener("click", unlock);
+      document.addEventListener("keydown", unlock);
+      document.addEventListener("touchstart", unlock);
+    } catch (e) {
+      console.warn("Audio initialization notice:", e);
+    }
   }
 
   setupListeners() {
@@ -389,15 +425,33 @@ class ScoreboardDisplay {
     nameEl.textContent = `${teamName} (Skor: ${newScore})`;
     banner.classList.add("show");
 
-    // Mainkan audio peluit / suara selebrasi
-    this.playWhistleSound();
+    // Mainkan sound effect SIUUU Cristiano Ronaldo!
+    this.playSiuSound();
 
     setTimeout(() => {
       banner.classList.remove("show");
     }, 4500);
   }
 
-  playWhistleSound() {
+  playSiuSound() {
+    try {
+      if (!this.siuAudio) {
+        this.siuAudio = new Audio("/assets/sounds/siu.mp3?v=20261124");
+      }
+      this.siuAudio.currentTime = 0;
+      const playPromise = this.siuAudio.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(err => {
+          console.warn("Autoplay blocked or audio playback error:", err);
+          this.playWhistleFallback();
+        });
+      }
+    } catch (_) {
+      this.playWhistleFallback();
+    }
+  }
+
+  playWhistleFallback() {
     try {
       const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       const osc = audioCtx.createOscillator();
