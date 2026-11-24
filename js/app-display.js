@@ -49,7 +49,7 @@ class ScoreboardDisplay {
             playPromise.then(() => {
               this.siuAudio.pause();
               this.siuAudio.currentTime = 0;
-            }).catch(() => {});
+            }).catch(() => { });
           }
         }
         document.removeEventListener("click", unlock);
