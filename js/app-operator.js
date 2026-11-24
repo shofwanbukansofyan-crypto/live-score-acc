@@ -19,15 +19,102 @@ class OperatorConsole {
     // 2. Populasi Daftar Pertandingan dari Preset
     this.populateMatchesDropdown();
 
-    // 3. Subscribe ke Realtime Sync Engine
+    // 3. Sinkronkan data pertandingan terbaru secara langsung dari database accfutsal2026
+    this.fetchLiveAccTournamentData();
+
+    // 4. Subscribe ke Realtime Sync Engine
     window.syncEngine.subscribe((state, events, conn) => {
       this.currentState = state;
       this.currentEvents = events;
       this.renderUI(state, events);
     });
 
-    // 4. Timer loop lokal untuk tampilan kontrol operator
+    // 5. Timer loop lokal untuk tampilan kontrol operator
     this.startLocalTimerLoop();
+  }
+
+  async fetchLiveAccTournamentData() {
+    try {
+      const host = 'qxanfoqijpznszezwzef.supabase.co';
+      const key = 'sb_publishable_3sH1x2EhzsmxKtCAei-sbg_ZAunYZja';
+      const [resTeams, resMatches] = await Promise.all([
+        fetch(`https://${host}/rest/v1/teams?select=*&limit=500`, {
+          headers: { 'apikey': key, 'Authorization': 'Bearer ' + key }
+        }).then(r => r.json()),
+        fetch(`https://${host}/rest/v1/matches?select=*&limit=500`, {
+          headers: { 'apikey': key, 'Authorization': 'Bearer ' + key }
+        }).then(r => r.json())
+      ]);
+
+      if (Array.isArray(resTeams) && resTeams.length > 0) {
+        window.ACC_TEAMS = resTeams.map(t => {
+          const idNum = parseInt((t.id || '').replace(/\D/g, ''), 10) || 0;
+          const cat = t.category || (idNum > 16 ? 'SD' : 'SMP');
+          const managerName = t.official_manager || (t.official && t.official.manager) || t.manager || '-';
+          const coachName = t.official_coach || (t.official && t.official.coach) || t.coach || '-';
+          return {
+            id: t.id,
+            name: t.name || 'Tim ' + t.id,
+            shortName: t.short_name || t.shortName || (t.name || '').substring(0, 5).toUpperCase(),
+            category: cat,
+            badgeColor: t.badge_color || t.badgeColor || (cat === 'SD' ? '#3b82f6' : '#10b981'),
+            city: t.city || 'Sulawesi Selatan',
+            logo: t.logo || '/assets/logo.png',
+            group: t.group_letter || t.group || 'A',
+            manager: managerName,
+            coach: coachName,
+            official: { manager: managerName, coach: coachName },
+            players: (t.players || []).map(p => ({
+              no: p.no ?? p.number ?? 0,
+              name: p.name || 'Pemain',
+              pos: p.pos || p.position || 'Pemain',
+              goals: p.goals || 0,
+              yc: p.yc || 0,
+              rc: p.rc || 0,
+              photo: p.photo || ''
+            }))
+          };
+        });
+      }
+
+      if (Array.isArray(resMatches) && resMatches.length > 0) {
+        window.ACC_MATCHES = resMatches.map(m => {
+          const homeTeam = (window.ACC_TEAMS || []).find(t => t.id === (m.home_id || m.homeId));
+          const awayTeam = (window.ACC_TEAMS || []).find(t => t.id === (m.away_id || m.awayId));
+          const homeName = (homeTeam && homeTeam.name) || m.home_placeholder || m.home_name || 'Menunggu Tim Lolos';
+          const awayName = (awayTeam && awayTeam.name) || m.away_placeholder || m.away_name || 'Menunggu Tim Lolos';
+          return {
+            id: m.id,
+            category: m.category || (m.id.includes('_SD_') ? 'SD' : 'SMP'),
+            stage: m.round_name || m.stage || (m.stage === 'group' ? `Grup ${m.group_letter || 'A'}` : 'Babak Gugur'),
+            group: m.group_letter || m.group || null,
+            pitch: m.pitch || 'Lapangan Utama',
+            date: m.date || '',
+            time: m.time || '',
+            homeId: m.home_id || m.homeId || '',
+            awayId: m.away_id || m.awayId || '',
+            homeName,
+            awayName,
+            homeShort: (homeTeam && homeTeam.shortName) || homeName.substring(0, 5),
+            awayShort: (awayTeam && awayTeam.shortName) || awayName.substring(0, 5),
+            homeLogo: (homeTeam && homeTeam.logo) || '/assets/logo.png',
+            awayLogo: (awayTeam && awayTeam.logo) || '/assets/logo.png',
+            homeColor: (homeTeam && homeTeam.badgeColor) || '#10b981',
+            awayColor: (awayTeam && awayTeam.badgeColor) || '#f59e0b',
+            status: m.status || 'upcoming',
+            homeScore: m.home_score ?? 0,
+            awayScore: m.away_score ?? 0,
+            scorers: m.scorers || [],
+            cards: m.cards || []
+          };
+        });
+
+        // Re-populate dropdown dengan data terupdate
+        this.populateMatchesDropdown();
+      }
+    } catch (e) {
+      console.warn("Live sync accfutsal notice:", e);
+    }
   }
 
   checkPinAuth() {
@@ -63,24 +150,30 @@ class OperatorConsole {
 
   populateMatchesDropdown() {
     const select = document.getElementById("selectMatchPreset");
-    if (!select || typeof ACC_MATCHES === "undefined") return;
+    const matchesList = window.ACC_MATCHES || (typeof ACC_MATCHES !== "undefined" ? ACC_MATCHES : []);
+    const teamsList = window.ACC_TEAMS || (typeof ACC_TEAMS !== "undefined" ? ACC_TEAMS : []);
+    if (!select || matchesList.length === 0) return;
 
-    select.innerHTML = '<option value="">-- Pilih Laga Resmi Turnamen (52 Pertandingan) --</option>';
+    select.innerHTML = '<option value="">-- Pilih Laga Resmi Turnamen (64 Pertandingan) --</option>';
 
     // Kelompokkan laga SMP dan SD
     const optGroupSMP = document.createElement("optgroup");
-    optGroupSMP.label = "🏆 KATEGORI SMP (16 Tim)";
+    optGroupSMP.label = "🏆 KATEGORI SMP (32 Laga Resmi)";
 
     const optGroupSD = document.createElement("optgroup");
-    optGroupSD.label = "⚽ KATEGORI SD (16 Tim)";
+    optGroupSD.label = "⚽ KATEGORI SD (32 Laga Resmi)";
 
-    ACC_MATCHES.forEach((m, idx) => {
+    matchesList.forEach((m, idx) => {
       const opt = document.createElement("option");
       opt.value = m.id;
 
-      const homeName = m.homeName || m.homePlaceholder || ("Tim " + (m.homeId || ""));
-      const awayName = m.awayName || m.awayPlaceholder || ("Tim " + (m.awayId || ""));
-      opt.textContent = `${m.id}: ${homeName} vs ${awayName} (${m.stage || 'Grup'} - ${m.time || 'Waktu'})`;
+      const homeTeam = teamsList.find(t => t.id === (m.homeId || m.home_id));
+      const awayTeam = teamsList.find(t => t.id === (m.awayId || m.away_id));
+
+      const homeName = (homeTeam && homeTeam.name) || m.homeName || m.home_placeholder || m.home_name || "TBD";
+      const awayName = (awayTeam && awayTeam.name) || m.awayName || m.away_placeholder || m.away_name || "TBD";
+
+      opt.textContent = `[${m.id}] ${homeName} vs ${awayName} (${m.stage || 'Babak'} • ${m.date || ''} ${m.time || ''})`;
 
       if ((m.category || "SMP") === "SD") {
         optGroupSD.appendChild(opt);
@@ -94,17 +187,22 @@ class OperatorConsole {
   }
 
   loadSelectedPreset(matchId) {
-    if (!matchId || typeof ACC_MATCHES === "undefined" || typeof ACC_TEAMS === "undefined") return;
+    const matchesList = window.ACC_MATCHES || (typeof ACC_MATCHES !== "undefined" ? ACC_MATCHES : []);
+    const teamsList = window.ACC_TEAMS || (typeof ACC_TEAMS !== "undefined" ? ACC_TEAMS : []);
+    if (!matchId || matchesList.length === 0) return;
 
-    const m = ACC_MATCHES.find(x => x.id === matchId);
+    const m = matchesList.find(x => x.id === matchId);
     if (!m) return;
 
-    if (!confirm(`Muat pertandingan "${m.id}: ${m.homeName || 'Home'} vs ${m.awayName || 'Away'}" ke layar TV?\n(Skor dan timer saat ini akan di-reset untuk laga ini)`)) {
+    const homeTeam = teamsList.find(t => t.id === (m.homeId || m.home_id)) || {};
+    const awayTeam = teamsList.find(t => t.id === (m.awayId || m.away_id)) || {};
+
+    const homeName = homeTeam.name || m.homeName || m.home_name || m.home_placeholder || 'TIM HOME';
+    const awayName = awayTeam.name || m.awayName || m.away_name || m.away_placeholder || 'TIM AWAY';
+
+    if (!confirm(`Muat pertandingan "${m.id}: ${homeName} vs ${awayName}" ke layar TV?\n(Skor dan timer saat ini akan di-reset untuk laga ini)`)) {
       return;
     }
-
-    const homeTeam = ACC_TEAMS.find(t => t.id === m.homeId) || {};
-    const awayTeam = ACC_TEAMS.find(t => t.id === m.awayId) || {};
 
     const cat = m.category || "SMP";
     const targetDuration = cat === "SD" ? CONFIG.DEFAULT_HALF_DURATION_SD : CONFIG.DEFAULT_HALF_DURATION_SMP;
@@ -113,20 +211,20 @@ class OperatorConsole {
       category: cat,
       stage: m.stage ? m.stage.toUpperCase() : "FASE GRUP",
       pitch: m.pitch || "Lapangan Utama",
-      home_id: homeTeam.id || m.homeId || "HOME",
-      home_name: homeTeam.name || m.homeName || "TIM HOME",
-      home_short: homeTeam.shortName || (homeTeam.name || "HOME").substring(0, 5),
+      home_id: homeTeam.id || m.homeId || m.home_id || "HOME",
+      home_name: homeName,
+      home_short: homeTeam.shortName || homeName.substring(0, 5),
       home_logo: homeTeam.logo || "/assets/logo.png",
-      home_color: homeTeam.badgeColor || "#10b981",
+      home_color: homeTeam.badgeColor || (cat === 'SD' ? "#3b82f6" : "#10b981"),
       home_score: 0,
       home_penalties: null,
       home_fouls: 0,
       home_timeout: false,
-      away_id: awayTeam.id || m.awayId || "AWAY",
-      away_name: awayTeam.name || m.awayName || "TIM AWAY",
-      away_short: awayTeam.shortName || (awayTeam.name || "AWAY").substring(0, 5),
+      away_id: awayTeam.id || m.awayId || m.away_id || "AWAY",
+      away_name: awayName,
+      away_short: awayTeam.shortName || awayName.substring(0, 5),
       away_logo: awayTeam.logo || "/assets/logo.png",
-      away_color: awayTeam.badgeColor || "#3b82f6",
+      away_color: awayTeam.badgeColor || "#f59e0b",
       away_score: 0,
       away_penalties: null,
       away_fouls: 0,
@@ -506,8 +604,8 @@ class OperatorConsole {
   }
 
   getTeamData(teamId) {
-    if (typeof ACC_TEAMS === "undefined") return null;
-    return ACC_TEAMS.find(t => t.id === teamId) || null;
+    const list = window.ACC_TEAMS || (typeof ACC_TEAMS !== "undefined" ? ACC_TEAMS : []);
+    return list.find(t => t.id === teamId) || null;
   }
 
   renderEventsLog(events) {
