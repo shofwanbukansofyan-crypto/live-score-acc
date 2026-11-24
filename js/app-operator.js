@@ -155,6 +155,14 @@ class OperatorConsole {
     this.setText("ctrlHomeScore", state.home_score ?? 0);
     this.setText("ctrlAwayScore", state.away_score ?? 0);
 
+    // Tampilkan Manajer & Pelatih Resmi
+    const homeTeam = this.getTeamData(state.home_id);
+    const awayTeam = this.getTeamData(state.away_id);
+    this.setText("ctrlHomeManager", (homeTeam && homeTeam.official && homeTeam.official.manager) || (homeTeam && homeTeam.manager) || "-");
+    this.setText("ctrlHomeCoach", (homeTeam && homeTeam.official && homeTeam.official.coach) || (homeTeam && homeTeam.coach) || "-");
+    this.setText("ctrlAwayManager", (awayTeam && awayTeam.official && awayTeam.official.manager) || (awayTeam && awayTeam.manager) || "-");
+    this.setText("ctrlAwayCoach", (awayTeam && awayTeam.official && awayTeam.official.coach) || (awayTeam && awayTeam.coach) || "-");
+
     // Fouls
     this.setText("ctrlHomeFouls", state.home_fouls ?? 0);
     this.setText("ctrlAwayFouls", state.away_fouls ?? 0);
@@ -425,10 +433,31 @@ class OperatorConsole {
       if (teamObj && Array.isArray(teamObj.players) && teamObj.players.length > 0) {
         teamObj.players.forEach(p => {
           const opt = document.createElement("option");
-          opt.value = p.name || p;
-          opt.textContent = `#${p.number || '-'} ${p.name || p} (${p.position || 'Pemain'})`;
+          const pName = p.name || p;
+          const num = p.no ?? p.number ?? '-';
+          const pos = p.pos ?? p.position ?? 'Pemain';
+          opt.value = pName;
+          opt.textContent = `#${num} ${pName} (${pos})`;
           selectPlayer.appendChild(opt);
         });
+      }
+
+      // Tambahkan opsi Pelatih / Manajer jika jenis event adalah kartu kuning/merah
+      if (type === "card_yellow" || type === "card_red") {
+        const mgr = (teamObj && teamObj.official && teamObj.official.manager) || (teamObj && teamObj.manager);
+        const cch = (teamObj && teamObj.official && teamObj.official.coach) || (teamObj && teamObj.coach);
+        if (cch) {
+          const optCoach = document.createElement("option");
+          optCoach.value = `${cch} (Pelatih)`;
+          optCoach.textContent = `📋 Pelatih: ${cch}`;
+          selectPlayer.appendChild(optCoach);
+        }
+        if (mgr) {
+          const optMgr = document.createElement("option");
+          optMgr.value = `${mgr} (Manajer)`;
+          optMgr.textContent = `👨‍💼 Manajer: ${mgr}`;
+          selectPlayer.appendChild(optMgr);
+        }
       }
     }
 

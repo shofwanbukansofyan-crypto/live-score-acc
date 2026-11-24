@@ -61,9 +61,14 @@ CREATE TABLE IF NOT EXISTS public.match_events (
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 3. AKTIFKAN ROW LEVEL SECURITY (RLS)
+-- 3. AKTIFKAN ROW LEVEL SECURITY (RLS) & GRANT PRIVILEGES
 ALTER TABLE public.live_match ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.match_events ENABLE ROW LEVEL SECURITY;
+
+-- Berikan izin akses tabel penuh untuk peran anon dan authenticated
+GRANT USAGE ON SCHEMA public TO anon, authenticated, service_role;
+GRANT ALL ON TABLE public.live_match TO anon, authenticated, service_role;
+GRANT ALL ON TABLE public.match_events TO anon, authenticated, service_role;
 
 -- 4. KEBIJAKAN AKSES (POLICIES)
 -- Mode Display TV & Publik: Dapat membaca data secara real-time tanpa login

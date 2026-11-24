@@ -4,8 +4,8 @@
 
 const CONFIG = {
   // Masukkan kredensial Supabase baru Anda di sini atau lewat form Pengaturan di UI
-  SUPABASE_URL: localStorage.getItem("acc_supabase_url") || "",
-  SUPABASE_ANON_KEY: localStorage.getItem("acc_supabase_key") || "",
+  SUPABASE_URL: localStorage.getItem("acc_supabase_url") || "https://lomckvgwqlfuxtucfwtn.supabase.co",
+  SUPABASE_ANON_KEY: localStorage.getItem("acc_supabase_key") || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxvbWNrdmd3cWxmdXh0dWNmd3RuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTU1MDEzOTMsImV4cCI6MjExMTA3NzM5M30.gjEIGKm8KR9uCK4m8xDOuJq7CHcVeSSTVKtlO_sRaWo",
 
   // PIN default untuk akses Operator Console (bisa diubah sesuai keinginan)
   OPERATOR_PIN: localStorage.getItem("acc_operator_pin") || "ACCdisplay2026",
@@ -30,10 +30,15 @@ const CONFIG = {
 
 // Fungsi helper untuk menyimpan kredensial Supabase dari UI
 function saveSupabaseConfig(url, key) {
-  if (url) localStorage.setItem("acc_supabase_url", url.trim());
-  if (key) localStorage.setItem("acc_supabase_key", key.trim());
-  CONFIG.SUPABASE_URL = localStorage.getItem("acc_supabase_url") || "";
-  CONFIG.SUPABASE_ANON_KEY = localStorage.getItem("acc_supabase_key") || "";
+  if (url) {
+    let clean = url.trim().replace(/\/rest\/v1\/?$/i, '').replace(/\/+$/, '');
+    localStorage.setItem("acc_supabase_url", clean);
+    CONFIG.SUPABASE_URL = clean;
+  }
+  if (key) {
+    localStorage.setItem("acc_supabase_key", key.trim());
+    CONFIG.SUPABASE_ANON_KEY = key.trim();
+  }
 }
 
 function saveOperatorPin(newPin) {
