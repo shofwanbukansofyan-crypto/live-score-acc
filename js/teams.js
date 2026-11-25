@@ -1168,7 +1168,7 @@ const ACC_TEAMS = [
     "category": "SMP",
     "badgeColor": "#ea580c",
     "city": "Maros",
-    "logo": "/assets/teams/T10/smpsqaf.png",
+    "logo": "/assets/teams/T10/smpqaf.png",
     "group": "B",
     "manager": "-",
     "coach": "Musrifil islam",
