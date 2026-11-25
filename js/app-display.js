@@ -243,9 +243,10 @@ class ScoreboardDisplay {
           }
 
           const rawPlayer = ev.player_name || defaultLabel;
-          const displayName = isOG
+          const cleanName = isOG
             ? (rawPlayer.replace(/\s*\(GBD\)/gi, '').trim() || "Gol Bunuh Diri")
             : rawPlayer;
+          const displayName = this.formatPersonName(cleanName);
 
           const minuteText = ev.minute ? `<span class="chip-minute">${ev.minute}'</span>` : "";
 
@@ -273,6 +274,17 @@ class ScoreboardDisplay {
 
     homeContainer.innerHTML = renderEventChips(homeEvents, true);
     awayContainer.innerHTML = renderEventChips(awayEvents, false);
+  }
+
+  formatPersonName(name) {
+    if (!name || name.trim() === "-") return name || "";
+    return name.trim().replace(/\s+/g, " ").split(" ").map(tok => {
+      if (!tok) return tok;
+      if (/^(s\.pd\.?i?\.?|m\.pd\.?|s\.or\.?|s\.h\.?|s\.ag\.?|s\.sos\.?|s\.tr\.pi|a\.md\.?|gr\.?|fc|\(c\))$/i.test(tok)) {
+        return tok;
+      }
+      return tok.replace(/(^|[-'‘])([a-zA-Z])([a-zA-Z]*)/g, (_, p, first, rest) => p + first.toUpperCase() + rest.toLowerCase());
+    }).join(" ");
   }
 
   syncTimerLoop() {

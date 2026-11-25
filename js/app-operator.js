@@ -41,6 +41,25 @@ class OperatorConsole {
       .replace(/'/g, "&#39;");
   }
 
+  formatPersonName(name) {
+    if (!name || String(name).trim() === "-") return name || "";
+    const titleMap = {
+      "s.pd": "S.Pd", "s.pd.": "S.Pd.", "s.pd.i": "S.Pd.I", "s.pd.i.": "S.Pd.I.",
+      "m.pd": "M.Pd", "m.pd.": "M.Pd.", "s.or": "S.Or", "s.or.": "S.Or.",
+      "s.h": "S.H", "s.h.": "S.H.", "s.ag": "S.Ag", "s.ag.": "S.Ag.",
+      "s.sos": "S.Sos", "s.sos.": "S.Sos.", "s.tr.pi": "S.Tr.Pi",
+      "amd": "A.Md", "a.md": "A.Md", "gr": "Gr", "gr.": "Gr.", "fc": "FC", "(c)": "(C)"
+    };
+    return String(name).trim().replace(/\s+/g, " ").split(" ").map(tok => {
+      if (!tok) return tok;
+      const hasComma = tok.endsWith(",") && !titleMap[tok.toLowerCase()];
+      const core = hasComma ? tok.slice(0, -1) : tok;
+      const mapped = titleMap[core.toLowerCase()];
+      if (mapped) return mapped + (hasComma ? "," : "");
+      return core.replace(/(^|[-'‘])([a-zA-Z])([a-zA-Z]*)/g, (_, p, f, r) => p + f.toUpperCase() + r.toLowerCase()) + (hasComma ? "," : "");
+    }).join(" ");
+  }
+
   async fetchLiveAccTournamentData() {
     try {
       const host = 'qxanfoqijpznszezwzef.supabase.co';
@@ -58,8 +77,8 @@ class OperatorConsole {
         window.ACC_TEAMS = resTeams.map(t => {
           const idNum = parseInt((t.id || '').replace(/\D/g, ''), 10) || 0;
           const cat = t.category || (idNum > 16 ? 'SD' : 'SMP');
-          const managerName = t.official_manager || (t.official && t.official.manager) || t.manager || '-';
-          const coachName = t.official_coach || (t.official && t.official.coach) || t.coach || '-';
+          const managerName = this.formatPersonName(t.official_manager || (t.official && t.official.manager) || t.manager || '-');
+          const coachName = this.formatPersonName(t.official_coach || (t.official && t.official.coach) || t.coach || '-');
           return {
             id: t.id,
             name: t.name || 'Tim ' + t.id,
@@ -74,7 +93,7 @@ class OperatorConsole {
             official: { manager: managerName, coach: coachName },
             players: (t.players || []).map(p => ({
               no: p.no ?? p.number ?? 0,
-              name: p.name || 'Pemain',
+              name: this.formatPersonName(p.name || 'Pemain'),
               pos: p.pos || p.position || 'Pemain',
               goals: p.goals || 0,
               yc: p.yc || 0,

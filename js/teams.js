@@ -274,12 +274,12 @@ const ACC_TEAMS = [
     "logo": "/assets/teams/T03/habiburrahman.png",
     "group": "B",
     "manager": "Coach Ade Irzan Rizaldi",
-    "coach": "Coach Reyfhank AL",
+    "coach": "Coach Reyfhank Al",
     "medic": "Muh. Yusnul Maulana Syam",
     "phone": "-",
     "official": {
       "manager": "Coach Ade Irzan Rizaldi",
-      "coach": "Coach Reyfhank AL",
+      "coach": "Coach Reyfhank Al",
       "medic": "Muh. Yusnul Maulana Syam",
       "phone": "-",
       "jerseyHome": "-",
@@ -405,12 +405,12 @@ const ACC_TEAMS = [
     "city": "Makassar",
     "logo": "/assets/teams/T04/smpiqis.png",
     "group": "A",
-    "manager": "Rezky,S.Sos",
+    "manager": "Rezky, S.Sos",
     "coach": "Rafa",
     "medic": "-",
     "phone": "082393521338",
     "official": {
-      "manager": "Rezky,S.Sos",
+      "manager": "Rezky, S.Sos",
       "coach": "Rafa",
       "medic": "-",
       "phone": "082393521338",
@@ -538,12 +538,12 @@ const ACC_TEAMS = [
     "logo": "/assets/teams/T05/habiburrahman_b.png",
     "group": "C",
     "manager": "Andi Fauzan Fauzi",
-    "coach": "Coach Reyfhank AL",
+    "coach": "Coach Reyfhank Al",
     "medic": "Muh. Ikra",
     "phone": "-",
     "official": {
       "manager": "Andi Fauzan Fauzi",
-      "coach": "Coach Reyfhank AL",
+      "coach": "Coach Reyfhank Al",
       "medic": "Muh. Ikra",
       "phone": "-",
       "jerseyHome": "Kotak Merah-Putih",
@@ -579,7 +579,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 19,
-        "name": "Zahir  Zacky Mustapa",
+        "name": "Zahir Zacky Mustapa",
         "pos": "Flank",
         "goals": 0,
         "yc": 0,
@@ -588,7 +588,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 7,
-        "name": "Zakir  Zacky Mustapa",
+        "name": "Zakir Zacky Mustapa",
         "pos": "Flank",
         "goals": 0,
         "yc": 0,
@@ -675,7 +675,7 @@ const ACC_TEAMS = [
     "players": [
       {
         "no": 1,
-        "name": "MUHAMMAD FADLAN FATAYYA",
+        "name": "Muhammad Fadlan Fatayya",
         "pos": "Kiper",
         "goals": 0,
         "yc": 0,
@@ -684,7 +684,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 6,
-        "name": "MUH RAFIF RIZQULLAH",
+        "name": "Muh Rafif Rizqullah",
         "pos": "Kiper",
         "goals": 0,
         "yc": 0,
@@ -693,7 +693,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 17,
-        "name": "GIBRAN JANUAR KALIFADO",
+        "name": "Gibran Januar Kalifado",
         "pos": "Flank",
         "goals": 0,
         "yc": 0,
@@ -702,7 +702,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 24,
-        "name": "AQIL ‘ALLAMAH",
+        "name": "Aqil ‘Allamah",
         "pos": "Flank",
         "goals": 0,
         "yc": 0,
@@ -711,7 +711,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 23,
-        "name": "DZAKY AN NAFI BAKHTIAR",
+        "name": "Dzaky An Nafi Bakhtiar",
         "pos": "Flank",
         "goals": 0,
         "yc": 0,
@@ -720,7 +720,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 15,
-        "name": "MUHAMMAD JIBRIL",
+        "name": "Muhammad Jibril",
         "pos": "Flank",
         "goals": 0,
         "yc": 0,
@@ -729,7 +729,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 11,
-        "name": "JIBRIL AZ ZUHRI ARIS",
+        "name": "Jibril Az Zuhri Aris",
         "pos": "Flank",
         "goals": 0,
         "yc": 0,
@@ -738,7 +738,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 8,
-        "name": "MUH AKBAR CAESAR AL FATIH",
+        "name": "Muh Akbar Caesar Al Fatih",
         "pos": "Pivot",
         "goals": 0,
         "yc": 0,
@@ -747,7 +747,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 7,
-        "name": "ARIFUDDIN",
+        "name": "Arifuddin",
         "pos": "Anchor",
         "goals": 0,
         "yc": 0,
@@ -756,7 +756,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 10,
-        "name": "MUSTAJAB",
+        "name": "Mustajab",
         "pos": "Anchor",
         "goals": 0,
         "yc": 0,
@@ -765,7 +765,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 22,
-        "name": "HANIF",
+        "name": "Hanif",
         "pos": "Anchor",
         "goals": 0,
         "yc": 0,
@@ -1171,12 +1171,12 @@ const ACC_TEAMS = [
     "logo": "/assets/teams/T10/smpqaf.png",
     "group": "B",
     "manager": "-",
-    "coach": "Musrifil islam",
+    "coach": "Musrifil Islam",
     "medic": "-",
     "phone": "-",
     "official": {
       "manager": "-",
-      "coach": "Musrifil islam",
+      "coach": "Musrifil Islam",
       "medic": "-",
       "phone": "-",
       "jerseyHome": "Oranye - Hitam",
@@ -1185,7 +1185,7 @@ const ACC_TEAMS = [
     "players": [
       {
         "no": 4,
-        "name": "Ahmad mundzir faqih",
+        "name": "Ahmad Mundzir Faqih",
         "pos": "Anchor",
         "goals": 0,
         "yc": 0,
@@ -1194,7 +1194,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 14,
-        "name": "Fariz ahmad alrasi",
+        "name": "Fariz Ahmad Alrasi",
         "pos": "Pivot",
         "goals": 0,
         "yc": 0,
@@ -1203,7 +1203,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 7,
-        "name": "Muhammad Raffy Ruslan ashar",
+        "name": "Muhammad Raffy Ruslan Ashar",
         "pos": "Kiper",
         "goals": 0,
         "yc": 0,
@@ -1212,7 +1212,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 11,
-        "name": "Radhi sadiq",
+        "name": "Radhi Sadiq",
         "pos": "Flank",
         "goals": 0,
         "yc": 0,
@@ -1221,7 +1221,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 13,
-        "name": "Muadz mumtaz",
+        "name": "Muadz Mumtaz",
         "pos": "Flank",
         "goals": 0,
         "yc": 0,
@@ -1230,7 +1230,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 5,
-        "name": "Andi ziaul haq",
+        "name": "Andi Ziaul Haq",
         "pos": "Flank",
         "goals": 0,
         "yc": 0,
@@ -1239,7 +1239,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 9,
-        "name": "Ahmad fahkrul amal",
+        "name": "Ahmad Fahkrul Amal",
         "pos": "Pivot",
         "goals": 0,
         "yc": 0,
@@ -1248,7 +1248,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 19,
-        "name": "Lutfi irfansyah",
+        "name": "Lutfi Irfansyah",
         "pos": "Anchor",
         "goals": 0,
         "yc": 0,
@@ -1257,7 +1257,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 10,
-        "name": "Sultan abdullah",
+        "name": "Sultan Abdullah",
         "pos": "Kiper",
         "goals": 0,
         "yc": 0,
@@ -1266,7 +1266,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 11,
-        "name": "Muh Alfatih firza",
+        "name": "Muh Alfatih Firza",
         "pos": "Anchor",
         "goals": 0,
         "yc": 0,
@@ -1431,7 +1431,7 @@ const ACC_TEAMS = [
     "players": [
       {
         "no": 1,
-        "name": "NABIL",
+        "name": "Nabil",
         "pos": "Flank",
         "goals": 0,
         "yc": 0,
@@ -1440,7 +1440,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 5,
-        "name": "RISKY PRATAMA",
+        "name": "Risky Pratama",
         "pos": "Flank",
         "goals": 0,
         "yc": 0,
@@ -1449,7 +1449,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 10,
-        "name": "M.REZA RAMADHAN",
+        "name": "M. Reza Ramadhan",
         "pos": "Pivot",
         "goals": 0,
         "yc": 0,
@@ -1458,7 +1458,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 1,
-        "name": "FAISAL",
+        "name": "Faisal",
         "pos": "Kiper",
         "goals": 0,
         "yc": 0,
@@ -1467,7 +1467,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 19,
-        "name": "A.KHAERUL",
+        "name": "A. Khaerul",
         "pos": "Anchor",
         "goals": 0,
         "yc": 0,
@@ -1476,7 +1476,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 12,
-        "name": "SYAHRUL RAMADHAN",
+        "name": "Syahrul Ramadhan",
         "pos": "Anchor",
         "goals": 0,
         "yc": 0,
@@ -1485,7 +1485,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 6,
-        "name": "HENDI",
+        "name": "Hendi",
         "pos": "Flank",
         "goals": 0,
         "yc": 0,
@@ -1494,7 +1494,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 20,
-        "name": "ARFANDI",
+        "name": "Arfandi",
         "pos": "Kiper",
         "goals": 0,
         "yc": 0,
@@ -1503,7 +1503,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 9,
-        "name": "MUH DWI RADITYA",
+        "name": "Muh Dwi Raditya",
         "pos": "Flank",
         "goals": 0,
         "yc": 0,
@@ -1512,7 +1512,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 10,
-        "name": "REYHAN ALFARTHIN",
+        "name": "Reyhan Alfarthin",
         "pos": "Pivot",
         "goals": 0,
         "yc": 0,
@@ -1521,7 +1521,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 11,
-        "name": "MUH REZKY ADITYA RAMADHAN",
+        "name": "Muh Rezky Aditya Ramadhan",
         "pos": "Flank",
         "goals": 0,
         "yc": 0,
@@ -1530,7 +1530,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 12,
-        "name": "ALIF SAPUTRA",
+        "name": "Alif Saputra",
         "pos": "Flank",
         "goals": 0,
         "yc": 0,
@@ -1563,7 +1563,7 @@ const ACC_TEAMS = [
     "players": [
       {
         "no": 26,
-        "name": "AZKA NAIZAR ANDIAZKA NAIZAR ANDIRARA",
+        "name": "Azka Naizar Andiazka Naizar Andirara",
         "pos": "Kiper",
         "goals": 0,
         "yc": 0,
@@ -1572,7 +1572,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 99,
-        "name": "FATAN AHMAD SYUKUR",
+        "name": "Fatan Ahmad Syukur",
         "pos": "Kiper",
         "goals": 0,
         "yc": 0,
@@ -1581,7 +1581,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 24,
-        "name": "MUH FATIHA ABDURRAHMAN",
+        "name": "Muh Fatiha Abdurrahman",
         "pos": "Flank",
         "goals": 0,
         "yc": 0,
@@ -1590,7 +1590,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 7,
-        "name": "ALIF SUPARMAN",
+        "name": "Alif Suparman",
         "pos": "Pivot",
         "goals": 0,
         "yc": 0,
@@ -1599,7 +1599,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 19,
-        "name": "SYAHID AMAN MULYADI",
+        "name": "Syahid Aman Mulyadi",
         "pos": "Anchor",
         "goals": 0,
         "yc": 0,
@@ -1608,7 +1608,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 5,
-        "name": "MUHAMMAD FATIR RAHMAT",
+        "name": "Muhammad Fatir Rahmat",
         "pos": "Flank",
         "goals": 0,
         "yc": 0,
@@ -1617,7 +1617,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 12,
-        "name": "MUH. ASYRAF KURNIAWAN SABARA",
+        "name": "Muh. Asyraf Kurniawan Sabara",
         "pos": "Pivot",
         "goals": 0,
         "yc": 0,
@@ -1626,7 +1626,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 13,
-        "name": "MUHAMMAD FATHI MUBARAK",
+        "name": "Muhammad Fathi Mubarak",
         "pos": "Pivot",
         "goals": 0,
         "yc": 0,
@@ -1635,7 +1635,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 16,
-        "name": "ANDI AHNAF TSAQIF",
+        "name": "Andi Ahnaf Tsaqif",
         "pos": "Pivot",
         "goals": 0,
         "yc": 0,
@@ -1644,7 +1644,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 67,
-        "name": "MUH. NUR SYAIFUL JIHAD",
+        "name": "Muh. Nur Syaiful Jihad",
         "pos": "Flank",
         "goals": 0,
         "yc": 0,
@@ -1653,7 +1653,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 77,
-        "name": "MUHAMMMAD AL FATIH",
+        "name": "Muhammmad Al Fatih",
         "pos": "Flank",
         "goals": 0,
         "yc": 0,
@@ -2049,12 +2049,12 @@ const ACC_TEAMS = [
     "city": "Makassar",
     "logo": "/assets/teams/T17/logo.svg",
     "group": "A",
-    "manager": "Wawan Dermawan, Amd",
+    "manager": "Wawan Dermawan, A.Md",
     "coach": "Ahmad Antara, S.Or",
     "medic": "Abudzar Al - Gifari",
     "phone": "085299920727",
     "official": {
-      "manager": "Wawan Dermawan, Amd",
+      "manager": "Wawan Dermawan, A.Md",
       "coach": "Ahmad Antara, S.Or",
       "medic": "Abudzar Al - Gifari",
       "phone": "085299920727",
@@ -2073,7 +2073,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 6,
-        "name": "Syafiq imam akbar Al Hadziq",
+        "name": "Syafiq Imam Akbar Al Hadziq",
         "pos": "Flank",
         "goals": 0,
         "yc": 0,
@@ -2082,7 +2082,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 7,
-        "name": "Muhammad fadhil ramadhan",
+        "name": "Muhammad Fadhil Ramadhan",
         "pos": "Flank",
         "goals": 0,
         "yc": 0,
@@ -2118,7 +2118,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 67,
-        "name": "Muhammad luqman arqam danial",
+        "name": "Muhammad Luqman Arqam Danial",
         "pos": "Anchor",
         "goals": 0,
         "yc": 0,
@@ -2127,7 +2127,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 5,
-        "name": "Khairy Akbar ghifary",
+        "name": "Khairy Akbar Ghifary",
         "pos": "Anchor",
         "goals": 0,
         "yc": 0,
@@ -2136,7 +2136,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 9,
-        "name": "Arsyaka siraj ahmad yusuf",
+        "name": "Arsyaka Siraj Ahmad Yusuf",
         "pos": "Flank",
         "goals": 0,
         "yc": 0,
@@ -2163,7 +2163,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 99,
-        "name": "Ahmad ismail ibrahim",
+        "name": "Ahmad Ismail Ibrahim",
         "pos": "Flank",
         "goals": 0,
         "yc": 0,
@@ -2277,13 +2277,13 @@ const ACC_TEAMS = [
     "city": "Makassar",
     "logo": "/assets/teams/T27/logo.jpg",
     "group": "B",
-    "manager": "MUH. IQBAL SALIM",
-    "coach": "YUSRAN SETIAWAN",
+    "manager": "Muh. Iqbal Salim",
+    "coach": "Yusran Setiawan",
     "medic": "-",
     "phone": "-",
     "official": {
-      "manager": "MUH. IQBAL SALIM",
-      "coach": "YUSRAN SETIAWAN",
+      "manager": "Muh. Iqbal Salim",
+      "coach": "Yusran Setiawan",
       "medic": "-",
       "phone": "-",
       "jerseyHome": "",
@@ -2301,7 +2301,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 9,
-        "name": "ANDI OGI MAWAKKA",
+        "name": "Andi Ogi Mawakka",
         "pos": "Anchor",
         "goals": 0,
         "yc": 0,
@@ -2310,7 +2310,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 7,
-        "name": "FATIR AL A’RAF",
+        "name": "Fatir Al A’Raf",
         "pos": "Pivot",
         "goals": 0,
         "yc": 0,
@@ -2319,7 +2319,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 10,
-        "name": "MOCH BADRUS ZAMAN",
+        "name": "Moch Badrus Zaman",
         "pos": "Flank",
         "goals": 0,
         "yc": 0,
@@ -2328,7 +2328,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 11,
-        "name": "MUH. NAUFAL AZKA",
+        "name": "Muh. Naufal Azka",
         "pos": "Pivot",
         "goals": 0,
         "yc": 0,
@@ -2337,7 +2337,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 2,
-        "name": "ADLEY AM LAMMA",
+        "name": "Adley Am Lamma",
         "pos": "Kiper",
         "goals": 0,
         "yc": 0,
@@ -2346,7 +2346,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 8,
-        "name": "ALTHAF SYAHPUTRA RAMADAN",
+        "name": "Althaf Syahputra Ramadan",
         "pos": "Flank",
         "goals": 0,
         "yc": 0,
@@ -2355,7 +2355,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 3,
-        "name": "ANDI MUH NUKTA",
+        "name": "Andi Muh Nukta",
         "pos": "Pivot",
         "goals": 0,
         "yc": 0,
@@ -2364,7 +2364,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 12,
-        "name": "JEFRY AL BUCHORY",
+        "name": "Jefry Al Buchory",
         "pos": "Flank",
         "goals": 0,
         "yc": 0,
@@ -2630,12 +2630,12 @@ const ACC_TEAMS = [
     "group": "C",
     "manager": "Hidayat Umanailo, S.Pd.",
     "coach": "Eko Sutrisno, S.H",
-    "medic": "Riki Supandi, S,Pd,",
+    "medic": "Riki Supandi, S.Pd.",
     "phone": "-",
     "official": {
       "manager": "Hidayat Umanailo, S.Pd.",
       "coach": "Eko Sutrisno, S.H",
-      "medic": "Riki Supandi, S,Pd,",
+      "medic": "Riki Supandi, S.Pd.",
       "phone": "-",
       "jerseyHome": "Hijau Daun - Putih",
       "jerseyAway": "Merah - Hitam"
@@ -2643,7 +2643,7 @@ const ACC_TEAMS = [
     "players": [
       {
         "no": 1,
-        "name": "Emir syahreza",
+        "name": "Emir Syahreza",
         "pos": "Kiper",
         "goals": 0,
         "yc": 0,
@@ -2670,7 +2670,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 11,
-        "name": "Muhammad alvin",
+        "name": "Muhammad Alvin",
         "pos": "Pivot",
         "goals": 0,
         "yc": 0,
@@ -2820,7 +2820,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 51,
-        "name": "Muhammad Al Ghani HD",
+        "name": "Muhammad Al Ghani Hd",
         "pos": "Anchor",
         "goals": 0,
         "yc": 0,
@@ -2880,7 +2880,7 @@ const ACC_TEAMS = [
     "players": [
       {
         "no": 1,
-        "name": "A. ABI",
+        "name": "A. Abi",
         "pos": "Kiper",
         "goals": 0,
         "yc": 0,
@@ -2889,7 +2889,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 6,
-        "name": "DIPA BINTANG",
+        "name": "Dipa Bintang",
         "pos": "Flank",
         "goals": 0,
         "yc": 0,
@@ -2898,7 +2898,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 7,
-        "name": "RAFFASYA",
+        "name": "Raffasya",
         "pos": "Flank",
         "goals": 0,
         "yc": 0,
@@ -2907,7 +2907,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 10,
-        "name": "SAKHA",
+        "name": "Sakha",
         "pos": "Flank",
         "goals": 0,
         "yc": 0,
@@ -2916,7 +2916,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 20,
-        "name": "AIMAR",
+        "name": "Aimar",
         "pos": "Anchor",
         "goals": 0,
         "yc": 0,
@@ -2925,7 +2925,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 12,
-        "name": "ZAIN",
+        "name": "Zain",
         "pos": "Flank",
         "goals": 0,
         "yc": 0,
@@ -2934,7 +2934,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 3,
-        "name": "HABIBI",
+        "name": "Habibi",
         "pos": "Flank",
         "goals": 0,
         "yc": 0,
@@ -2943,7 +2943,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 17,
-        "name": "SYAHRUL",
+        "name": "Syahrul",
         "pos": "Flank",
         "goals": 0,
         "yc": 0,
@@ -2952,7 +2952,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 9,
-        "name": "ZAHDAN",
+        "name": "Zahdan",
         "pos": "Flank",
         "goals": 0,
         "yc": 0,
@@ -2961,7 +2961,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 10,
-        "name": "HAZIM",
+        "name": "Hazim",
         "pos": "Anchor",
         "goals": 0,
         "yc": 0,
@@ -2970,7 +2970,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 11,
-        "name": "DIMAS",
+        "name": "Dimas",
         "pos": "Pivot",
         "goals": 0,
         "yc": 0,
@@ -2979,7 +2979,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 12,
-        "name": "DAFFA",
+        "name": "Daffa",
         "pos": "Pivot",
         "goals": 0,
         "yc": 0,
@@ -2999,12 +2999,12 @@ const ACC_TEAMS = [
     "group": "A",
     "manager": "Hidayat Umanailo, S.Pd.",
     "coach": "Eko Sutrisno, S.H",
-    "medic": "Riki Supandi, S,Pd,",
+    "medic": "Riki Supandi, S.Pd.",
     "phone": "-",
     "official": {
       "manager": "Hidayat Umanailo, S.Pd.",
       "coach": "Eko Sutrisno, S.H",
-      "medic": "Riki Supandi, S,Pd,",
+      "medic": "Riki Supandi, S.Pd.",
       "phone": "-",
       "jerseyHome": "Cokelat Emas - Putih",
       "jerseyAway": "Hitam - Merah"
@@ -3030,7 +3030,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 10,
-        "name": "Muhammad dzaki khaffid uchiha",
+        "name": "Muhammad Dzaki Khaffid Uchiha",
         "pos": "Flank",
         "goals": 0,
         "yc": 0,
@@ -3039,7 +3039,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 11,
-        "name": "Abdurrahman A.K.Bafagih",
+        "name": "Abdurrahman A.K. Bafagih",
         "pos": "Pivot",
         "goals": 0,
         "yc": 0,
@@ -3066,7 +3066,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 4,
-        "name": "Abu bakar",
+        "name": "Abu Bakar",
         "pos": "Anchor",
         "goals": 0,
         "yc": 0,
@@ -3084,7 +3084,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 9,
-        "name": "Al Fatih juniar",
+        "name": "Al Fatih Juniar",
         "pos": "Flank",
         "goals": 0,
         "yc": 0,
@@ -3180,7 +3180,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 14,
-        "name": "MT Dyandra Raffasya P",
+        "name": "Mt Dyandra Raffasya P",
         "pos": "Flank",
         "goals": 0,
         "yc": 0,
@@ -3253,12 +3253,12 @@ const ACC_TEAMS = [
     "logo": "/assets/teams/T27/logo.jpg",
     "group": "C",
     "manager": "-",
-    "coach": "MUSYRIFIL ISLAM",
+    "coach": "Musyrifil Islam",
     "medic": "-",
     "phone": "-",
     "official": {
       "manager": "-",
-      "coach": "MUSYRIFIL ISLAM",
+      "coach": "Musyrifil Islam",
       "medic": "-",
       "phone": "-",
       "jerseyHome": "Biru - Putih",
@@ -3267,7 +3267,7 @@ const ACC_TEAMS = [
     "players": [
       {
         "no": 5,
-        "name": "ANDI MUH VHIRZA",
+        "name": "Andi Muh Vhirza",
         "pos": "Kiper",
         "goals": 0,
         "yc": 0,
@@ -3276,7 +3276,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 14,
-        "name": "MUHAMMAD AFIF AKBAR",
+        "name": "Muhammad Afif Akbar",
         "pos": "Anchor",
         "goals": 0,
         "yc": 0,
@@ -3285,7 +3285,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 12,
-        "name": "AQHARI ANAQI ADIVAR",
+        "name": "Aqhari Anaqi Adivar",
         "pos": "Flank",
         "goals": 0,
         "yc": 0,
@@ -3294,7 +3294,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 10,
-        "name": "AHZA GIBRAN M.",
+        "name": "Ahza Gibran M.",
         "pos": "Flank",
         "goals": 0,
         "yc": 0,
@@ -3303,7 +3303,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 8,
-        "name": "MUH. ADZKA RAHMAN",
+        "name": "Muh. Adzka Rahman",
         "pos": "Anchor",
         "goals": 0,
         "yc": 0,
@@ -3312,7 +3312,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 15,
-        "name": "NABIL AFNAF KAIRI",
+        "name": "Nabil Afnaf Kairi",
         "pos": "Flank",
         "goals": 0,
         "yc": 0,
@@ -3321,7 +3321,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 16,
-        "name": "MUH. NUR AZHAR",
+        "name": "Muh. Nur Azhar",
         "pos": "Kiper",
         "goals": 0,
         "yc": 0,
@@ -3330,7 +3330,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 4,
-        "name": "ADIB AKRAM ISMAIL",
+        "name": "Adib Akram Ismail",
         "pos": "Anchor",
         "goals": 0,
         "yc": 0,
@@ -3339,7 +3339,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 11,
-        "name": "IKRAR PASIORI",
+        "name": "Ikrar Pasiori",
         "pos": "Flank",
         "goals": 0,
         "yc": 0,
@@ -3348,7 +3348,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 7,
-        "name": "IHSAN HUSAIN",
+        "name": "Ihsan Husain",
         "pos": "Pivot",
         "goals": 0,
         "yc": 0,
@@ -3357,7 +3357,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 2,
-        "name": "MUH. NOKILALAKI AL QAINAN AZWAR",
+        "name": "Muh. Nokilalaki Al Qainan Azwar",
         "pos": "Anchor",
         "goals": 0,
         "yc": 0,
@@ -3366,7 +3366,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 19,
-        "name": "AlMUHKBIT ILALLAH MUAMMAR",
+        "name": "Almuhkbit Ilallah Muammar",
         "pos": "Anchor",
         "goals": 0,
         "yc": 0,
@@ -3399,7 +3399,7 @@ const ACC_TEAMS = [
     "players": [
       {
         "no": 1,
-        "name": "Muh Habib Al  Habsy",
+        "name": "Muh Habib Al Habsy",
         "pos": "Kiper",
         "goals": 0,
         "yc": 0,
@@ -3444,7 +3444,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 11,
-        "name": "A Qabil Abu Bakar HS",
+        "name": "A Qabil Abu Bakar Hs",
         "pos": "Flank",
         "goals": 0,
         "yc": 0,
@@ -3894,13 +3894,13 @@ const ACC_TEAMS = [
     "city": "Maros",
     "logo": "/assets/teams/T32/logo.jpg",
     "group": "A",
-    "manager": "MUH. IQBAL SALIM",
-    "coach": "YUSRAN SETIAWAN",
+    "manager": "Muh. Iqbal Salim",
+    "coach": "Yusran Setiawan",
     "medic": "-",
     "phone": "-",
     "official": {
-      "manager": "MUH. IQBAL SALIM",
-      "coach": "YUSRAN SETIAWAN",
+      "manager": "Muh. Iqbal Salim",
+      "coach": "Yusran Setiawan",
       "medic": "-",
       "phone": "-",
       "jerseyHome": "Biru - Putih",
