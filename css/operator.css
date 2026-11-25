@@ -285,7 +285,8 @@ body {
   flex: 1 1 200px;
 }
 
-.select-input, .text-input {
+.select-input,
+.text-input {
   width: 100%;
   background: var(--bg-surface-elevated);
   border: 1px solid var(--border-color);
@@ -299,7 +300,8 @@ body {
   font-family: var(--font-family);
 }
 
-.select-input:focus, .text-input:focus {
+.select-input:focus,
+.text-input:focus {
   border-color: var(--border-focus);
 }
 
