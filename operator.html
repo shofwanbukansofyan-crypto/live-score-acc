@@ -25,7 +25,7 @@
     rel="stylesheet">
 
   <!-- CSS -->
-  <link rel="stylesheet" href="/css/operator.css?v=20261126_v211">
+  <link rel="stylesheet" href="/css/operator.css?v=20261126_v213">
 
   <!-- Cache-Control & Auto-Purge Cache Stale Worker -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -34,7 +34,7 @@
   <script>
     (function () {
       try {
-        var APP_VER = "20261126_v211";
+        var APP_VER = "20261126_v213";
         if (localStorage.getItem("acc_livescore_version") !== APP_VER) {
           localStorage.setItem("acc_livescore_version", APP_VER);
           if ('caches' in window) {
@@ -175,19 +175,37 @@
 
           <!-- KONTROL ADU PENALTI (MUNCUL SAAT BABAK = PENALTIES) -->
           <div class="subpanel-box penalty-ctrl-box" id="penaltyControlBox" style="display: none;">
-            <div class="subpanel-label" style="color: #fbbf24;">🎯 Kontrol Skor Adu Penalti</div>
-            <div class="penalty-ctrl-row">
-              <div class="penalty-team-ctrl">
-                <span class="pen-team-lbl" id="penHomeLabel">HOME</span>
-                <button type="button" class="btn-stat-mini" onclick="operatorConsole.changePenalty('home', -1)">-1</button>
-                <strong class="pen-score-val" id="ctrlHomePen">0</strong>
-                <button type="button" class="btn-stat-mini btn-mini-green" onclick="operatorConsole.changePenalty('home', 1)">+1</button>
+            <div class="penalty-header-row">
+              <div class="subpanel-label" style="color: #fbbf24; margin-bottom: 0;">🎯 Kontrol Adu Penalti</div>
+              <button type="button" class="btn-nav btn-mini-nav" onclick="operatorConsole.resetPenalties()" title="Reset ulang penalti menjadi 0-0">
+                🔄 Reset Penalti
+              </button>
+            </div>
+            <div class="penalty-ctrl-grid">
+              <div class="penalty-team-card">
+                <div class="penalty-team-top">
+                  <span class="pen-team-lbl" id="penHomeLabel">HOME</span>
+                  <div class="op-pen-dots" id="opHomePenDots"></div>
+                  <strong class="pen-score-val" id="ctrlHomePen">0</strong>
+                </div>
+                <div class="penalty-action-row">
+                  <button type="button" class="btn-pen-goal" onclick="operatorConsole.recordPenaltyKick('home', true)">🟢 Gol</button>
+                  <button type="button" class="btn-pen-miss" onclick="operatorConsole.recordPenaltyKick('home', false)">🔴 Gagal</button>
+                  <button type="button" class="btn-pen-undo" onclick="operatorConsole.undoPenaltyKick('home')" title="Batalkan tendangan terakhir">↩️</button>
+                </div>
               </div>
-              <div class="penalty-team-ctrl">
-                <span class="pen-team-lbl" id="penAwayLabel">AWAY</span>
-                <button type="button" class="btn-stat-mini" onclick="operatorConsole.changePenalty('away', -1)">-1</button>
-                <strong class="pen-score-val" id="ctrlAwayPen">0</strong>
-                <button type="button" class="btn-stat-mini btn-mini-blue" onclick="operatorConsole.changePenalty('away', 1)">+1</button>
+
+              <div class="penalty-team-card">
+                <div class="penalty-team-top">
+                  <span class="pen-team-lbl" id="penAwayLabel">AWAY</span>
+                  <div class="op-pen-dots" id="opAwayPenDots"></div>
+                  <strong class="pen-score-val" id="ctrlAwayPen">0</strong>
+                </div>
+                <div class="penalty-action-row">
+                  <button type="button" class="btn-pen-goal" onclick="operatorConsole.recordPenaltyKick('away', true)">🟢 Gol</button>
+                  <button type="button" class="btn-pen-miss" onclick="operatorConsole.recordPenaltyKick('away', false)">🔴 Gagal</button>
+                  <button type="button" class="btn-pen-undo" onclick="operatorConsole.undoPenaltyKick('away')" title="Batalkan tendangan terakhir">↩️</button>
+                </div>
               </div>
             </div>
           </div>
@@ -443,11 +461,11 @@
   </div>
 
   <!-- JAVASCRIPT LOGIC -->
-  <script src="/js/config.js?v=20261126_v211"></script>
-  <script src="/js/teams.js?v=20261126_v211"></script>
-  <script src="/js/matches.js?v=20261126_v211"></script>
-  <script src="/js/supabase-sync.js?v=20261126_v211"></script>
-  <script src="/js/app-operator.js?v=20261126_v211"></script>
+  <script src="/js/config.js?v=20261126_v213"></script>
+  <script src="/js/teams.js?v=20261126_v213"></script>
+  <script src="/js/matches.js?v=20261126_v213"></script>
+  <script src="/js/supabase-sync.js?v=20261126_v213"></script>
+  <script src="/js/app-operator.js?v=20261126_v213"></script>
 
   <!-- PWA SERVICE WORKER REGISTRATION -->
   <script>

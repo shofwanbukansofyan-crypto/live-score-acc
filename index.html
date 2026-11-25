@@ -19,7 +19,7 @@
     rel="stylesheet">
 
   <!-- CSS Stylesheet -->
-  <link rel="stylesheet" href="/css/display.css?v=20261126_v212">
+  <link rel="stylesheet" href="/css/display.css?v=20261126_v213">
 
   <!-- Cache-Control & Auto-Purge Cache Stale Worker -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -28,7 +28,7 @@
   <script>
     (function () {
       try {
-        var APP_VER = "20261126_v212";
+        var APP_VER = "20261126_v213";
         if (localStorage.getItem("acc_livescore_version") !== APP_VER) {
           localStorage.setItem("acc_livescore_version", APP_VER);
           if ('caches' in window) {
@@ -75,9 +75,9 @@
         <h2 class="team-name" id="homeTeamName">SMP 5 MANDAI B</h2>
 
         <div class="team-submeta">
-          <!-- FOULS (FUTSAL 5 LIMIT) -->
-          <div class="futsal-fouls-meter">
-            <span class="fouls-label">FOUL</span>
+          <!-- FOULS / ADU PENALTI (5 BULATAN) -->
+          <div class="futsal-fouls-meter" id="homeMeterBox">
+            <span class="fouls-label" id="homeMeterLabel">FOUL</span>
             <div class="fouls-dots-wrap" id="homeFoulsContainer">
               <div class="foul-dot"></div>
               <div class="foul-dot"></div>
@@ -85,9 +85,8 @@
               <div class="foul-dot"></div>
               <div class="foul-dot"></div>
             </div>
+            <span class="pen-meter-score" id="homeMeterPenScore" style="display: none;">0</span>
           </div>
-          <!-- TIMEOUT TAG -->
-          <div class="timeout-tag" id="homeTimeoutTag">TO: ADA</div>
         </div>
       </article>
 
@@ -130,9 +129,9 @@
         <h2 class="team-name" id="awayTeamName">SMPIT IBNUL QAYYIM</h2>
 
         <div class="team-submeta">
-          <!-- FOULS (FUTSAL 5 LIMIT) -->
-          <div class="futsal-fouls-meter">
-            <span class="fouls-label">FOUL</span>
+          <!-- FOULS / ADU PENALTI (5 BULATAN) -->
+          <div class="futsal-fouls-meter" id="awayMeterBox">
+            <span class="fouls-label" id="awayMeterLabel">FOUL</span>
             <div class="fouls-dots-wrap" id="awayFoulsContainer">
               <div class="foul-dot"></div>
               <div class="foul-dot"></div>
@@ -140,9 +139,8 @@
               <div class="foul-dot"></div>
               <div class="foul-dot"></div>
             </div>
+            <span class="pen-meter-score" id="awayMeterPenScore" style="display: none;">0</span>
           </div>
-          <!-- TIMEOUT TAG -->
-          <div class="timeout-tag" id="awayTimeoutTag">TO: ADA</div>
         </div>
       </article>
 
@@ -182,10 +180,10 @@
   </div>
 
   <!-- JAVASCRIPT LOGIC -->
-  <script src="/js/config.js?v=20261126_v212"></script>
-  <script src="/js/teams.js?v=20261126_v212"></script>
-  <script src="/js/supabase-sync.js?v=20261126_v212"></script>
-  <script src="/js/app-display.js?v=20261126_v212"></script>
+  <script src="/js/config.js?v=20261126_v213"></script>
+  <script src="/js/teams.js?v=20261126_v213"></script>
+  <script src="/js/supabase-sync.js?v=20261126_v213"></script>
+  <script src="/js/app-display.js?v=20261126_v213"></script>
 
 </body>
 

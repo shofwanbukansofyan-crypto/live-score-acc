@@ -388,13 +388,13 @@ class OperatorConsole {
     // Timeouts
     const btnHomeTo = document.getElementById("btnHomeTimeout");
     if (btnHomeTo) {
-      btnHomeTo.textContent = state.home_timeout ? "TO Home (HABIS)" : "TO Home";
-      btnHomeTo.style.opacity = state.home_timeout ? "0.55" : "1";
+      btnHomeTo.textContent = "TO Home";
+      btnHomeTo.style.opacity = "1";
     }
     const btnAwayTo = document.getElementById("btnAwayTimeout");
     if (btnAwayTo) {
-      btnAwayTo.textContent = state.away_timeout ? "TO Away (HABIS)" : "TO Away";
-      btnAwayTo.style.opacity = state.away_timeout ? "0.55" : "1";
+      btnAwayTo.textContent = "TO Away";
+      btnAwayTo.style.opacity = "1";
     }
 
     // Tombol Play / Pause Timer
@@ -424,6 +424,8 @@ class OperatorConsole {
         this.setText("penAwayLabel", state.away_short || state.away_name || "AWAY");
         this.setText("ctrlHomePen", state.home_penalties ?? 0);
         this.setText("ctrlAwayPen", state.away_penalties ?? 0);
+        this.renderOperatorPenaltyDots("home", events);
+        this.renderOperatorPenaltyDots("away", events);
       }
     }
 
@@ -836,7 +838,73 @@ class OperatorConsole {
     this.changeScore(team, -1);
   }
 
-  // --- KONTROL ADU PENALTI ---
+  // --- KONTROL ADU PENALTI (5 BULATAN + SKOR TETAP AKUMULASI) ---
+  renderOperatorPenaltyDots(team, events) {
+    const el = document.getElementById(team === "home" ? "opHomePenDots" : "opAwayPenDots");
+    if (!el) return;
+    const limit = 5;
+    const kicks = (events || []).filter(ev => ev.team === team && (ev.type === "pen_goal" || ev.type === "pen_miss"));
+    const startIdx = kicks.length > 0 ? Math.floor((kicks.length - 1) / limit) * limit : 0;
+    const visible = kicks.slice(startIdx, startIdx + limit);
+
+    let html = "";
+    for (let i = 0; i < limit; i++) {
+      const k = visible[i];
+      let cls = "op-pen-dot";
+      if (k) cls += k.type === "pen_goal" ? " goal" : " miss";
+      html += `<span class="${cls}"></span>`;
+    }
+    el.innerHTML = html;
+  }
+
+  recordPenaltyKick(team, isGoal) {
+    if (!this.currentState) return;
+    const existingKicks = (this.currentEvents || []).filter(
+      ev => ev.team === team && (ev.type === "pen_goal" || ev.type === "pen_miss")
+    );
+    const kickNum = existingKicks.length + 1;
+
+    if (isGoal) {
+      this.changePenalty(team, 1);
+    }
+
+    window.syncEngine.addEvent({
+      type: isGoal ? "pen_goal" : "pen_miss",
+      team: team,
+      player_name: `Penalti #${kickNum} (${isGoal ? "Gol" : "Gagal"})`,
+      minute: "PEN",
+      note: "Adu Penalti"
+    });
+  }
+
+  undoPenaltyKick(team) {
+    if (!this.currentState) return;
+    const kicks = (this.currentEvents || []).filter(
+      ev => ev.team === team && (ev.type === "pen_goal" || ev.type === "pen_miss")
+    );
+    if (kicks.length > 0) {
+      const lastKick = kicks[kicks.length - 1];
+      if (lastKick.type === "pen_goal") {
+        this.changePenalty(team, -1);
+      }
+      window.syncEngine.deleteEvent(lastKick.id);
+    } else {
+      this.changePenalty(team, -1);
+    }
+  }
+
+  resetPenalties() {
+    if (!confirm("Reset seluruh tendangan & skor adu penalti menjadi 0 - 0?")) return;
+    const penEvents = (this.currentEvents || []).filter(
+      ev => ev.type === "pen_goal" || ev.type === "pen_miss"
+    );
+    penEvents.forEach(ev => window.syncEngine.deleteEvent(ev.id));
+    window.syncEngine.updateState({
+      home_penalties: 0,
+      away_penalties: 0
+    });
+  }
+
   changePenalty(team, delta) {
     if (!this.currentState) return;
     const key = team === "home" ? "home_penalties" : "away_penalties";
@@ -951,6 +1019,13 @@ class OperatorConsole {
     }
 
     updates.period_label = label;
+    if (periodKey !== "penalties") {
+      const hasPenKicks = (this.currentEvents || []).some(ev => ev.type === "pen_goal" || ev.type === "pen_miss");
+      if (!hasPenKicks && (this.currentState.home_penalties || 0) === 0 && (this.currentState.away_penalties || 0) === 0) {
+        updates.home_penalties = null;
+        updates.away_penalties = null;
+      }
+    }
     window.syncEngine.updateState(updates);
   }
 
@@ -1152,6 +1227,10 @@ class OperatorConsole {
       if (isOG) {
         icon = "⚽";
         ogBadge = '<span class="goal-og-pill">GBD</span>';
+      } else if (ev.type === "pen_goal") {
+        icon = "🟢";
+      } else if (ev.type === "pen_miss") {
+        icon = "🔴";
       } else if (ev.type === "card_yellow") {
         icon = "🟨";
       } else if (ev.type === "card_red") {
@@ -1196,6 +1275,15 @@ class OperatorConsole {
       this.lastGoalSignatures = { home: "", away: "" };
       window.syncEngine.deleteEvent(id);
       this.changeScore(ev.team, -1);
+      return;
+    }
+
+    if (ev && (ev.type === "pen_goal" || ev.type === "pen_miss")) {
+      if (!confirm("Hapus catatan tendangan penalti ini?")) return;
+      if (ev.type === "pen_goal") {
+        this.changePenalty(ev.team, -1);
+      }
+      window.syncEngine.deleteEvent(id);
       return;
     }
 

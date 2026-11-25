@@ -155,8 +155,6 @@ class ScoreboardDisplay {
     this.updateText("homeTeamName", state.home_name || "TIM HOME");
     this.updateText("homeScoreDigits", state.home_score ?? 0);
     this.updateTeamLogo("homeTeamLogo", "homeTeamFallback", homeLogo, state.home_short || state.home_name, homeColor);
-    this.renderFouls("homeFoulsContainer", state.home_fouls || 0);
-    this.updateTimeoutTag("homeTimeoutTag", state.home_timeout);
 
     // Set warna border tim home jika ada
     const homeCard = document.getElementById("homeCard");
@@ -168,8 +166,6 @@ class ScoreboardDisplay {
     this.updateText("awayTeamName", state.away_name || "TIM AWAY");
     this.updateText("awayScoreDigits", state.away_score ?? 0);
     this.updateTeamLogo("awayTeamLogo", "awayTeamFallback", awayLogo, state.away_short || state.away_name, awayColor);
-    this.renderFouls("awayFoulsContainer", state.away_fouls || 0);
-    this.updateTimeoutTag("awayTimeoutTag", state.away_timeout);
 
     const awayCard = document.getElementById("awayCard");
     if (awayCard && awayColor) {
@@ -188,6 +184,9 @@ class ScoreboardDisplay {
       }
     }
 
+    // Render meter Foul atau Adu Penalti (5 bulatan)
+    this.renderTeamMeters();
+
     // Render Timeout Countdown Overlay jika aktif
     this.handleTimeoutState(state);
 
@@ -197,12 +196,13 @@ class ScoreboardDisplay {
 
   handleEventsUpdate(events) {
     this.currentEvents = events || [];
+    this.renderTeamMeters();
     const homeContainer = document.getElementById("momentumHomeEvents");
     const awayContainer = document.getElementById("momentumAwayEvents");
     if (!homeContainer || !awayContainer) return;
 
     // Filter kejadian berdasarkan tim (hanya gol & kartu untuk layar TV)
-    const relevantEvents = this.currentEvents.filter(ev => ev.type !== "timeout");
+    const relevantEvents = this.currentEvents.filter(ev => !["timeout", "pen_goal", "pen_miss"].includes(ev.type));
     const homeEvents = relevantEvents.filter(ev => ev.team === "home");
     const awayEvents = relevantEvents.filter(ev => ev.team === "away");
 
@@ -357,6 +357,65 @@ class ScoreboardDisplay {
     }
   }
 
+  renderTeamMeters() {
+    const state = this.currentState;
+    if (!state) return;
+
+    const events = this.currentEvents || [];
+    const hasPenEvents = events.some(ev => ev.type === "pen_goal" || ev.type === "pen_miss");
+    const isPenaltyMode =
+      state.period === "penalties" ||
+      (state.period === "finished" && (hasPenEvents || (state.home_penalties !== null && state.home_penalties !== undefined)));
+
+    this.renderSingleMeter("home", state, events, isPenaltyMode);
+    this.renderSingleMeter("away", state, events, isPenaltyMode);
+  }
+
+  renderSingleMeter(team, state, events, isPenaltyMode) {
+    const boxEl = document.getElementById(team === "home" ? "homeMeterBox" : "awayMeterBox");
+    const labelEl = document.getElementById(team === "home" ? "homeMeterLabel" : "awayMeterLabel");
+    const dotsEl = document.getElementById(team === "home" ? "homeFoulsContainer" : "awayFoulsContainer");
+    const penScoreEl = document.getElementById(team === "home" ? "homeMeterPenScore" : "awayMeterPenScore");
+    if (!dotsEl) return;
+
+    const limit = 5;
+
+    if (isPenaltyMode) {
+      if (boxEl) boxEl.classList.add("penalty-mode");
+      if (labelEl) labelEl.textContent = "PENALTI";
+
+      const kicks = events.filter(ev => ev.team === team && (ev.type === "pen_goal" || ev.type === "pen_miss"));
+      // Jika 5 bulatan sudah penuh dan masuk tendangan ke-6 dst., kembali ke awal (siklus 5 bulatan)
+      const startIdx = kicks.length > 0 ? Math.floor((kicks.length - 1) / limit) * limit : 0;
+      const visibleKicks = kicks.slice(startIdx, startIdx + limit);
+
+      let html = "";
+      for (let i = 0; i < limit; i++) {
+        const kick = visibleKicks[i];
+        let cls = "foul-dot";
+        if (kick) {
+          cls += kick.type === "pen_goal" ? " pen-goal" : " pen-miss";
+        }
+        html += `<div class="${cls}"></div>`;
+      }
+      dotsEl.innerHTML = html;
+
+      // Info skor adu penalti tetap tampil & terakumulasi
+      const penScore = team === "home" ? (state.home_penalties ?? 0) : (state.away_penalties ?? 0);
+      if (penScoreEl) {
+        penScoreEl.style.display = "inline-block";
+        penScoreEl.textContent = penScore;
+      }
+    } else {
+      if (boxEl) boxEl.classList.remove("penalty-mode");
+      if (labelEl) labelEl.textContent = "FOUL";
+      if (penScoreEl) penScoreEl.style.display = "none";
+
+      const count = team === "home" ? (state.home_fouls || 0) : (state.away_fouls || 0);
+      this.renderFouls(dotsEl.id, count);
+    }
+  }
+
   renderFouls(containerId, count) {
     const el = document.getElementById(containerId);
     if (!el) return;
@@ -371,18 +430,6 @@ class ScoreboardDisplay {
       html += `<div class="${className}" title="Foul ${i}"></div>`;
     }
     el.innerHTML = html;
-  }
-
-  updateTimeoutTag(tagId, isUsed) {
-    const el = document.getElementById(tagId);
-    if (!el) return;
-    if (isUsed) {
-      el.classList.add("used");
-      el.textContent = "TO: HABIS";
-    } else {
-      el.classList.remove("used");
-      el.textContent = "TO: ADA";
-    }
   }
 
   updateTeamLogo(imgId, fallbackId, logoUrl, teamName, badgeColor) {

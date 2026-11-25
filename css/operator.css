@@ -465,36 +465,124 @@ body {
   border-color: rgba(239, 68, 68, 0.35);
 }
 
-.penalty-ctrl-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.penalty-team-ctrl {
-  flex: 1 1 180px;
+.penalty-header-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.penalty-ctrl-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 8px;
-  background: rgba(0, 0, 0, 0.25);
-  padding: 6px 10px;
+}
+
+@media (max-width: 560px) {
+  .penalty-ctrl-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.penalty-team-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.28);
+  padding: 9px 10px;
   border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.penalty-team-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
 }
 
 .pen-team-lbl {
-  font-size: 0.76rem;
+  font-size: 0.74rem;
   font-weight: 800;
   color: #e2e8f0;
-  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.op-pen-dots {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.op-pen-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.op-pen-dot.goal {
+  background: #10b981;
+  border-color: #34d399;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.7);
+}
+
+.op-pen-dot.miss {
+  background: #ef4444;
+  border-color: #f87171;
+  box-shadow: 0 0 6px rgba(239, 68, 68, 0.7);
 }
 
 .pen-score-val {
   font-family: var(--font-mono);
-  font-size: 1.2rem;
+  font-size: 1.15rem;
+  font-weight: 900;
   color: #fbbf24;
-  min-width: 24px;
-  text-align: center;
+  min-width: 20px;
+  text-align: right;
+}
+
+.penalty-action-row {
+  display: flex;
+  gap: 6px;
+}
+
+.btn-pen-goal {
+  flex: 1;
+  background: rgba(16, 185, 129, 0.18);
+  border: 1px solid rgba(16, 185, 129, 0.45);
+  color: #6ee7b7;
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 0.76rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.btn-pen-miss {
+  flex: 1;
+  background: rgba(239, 68, 68, 0.18);
+  border: 1px solid rgba(239, 68, 68, 0.45);
+  color: #fca5a5;
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 0.76rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.btn-pen-undo {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-color);
+  color: #cbd5e1;
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 0.76rem;
+  font-weight: 800;
+  cursor: pointer;
 }
 
 .timeout-btn-row {
