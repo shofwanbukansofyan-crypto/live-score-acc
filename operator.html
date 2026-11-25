@@ -25,7 +25,7 @@
     rel="stylesheet">
 
   <!-- CSS -->
-  <link rel="stylesheet" href="/css/operator.css?v=20261124_v205">
+  <link rel="stylesheet" href="/css/operator.css?v=20261126_v210">
 
   <!-- Cache-Control & Auto-Purge Cache Stale Worker -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -34,7 +34,7 @@
   <script>
     (function () {
       try {
-        var APP_VER = "20261124_v205";
+        var APP_VER = "20261126_v210";
         if (localStorage.getItem("acc_livescore_version") !== APP_VER) {
           localStorage.setItem("acc_livescore_version", APP_VER);
           if ('caches' in window) {
@@ -70,8 +70,7 @@
         Buka Akses Konsol
       </button>
       <div style="margin-top: 14px;">
-        <a href="/" style="color: #94a3b8; font-size: 0.82rem; text-decoration: none;">← Kembali ke Tampilan Layar
-          TV</a>
+        <a href="/" style="color: #94a3b8; font-size: 0.82rem; text-decoration: none;">← Kembali ke Tampilan Layar TV</a>
       </div>
     </div>
   </div>
@@ -83,24 +82,22 @@
     <header class="operator-navbar">
       <div class="brand-wrap">
         <img src="/assets/acc_logo.png" alt="ACC Logo" onerror="this.src='/assets/logo.png'">
-        <div>
-          <h2>KONSOL OPERATOR <span>MEJA WASIT</span></h2>
+        <div class="brand-title-col">
+          <h2>KONSOL OPERATOR <span class="brand-badge">MEJA WASIT</span></h2>
+          <div class="status-indicator connecting" id="connectionStatusPill">
+            <span class="status-dot"></span>
+            <span>Menghubungkan ke Supabase...</span>
+          </div>
         </div>
       </div>
 
       <div class="nav-actions">
-        <button type="button" class="btn-nav"
-          style="background: rgba(239, 68, 68, 0.18); border-color: rgba(239, 68, 68, 0.45); color: #fca5a5;"
-          onclick="operatorConsole.resetCurrentMatch()" title="Reset Seluruh Skor, Timer & Kejadian Laga Ini">
-          🔄 Reset Laga
-        </button>
-        <button type="button" class="btn-nav"
-          style="background: rgba(234, 179, 8, 0.18); border-color: rgba(234, 179, 8, 0.45); color: #fef08a;"
+        <button type="button" class="btn-nav btn-nav-gold"
           onclick="operatorConsole.playSiuSound()" title="Tes Mainkan Sound Effect Siu Ronaldo">
           🔊 Tes Siuu
         </button>
         <a href="/" target="_blank" class="btn-nav" title="Buka Mode Display di Tab/Layar Baru">
-          🖥️ Buka Layar TV
+          🖥️ Layar TV
         </a>
         <button type="button" class="btn-nav" onclick="operatorConsole.openSettingsModal()"
           title="Pengaturan Database Supabase">
@@ -112,305 +109,270 @@
     <!-- 1. PANEL PEMILIHAN PERTANDINGAN RESMI -->
     <section class="operator-card">
       <div class="card-title">
-        <span>🏆 1. Pilih Pertandingan Resmi (Sesuai matches.js)</span>
-        <span style="font-size: 0.75rem; color: var(--color-primary); font-weight: 700;">64 LAGA RESMI ACC 2026</span>
+        <span>🏆 1. Pilih Pertandingan Resmi</span>
+        <span class="card-badge-gold">64 LAGA RESMI ACC 2026</span>
       </div>
-      <div class="match-selector-bar">
+      <div class="match-selector-wrap">
         <select id="selectMatchPreset" class="select-input">
           <option value="">-- Memuat Jadwal Pertandingan... --</option>
         </select>
-        <button type="button" class="btn-nav"
-          style="background: var(--color-primary); color: #000; font-weight: 800; justify-content: center;"
-          onclick="operatorConsole.loadSelectedPreset(document.getElementById('selectMatchPreset').value)">
-          ⚡ Muat ke Layar TV
-        </button>
-        <button type="button" class="btn-nav" id="btnForceReload"
-          style="background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid #38bdf8; font-weight: 800;"
-          onclick="operatorConsole.forceReloadOfficialData()"
-          title="Hapus cache HP & muat ulang 64 laga resmi turnamen">
-          ⚡ Muat 64 Laga Resmi
-        </button>
-        <button type="button" class="btn-reset-match" onclick="operatorConsole.resetCurrentMatch()"
-          title="Reset Skor (0-0), Timer (00:00), Fouls & Riwayat Pertandingan Ini">
-          🔄 Reset Laga
-        </button>
+        <div class="match-selector-actions">
+          <button type="button" class="btn-primary-amber"
+            onclick="operatorConsole.loadSelectedPreset(document.getElementById('selectMatchPreset').value)">
+            ⚡ Muat ke Layar TV
+          </button>
+          <button type="button" class="btn-reset-match" onclick="operatorConsole.resetCurrentMatch()"
+            title="Reset Skor (0-0), Timer (00:00), Fouls & Riwayat Pertandingan Ini">
+            🔄 Reset Laga
+          </button>
+          <button type="button" class="btn-nav btn-nav-cyan" id="btnForceReload"
+            onclick="operatorConsole.forceReloadOfficialData()"
+            title="Hapus cache & muat ulang 64 laga resmi turnamen">
+            📡 Refresh Data
+          </button>
+        </div>
       </div>
     </section>
 
-    <!-- 2. GRID KONTROL UTAMA: TIMER & SKOR TIM -->
-    <div class="controller-main-grid">
+    <!-- 2. KONTROL STOPWATCH, BABAK & TIMEOUT (LAYOUT LEGA HORIZONTAL) -->
+    <section class="operator-card">
+      <div class="card-title">
+        <span>⏱️ 2. Kontrol Stopwatch, Babak &amp; Time Out</span>
+      </div>
 
-      <!-- KOLOM KIRI: KONTROL TIMER & STATUS BABAK -->
-      <section class="operator-card">
-        <div class="card-title">
-          <span>⏱️ 2. Kontrol Stopwatch &amp; Babak</span>
-        </div>
-
+      <div class="timer-deck-grid">
+        <!-- KIRI: STOPWATCH & ADJUST WAKTU -->
         <div class="timer-panel">
           <div class="timer-digits-wrap" id="ctrlTimerDigits">00:00</div>
 
-          <!-- TOMBOL UTAMA TIMER -->
-          <div class="timer-button-row">
-            <button type="button" class="btn-timer-primary" id="btnTimerToggle" onclick="operatorConsole.toggleTimer()">
-              ▶️ JALANKAN TIMER
-            </button>
-            <button type="button" class="btn-timer-sub" onclick="operatorConsole.adjustTimer(60)"
-              title="Tambah 1 Menit">
-              +1m
-            </button>
-            <button type="button" class="btn-timer-sub" onclick="operatorConsole.adjustTimer(-60)"
-              title="Kurang 1 Menit">
-              -1m
-            </button>
-            <button type="button" class="btn-timer-sub" onclick="operatorConsole.adjustTimer(10)"
-              title="Tambah 10 Detik">
-              +10s
-            </button>
-            <button type="button" class="btn-timer-sub" onclick="operatorConsole.resetTimer()"
-              title="Reset Menjadi 00:00" style="color: #ef4444;">
-              🔄
-            </button>
-          </div>
-
-          <!-- SHORTCUT PILIH BABAK -->
-          <div class="period-buttons-grid">
-            <button type="button" class="btn-period" data-period="upcoming"
-              onclick="operatorConsole.setPeriod('upcoming')">
-              Belum Mulai
-            </button>
-            <button type="button" class="btn-period" data-period="1st" onclick="operatorConsole.setPeriod('1st')">
-              Babak 1
-            </button>
-            <button type="button" class="btn-period" data-period="halftime"
-              onclick="operatorConsole.setPeriod('halftime')">
-              Istirahat (HT)
-            </button>
-            <button type="button" class="btn-period" data-period="2nd" onclick="operatorConsole.setPeriod('2nd')">
-              Babak 2
-            </button>
-            <button type="button" class="btn-period" data-period="et" onclick="operatorConsole.setPeriod('et')">
-              Extra Time
-            </button>
-            <button type="button" class="btn-period" data-period="penalties"
-              onclick="operatorConsole.setPeriod('penalties')">
-              Adu Penalti
-            </button>
-            <button type="button" class="btn-period" data-period="finished"
-              onclick="operatorConsole.setPeriod('finished')"
-              style="grid-column: span 3; color: #ef4444; border-color: rgba(239, 68, 68, 0.4);">
-              🏁 Selesai Pertandingan (FT)
-            </button>
-          </div>
-        </div>
-
-        <!-- TIMEOUT CONTROLLER -->
-        <div
-          style="margin-top: 16px; background: rgba(0,0,0,0.25); padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
-          <div style="font-size: 0.8rem; font-weight: 800; color: var(--text-muted); margin-bottom: 8px;">
-            ⏱️ KONTROL TIME OUT (1 MENIT HITUNG MUNDUR DI LAYAR TV)
-          </div>
-          <div style="display: flex; gap: 8px;">
-            <button type="button" class="btn-action-cyan" id="btnHomeTimeout" style="flex: 1; padding: 10px;"
-              onclick="operatorConsole.startTimeout('home')">
-              TO Tim Home
-            </button>
-            <button type="button" class="btn-action-cyan" id="btnAwayTimeout" style="flex: 1; padding: 10px;"
-              onclick="operatorConsole.startTimeout('away')">
-              TO Tim Away
-            </button>
-            <button type="button" class="btn-timer-sub" style="color: #ef4444;"
-              onclick="operatorConsole.cancelTimeout()" title="Batalkan Countdown Timeout">
-              Batal TO
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <!-- KOLOM KANAN: KONTROL SKOR, FOULS & KARTU TIM -->
-      <section class="operator-card">
-        <div class="card-title">
-          <span>⚽ 3. Skor, Pelanggaran (Fouls) &amp; Kartu</span>
-          <button type="button" class="btn-nav" style="padding: 4px 10px; font-size: 0.75rem;"
-            onclick="operatorConsole.resetFouls()">
-            Reset Fouls
+          <button type="button" class="btn-timer-primary" id="btnTimerToggle" onclick="operatorConsole.toggleTimer()">
+            ▶️ JALANKAN TIMER
           </button>
+
+          <div class="timer-adjust-row">
+            <button type="button" class="btn-timer-sub" onclick="operatorConsole.adjustTimer(-60)" title="Kurang 1 Menit">-1m</button>
+            <button type="button" class="btn-timer-sub" onclick="operatorConsole.adjustTimer(-10)" title="Kurang 10 Detik">-10s</button>
+            <button type="button" class="btn-timer-sub" onclick="operatorConsole.adjustTimer(10)" title="Tambah 10 Detik">+10s</button>
+            <button type="button" class="btn-timer-sub" onclick="operatorConsole.adjustTimer(60)" title="Tambah 1 Menit">+1m</button>
+            <button type="button" class="btn-timer-sub btn-timer-reset" onclick="operatorConsole.resetTimer()" title="Reset Menjadi 00:00">🔄 Reset</button>
+          </div>
         </div>
 
-        <div class="teams-controller-wrap">
-
-          <!-- TIM HOME -->
-          <div class="team-ctrl-box home">
-            <div class="team-ctrl-header" style="display: flex; align-items: center; gap: 8px;">
-              <img id="ctrlHomeLogo" src="/assets/teams/T16/logo.jpg" alt="Home Logo" style="width: 32px; height: 32px; border-radius: 50%; object-fit: contain; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2);" onerror="this.src='/assets/acc_logo.png'">
-              <span class="team-ctrl-name" id="ctrlHomeName" style="flex: 1;">SMP 5 MANDAI B</span>
-              <span
-                style="font-size: 0.72rem; color: #10b981; font-weight: 800; background: rgba(16,185,129,0.15); padding: 2px 6px; border-radius: 4px;">HOME</span>
+        <!-- KANAN: BABAK, PENALTI & TIMEOUT -->
+        <div class="period-timeout-col">
+          <div class="subpanel-box">
+            <div class="subpanel-label">📌 Status Babak Pertandingan</div>
+            <div class="period-buttons-grid">
+              <button type="button" class="btn-period" data-period="upcoming" onclick="operatorConsole.setPeriod('upcoming')">Belum Mulai</button>
+              <button type="button" class="btn-period" data-period="1st" onclick="operatorConsole.setPeriod('1st')">Babak 1</button>
+              <button type="button" class="btn-period" data-period="halftime" onclick="operatorConsole.setPeriod('halftime')">Istirahat (HT)</button>
+              <button type="button" class="btn-period" data-period="2nd" onclick="operatorConsole.setPeriod('2nd')">Babak 2</button>
+              <button type="button" class="btn-period" data-period="et" onclick="operatorConsole.setPeriod('et')">Extra Time</button>
+              <button type="button" class="btn-period" data-period="penalties" onclick="operatorConsole.setPeriod('penalties')">Adu Penalti</button>
+              <button type="button" class="btn-period btn-period-ft" data-period="finished" onclick="operatorConsole.setPeriod('finished')">🏁 Selesai Pertandingan (FT)</button>
             </div>
+          </div>
 
-            <!-- DETAIL OFISIAL TIM HOME -->
-            <div class="team-officials-sub"
-              style="font-size: 0.72rem; color: #94a3b8; background: rgba(0,0,0,0.2); padding: 6px 10px; border-radius: 6px; display: flex; flex-direction: column; gap: 2px;">
-              <div>👨‍💼 Manajer: <strong id="ctrlHomeManager" style="color: #e2e8f0;">-</strong></div>
-              <div>📋 Pelatih: <strong id="ctrlHomeCoach" style="color: #e2e8f0;">-</strong></div>
-            </div>
-
-            <!-- SKOR -->
-            <div class="team-ctrl-score-row">
-              <div class="score-display-box" id="ctrlHomeScore">0</div>
-              <div class="score-btn-group">
-                <button type="button" class="btn-score-plus" onclick="operatorConsole.changeScore('home', 1)"
-                  title="Tambah 1 Gol">
-                  +1 GOL
-                </button>
-                <button type="button" class="btn-score-minus" onclick="operatorConsole.changeScore('home', -1)"
-                  title="Kurang 1 Gol">
-                  -1
-                </button>
+          <!-- KONTROL ADU PENALTI (MUNCUL SAAT BABAK = PENALTIES) -->
+          <div class="subpanel-box penalty-ctrl-box" id="penaltyControlBox" style="display: none;">
+            <div class="subpanel-label" style="color: #fbbf24;">🎯 Kontrol Skor Adu Penalti</div>
+            <div class="penalty-ctrl-row">
+              <div class="penalty-team-ctrl">
+                <span class="pen-team-lbl" id="penHomeLabel">HOME</span>
+                <button type="button" class="btn-stat-mini" onclick="operatorConsole.changePenalty('home', -1)">-1</button>
+                <strong class="pen-score-val" id="ctrlHomePen">0</strong>
+                <button type="button" class="btn-stat-mini btn-mini-green" onclick="operatorConsole.changePenalty('home', 1)">+1</button>
+              </div>
+              <div class="penalty-team-ctrl">
+                <span class="pen-team-lbl" id="penAwayLabel">AWAY</span>
+                <button type="button" class="btn-stat-mini" onclick="operatorConsole.changePenalty('away', -1)">-1</button>
+                <strong class="pen-score-val" id="ctrlAwayPen">0</strong>
+                <button type="button" class="btn-stat-mini btn-mini-blue" onclick="operatorConsole.changePenalty('away', 1)">+1</button>
               </div>
             </div>
+          </div>
 
-            <!-- FOULS (PELANGGARAN) -->
-            <div class="stat-pill-row">
-              <span class="stat-pill-label">Fouls (Maks 5):</span>
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <strong style="font-size: 1.2rem; color: #f59e0b;" id="ctrlHomeFouls">0</strong>
-                <button type="button" class="btn-stat-mini" onclick="operatorConsole.changeFoul('home', 1)">+1</button>
-                <button type="button" class="btn-stat-mini" onclick="operatorConsole.changeFoul('home', -1)">-1</button>
+          <!-- TIMEOUT CONTROLLER -->
+          <div class="subpanel-box">
+            <div class="subpanel-label">⏱️ Kontrol Time Out (1 Menit di Layar TV)</div>
+            <div class="timeout-btn-row">
+              <button type="button" class="btn-action-cyan" id="btnHomeTimeout" onclick="operatorConsole.startTimeout('home')">TO Home</button>
+              <button type="button" class="btn-action-cyan" id="btnAwayTimeout" onclick="operatorConsole.startTimeout('away')">TO Away</button>
+              <button type="button" class="btn-timer-sub btn-timer-reset" onclick="operatorConsole.cancelTimeout()" title="Batalkan Countdown Timeout">Batal TO</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. PANEL SKOR, EDIT PENCETAK GOL, FOULS & KARTU (LEBAR PENUH 2 KOLOM) -->
+    <section class="operator-card">
+      <div class="card-title">
+        <span>⚽ 3. Skor, Pencetak Gol, Fouls &amp; Kartu</span>
+        <button type="button" class="btn-nav btn-mini-nav" onclick="operatorConsole.resetFouls()">
+          Reset Fouls
+        </button>
+      </div>
+
+      <div class="teams-controller-wrap">
+
+        <!-- TIM HOME -->
+        <div class="team-ctrl-box home">
+          <div class="team-ctrl-header">
+            <img id="ctrlHomeLogo" src="/assets/teams/T16/logo.jpg" alt="Home Logo" class="team-ctrl-logo" onerror="this.src='/assets/acc_logo.png'">
+            <div class="team-ctrl-title-wrap">
+              <span class="team-ctrl-name" id="ctrlHomeName">SMP 5 MANDAI B</span>
+              <div class="team-officials-inline">
+                <span>👨‍💼 <strong id="ctrlHomeManager">-</strong></span>
+                <span class="sep">•</span>
+                <span>📋 <strong id="ctrlHomeCoach">-</strong></span>
               </div>
             </div>
+            <span class="team-side-badge home">HOME</span>
+          </div>
 
-            <!-- DETAIL GOL & KARTU -->
-            <div class="quick-action-grid">
-              <button type="button" class="btn-action-green"
-                onclick="operatorConsole.openAddEventModal('goal', 'home')">
-                ⚽ + Gol Detail
+          <!-- SKOR UTAMA + TOMBOL TAMBAH GOL INSTAN -->
+          <div class="team-ctrl-score-row">
+            <div class="score-display-box" id="ctrlHomeScore">0</div>
+            <div class="score-btn-group">
+              <button type="button" class="btn-score-plus" onclick="operatorConsole.addGoal('home')"
+                title="Tambah +1 Gol sekarang, lalu edit pencetak gol di daftar bawah">
+                ⚽ +1 GOL
               </button>
+              <button type="button" class="btn-score-minus" onclick="operatorConsole.removeScoreOrGoal('home')"
+                title="Kurangi 1 Gol">
+                -1
+              </button>
+            </div>
+          </div>
+
+          <!-- DAFTAR BARIS GOL TIM HOME (EDIT PENCETAK TIM / LAWAN OWN GOAL) -->
+          <div class="goals-editor-section">
+            <div class="goals-section-header">
+              <span>📋 Daftar Gol &amp; Pencetak</span>
+              <span class="goals-count-hint">Klik Edit pada baris gol</span>
+            </div>
+            <div class="goals-list-wrap" id="homeGoalsList">
+              <div class="goals-empty-hint">Belum ada gol. Tekan <strong>+1 GOL</strong> saat tim mencetak gol.</div>
+            </div>
+          </div>
+
+          <!-- FOULS & KARTU -->
+          <div class="team-bottom-controls">
+            <div class="stat-pill-row">
+              <span class="stat-pill-label">Fouls (Maks 5)</span>
+              <div class="foul-ctrl-group">
+                <button type="button" class="btn-stat-mini" onclick="operatorConsole.changeFoul('home', -1)">-1</button>
+                <strong class="foul-count-val" id="ctrlHomeFouls">0</strong>
+                <button type="button" class="btn-stat-mini" onclick="operatorConsole.changeFoul('home', 1)">+1</button>
+              </div>
+            </div>
+
+            <div class="quick-action-grid">
               <button type="button" class="btn-action-yellow"
                 onclick="operatorConsole.openAddEventModal('card_yellow', 'home')">
-                🟨 + Kartu Kuning
+                🟨 Kartu Kuning
               </button>
               <button type="button" class="btn-action-red"
                 onclick="operatorConsole.openAddEventModal('card_red', 'home')">
-                🟥 + Kartu Merah
+                🟥 Kartu Merah
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- TIM AWAY -->
+        <div class="team-ctrl-box away">
+          <div class="team-ctrl-header">
+            <img id="ctrlAwayLogo" src="/assets/teams/T04/logo.svg" alt="Away Logo" class="team-ctrl-logo" onerror="this.src='/assets/acc_logo.png'">
+            <div class="team-ctrl-title-wrap">
+              <span class="team-ctrl-name" id="ctrlAwayName">SMPIT IBNUL QAYYIM</span>
+              <div class="team-officials-inline">
+                <span>👨‍💼 <strong id="ctrlAwayManager">-</strong></span>
+                <span class="sep">•</span>
+                <span>📋 <strong id="ctrlAwayCoach">-</strong></span>
+              </div>
+            </div>
+            <span class="team-side-badge away">AWAY</span>
+          </div>
+
+          <!-- SKOR UTAMA + TOMBOL TAMBAH GOL INSTAN -->
+          <div class="team-ctrl-score-row">
+            <div class="score-display-box" id="ctrlAwayScore">0</div>
+            <div class="score-btn-group">
+              <button type="button" class="btn-score-plus" onclick="operatorConsole.addGoal('away')"
+                title="Tambah +1 Gol sekarang, lalu edit pencetak gol di daftar bawah">
+                ⚽ +1 GOL
+              </button>
+              <button type="button" class="btn-score-minus" onclick="operatorConsole.removeScoreOrGoal('away')"
+                title="Kurangi 1 Gol">
+                -1
               </button>
             </div>
           </div>
 
-          <!-- TIM AWAY -->
-          <div class="team-ctrl-box away">
-            <div class="team-ctrl-header" style="display: flex; align-items: center; gap: 8px;">
-              <img id="ctrlAwayLogo" src="/assets/teams/T04/logo.svg" alt="Away Logo" style="width: 32px; height: 32px; border-radius: 50%; object-fit: contain; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2);" onerror="this.src='/assets/acc_logo.png'">
-              <span class="team-ctrl-name" id="ctrlAwayName" style="flex: 1;">SMPIT IBNUL QAYYIM</span>
-              <span
-                style="font-size: 0.72rem; color: #3b82f6; font-weight: 800; background: rgba(59,130,246,0.15); padding: 2px 6px; border-radius: 4px;">AWAY</span>
+          <!-- DAFTAR BARIS GOL TIM AWAY (EDIT PENCETAK TIM / LAWAN OWN GOAL) -->
+          <div class="goals-editor-section">
+            <div class="goals-section-header">
+              <span>📋 Daftar Gol &amp; Pencetak</span>
+              <span class="goals-count-hint">Klik Edit pada baris gol</span>
             </div>
-
-            <!-- DETAIL OFISIAL TIM AWAY -->
-            <div class="team-officials-sub"
-              style="font-size: 0.72rem; color: #94a3b8; background: rgba(0,0,0,0.2); padding: 6px 10px; border-radius: 6px; display: flex; flex-direction: column; gap: 2px;">
-              <div>👨‍💼 Manajer: <strong id="ctrlAwayManager" style="color: #e2e8f0;">-</strong></div>
-              <div>📋 Pelatih: <strong id="ctrlAwayCoach" style="color: #e2e8f0;">-</strong></div>
+            <div class="goals-list-wrap" id="awayGoalsList">
+              <div class="goals-empty-hint">Belum ada gol. Tekan <strong>+1 GOL</strong> saat tim mencetak gol.</div>
             </div>
+          </div>
 
-            <!-- SKOR -->
-            <div class="team-ctrl-score-row">
-              <div class="score-display-box" id="ctrlAwayScore">0</div>
-              <div class="score-btn-group">
-                <button type="button" class="btn-score-plus" onclick="operatorConsole.changeScore('away', 1)"
-                  title="Tambah 1 Gol">
-                  +1 GOL
-                </button>
-                <button type="button" class="btn-score-minus" onclick="operatorConsole.changeScore('away', -1)"
-                  title="Kurang 1 Gol">
-                  -1
-                </button>
-              </div>
-            </div>
-
-            <!-- FOULS (PELANGGARAN) -->
+          <!-- FOULS & KARTU -->
+          <div class="team-bottom-controls">
             <div class="stat-pill-row">
-              <span class="stat-pill-label">Fouls (Maks 5):</span>
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <strong style="font-size: 1.2rem; color: #f59e0b;" id="ctrlAwayFouls">0</strong>
-                <button type="button" class="btn-stat-mini" onclick="operatorConsole.changeFoul('away', 1)">+1</button>
+              <span class="stat-pill-label">Fouls (Maks 5)</span>
+              <div class="foul-ctrl-group">
                 <button type="button" class="btn-stat-mini" onclick="operatorConsole.changeFoul('away', -1)">-1</button>
+                <strong class="foul-count-val" id="ctrlAwayFouls">0</strong>
+                <button type="button" class="btn-stat-mini" onclick="operatorConsole.changeFoul('away', 1)">+1</button>
               </div>
             </div>
 
-            <!-- DETAIL GOL & KARTU -->
             <div class="quick-action-grid">
-              <button type="button" class="btn-action-green"
-                onclick="operatorConsole.openAddEventModal('goal', 'away')">
-                ⚽ + Gol Detail
-              </button>
               <button type="button" class="btn-action-yellow"
                 onclick="operatorConsole.openAddEventModal('card_yellow', 'away')">
-                🟨 + Kartu Kuning
+                🟨 Kartu Kuning
               </button>
               <button type="button" class="btn-action-red"
                 onclick="operatorConsole.openAddEventModal('card_red', 'away')">
-                🟥 + Kartu Merah
+                🟥 Kartu Merah
               </button>
             </div>
           </div>
-
         </div>
-      </section>
 
-    </div>
+      </div>
+    </section>
 
-    <!-- 3. TIMELINE LOG KEJADIAN LAGA (BISA DIHAPUS JIKA SALAH INPUT) -->
+    <!-- 4. TIMELINE LOG KEJADIAN LAGA (GOL, KARTU, TIMEOUT) -->
     <section class="operator-card">
       <div class="card-title">
         <span>📜 4. Log Riwayat Kejadian (Gol, Kartu, Timeout)</span>
       </div>
       <div class="events-log-container" id="eventsLogList">
-        <div style="font-size: 0.85rem; color: var(--text-muted); text-align: center; padding: 12px;">Memuat data
-          kejadian...</div>
+        <div style="font-size: 0.85rem; color: var(--text-muted); text-align: center; padding: 12px;">Memuat data kejadian...</div>
       </div>
     </section>
 
   </div>
 
-  <!-- MODAL TAMBAH EVENT (GOL / KARTU) -->
+  <!-- MODAL CATAT KARTU (KUNING / MERAH) -->
   <div class="modal-overlay" id="addEventModal">
     <div class="modal-content">
-      <h3 id="addEventModalTitle" style="color: #fff; margin-bottom: 14px; font-size: 1.15rem; font-weight: 800;">Catat
-        Kejadian</h3>
+      <h3 id="addEventModalTitle" style="color: #fff; margin-bottom: 14px; font-size: 1.15rem; font-weight: 800;">Catat Kejadian</h3>
 
       <input type="hidden" id="hiddenEventType">
       <input type="hidden" id="hiddenEventTeam">
 
-      <!-- OPSI GOL BUNUH DIRI (OWN GOAL / GBD) -->
-      <div id="ownGoalContainer" style="display: none; margin-bottom: 14px; background: rgba(249, 115, 22, 0.12); border: 1px solid rgba(249, 115, 22, 0.35); border-radius: 8px; padding: 10px 12px;">
-        <label style="display: flex; align-items: center; gap: 8px; font-size: 0.88rem; color: #fdba74; font-weight: 700; cursor: pointer;">
-          <input type="checkbox" id="checkIsOwnGoal" style="width: 18px; height: 18px; cursor: pointer; accent-color: #ea580c;" onchange="operatorConsole.toggleOwnGoal(this.checked)">
-          ⚽ Gol Bunuh Diri (Own Goal / GBD)
-        </label>
-        <div id="ownGoalDetails" style="display: none; margin-top: 10px; font-size: 0.82rem; color: #fed7aa;">
-          <div style="margin-bottom: 6px; font-weight: 700;">
-            Poin skor (+1) diberikan kepada tim yang diuntungkan:
-          </div>
-          <div style="display: flex; gap: 14px; margin-bottom: 8px;">
-            <label style="display: flex; align-items: center; gap: 6px; font-size: 0.82rem; cursor: pointer;">
-              <input type="radio" name="ogAwardTeam" id="ogAwardHome" value="home" onchange="operatorConsole.onOgAwardTeamChange()">
-              <span id="ogAwardHomeLabel">Tim Home (+1)</span>
-            </label>
-            <label style="display: flex; align-items: center; gap: 6px; font-size: 0.82rem; cursor: pointer;">
-              <input type="radio" name="ogAwardTeam" id="ogAwardAway" value="away" onchange="operatorConsole.onOgAwardTeamChange()">
-              <span id="ogAwardAwayLabel">Tim Away (+1)</span>
-            </label>
-          </div>
-          <div style="font-size: 0.78rem; color: #cbd5e1; line-height: 1.4;">
-            💡 Pilih pemain dari skuad tim yang melakukan kesalahan gol di bawah. Catatan di papan TV akan otomatis diberi tanda <strong>(GBD)</strong>.
-          </div>
-        </div>
-      </div>
-
       <div style="margin-bottom: 12px;">
         <label id="selectPlayerLabel"
           style="display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; font-weight: 700;">
-          Pilih Pemain dari Skuad Resmi:
+          Pilih Pemain / Ofisial dari Skuad Resmi:
         </label>
         <select id="selectEventPlayer" class="select-input">
           <option value="">-- Pilih Pemain --</option>
@@ -420,7 +382,7 @@
       <div style="margin-bottom: 12px;">
         <label
           style="display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; font-weight: 700;">
-          Atau Ketik Nama Pemain / Nomor Punggung Manual:
+          Atau Ketik Nama Manual:
         </label>
         <input type="text" id="inputCustomPlayer" class="text-input" placeholder="Contoh: Ahmad (#10)">
       </div>
@@ -435,9 +397,8 @@
 
       <div style="display: flex; gap: 10px; justify-content: flex-end;">
         <button type="button" class="btn-nav" onclick="operatorConsole.closeAddEventModal()">Batal</button>
-        <button type="button" class="btn-nav" style="background: var(--color-primary); color: #000; font-weight: 800;"
-          onclick="operatorConsole.saveEventFromModal()">
-          Simpan Kejadian
+        <button type="button" class="btn-primary-amber" onclick="operatorConsole.saveEventFromModal()">
+          Simpan Kartu
         </button>
       </div>
     </div>
@@ -446,33 +407,27 @@
   <!-- MODAL PENGATURAN SUPABASE & PIN -->
   <div class="modal-overlay" id="settingsModal">
     <div class="modal-content">
-      <h3 style="color: #fff; margin-bottom: 8px; font-size: 1.15rem; font-weight: 800;">⚙️ Pengaturan Supabase &amp;
-        Keamanan</h3>
+      <h3 style="color: #fff; margin-bottom: 8px; font-size: 1.15rem; font-weight: 800;">⚙️ Pengaturan Supabase &amp; Keamanan</h3>
       <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 14px;">
-        Masukkan URL &amp; Anon Key dari project Supabase baru Anda untuk mengaktifkan sinkronisasi cloud real-time
-        antar perangkat.
+        Masukkan URL &amp; Anon Key dari project Supabase Anda untuk sinkronisasi cloud real-time antar perangkat.
       </p>
 
       <div style="margin-bottom: 12px;">
-        <label
-          style="display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; font-weight: 700;">
+        <label style="display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; font-weight: 700;">
           Supabase Project URL:
         </label>
         <input type="text" id="settingSupabaseUrl" class="text-input" placeholder="https://xyzcompany.supabase.co">
       </div>
 
       <div style="margin-bottom: 12px;">
-        <label
-          style="display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; font-weight: 700;">
+        <label style="display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; font-weight: 700;">
           Supabase Anon / Public Key:
         </label>
-        <input type="password" id="settingSupabaseKey" class="text-input"
-          placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...">
+        <input type="password" id="settingSupabaseKey" class="text-input" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...">
       </div>
 
       <div style="margin-bottom: 18px;">
-        <label
-          style="display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; font-weight: 700;">
+        <label style="display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; font-weight: 700;">
           PIN Akses Operator Baru (Opsional):
         </label>
         <input type="text" id="settingOperatorPin" class="text-input" placeholder="ACCdisplay2026">
@@ -480,8 +435,7 @@
 
       <div style="display: flex; gap: 10px; justify-content: flex-end;">
         <button type="button" class="btn-nav" onclick="operatorConsole.closeSettingsModal()">Batal</button>
-        <button type="button" class="btn-nav" style="background: var(--color-primary); color: #000; font-weight: 800;"
-          onclick="operatorConsole.saveSettings()">
+        <button type="button" class="btn-primary-amber" onclick="operatorConsole.saveSettings()">
           Simpan Pengaturan
         </button>
       </div>
@@ -489,11 +443,11 @@
   </div>
 
   <!-- JAVASCRIPT LOGIC -->
-  <script src="/js/config.js?v=20261124_v205"></script>
-  <script src="/js/teams.js?v=20261124_v205"></script>
-  <script src="/js/matches.js?v=20261124_v205"></script>
-  <script src="/js/supabase-sync.js?v=20261124_v205"></script>
-  <script src="/js/app-operator.js?v=20261124_v205"></script>
+  <script src="/js/config.js?v=20261126_v210"></script>
+  <script src="/js/teams.js?v=20261126_v210"></script>
+  <script src="/js/matches.js?v=20261126_v210"></script>
+  <script src="/js/supabase-sync.js?v=20261126_v210"></script>
+  <script src="/js/app-operator.js?v=20261126_v210"></script>
 
   <!-- PWA SERVICE WORKER REGISTRATION -->
   <script>

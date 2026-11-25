@@ -13,6 +13,9 @@ class SyncEngine {
     this.pollInterval = null;
     this.cachedState = this.getDefaultState();
     this.cachedEvents = [];
+    this.pendingEventUpdates = {};
+    this.pendingEventDeletes = new Set();
+    this.idAliases = {};
 
     this.initBroadcastChannel();
     this.initSupabase();
@@ -296,14 +299,51 @@ class SyncEngine {
     }
   }
 
-  async addEvent(eventData) {
-    // 1. Siapkan payload yang valid untuk database (wajib menyertakan match_id)
-    const dbPayload = Object.assign({
-      match_id: "current_match"
-    }, eventData);
+  resolveEventId(eventId) {
+    return (eventId && this.idAliases[eventId]) ? this.idAliases[eventId] : eventId;
+  }
 
-    // Pastikan tidak ada id sementara non-UUID yang ikut terkirim ke kolom uuid
-    delete dbPayload.id;
+  sanitizeEventPayload(eventData) {
+    const allowed = ["match_id", "type", "team", "player_name", "minute", "note"];
+    const clean = {};
+    allowed.forEach((key) => {
+      if (eventData[key] !== undefined) {
+        clean[key] = eventData[key];
+      }
+    });
+    return clean;
+  }
+
+  broadcastEventsUpdate() {
+    this.saveLocalBackup(null, this.cachedEvents);
+
+    if (this.broadcastChannel) {
+      try {
+        this.broadcastChannel.postMessage({
+          type: "EVENTS_UPDATE",
+          payload: this.cachedEvents
+        });
+      } catch (_) { }
+    }
+
+    if (this.realtimeChannel && this.isConnected) {
+      try {
+        this.realtimeChannel.send({
+          type: "broadcast",
+          event: "EVENTS_UPDATE",
+          payload: this.cachedEvents
+        });
+      } catch (_) { }
+    }
+
+    this.notifyListeners(this.cachedState, this.cachedEvents);
+  }
+
+  async addEvent(eventData) {
+    // 1. Siapkan payload yang valid untuk kolom tabel match_events Supabase
+    const dbPayload = this.sanitizeEventPayload(Object.assign({
+      match_id: "current_match"
+    }, eventData));
 
     // 2. Buat objek sementara untuk Optimistic UI lokal
     const tempId = "ev_" + Date.now() + "_" + Math.random().toString(36).substr(2, 4);
@@ -314,30 +354,9 @@ class SyncEngine {
 
     // Update lokal seketika
     this.cachedEvents.push(newEvent);
-    this.saveLocalBackup(null, this.cachedEvents);
+    this.broadcastEventsUpdate();
 
-    if (this.broadcastChannel) {
-      try {
-        this.broadcastChannel.postMessage({
-          type: "EVENTS_UPDATE",
-          payload: this.cachedEvents
-        });
-      } catch (_) { }
-    }
-
-    if (this.realtimeChannel && this.isConnected) {
-      try {
-        this.realtimeChannel.send({
-          type: "broadcast",
-          event: "EVENTS_UPDATE",
-          payload: this.cachedEvents
-        });
-      } catch (_) { }
-    }
-
-    this.notifyListeners(this.cachedState, this.cachedEvents);
-
-    // 3. Kirim dbPayload (yang sudah berisi match_id) ke Supabase
+    // 3. Kirim dbPayload ke Supabase
     if (this.supabase && this.isUsingSupabase) {
       try {
         const { data, error } = await this.supabase
@@ -347,50 +366,100 @@ class SyncEngine {
 
         if (error) {
           console.error("Supabase insert event error:", error.message, error.details);
-          return;
+          return null;
         }
 
         if (data && data[0]) {
+          const realId = data[0].id;
+          this.idAliases[tempId] = realId;
+
+          // Jika user sempat menghapus event ini saat insert masih berjalan
+          if (this.pendingEventDeletes.has(tempId)) {
+            this.pendingEventDeletes.delete(tempId);
+            delete this.pendingEventUpdates[tempId];
+            await this.supabase.from("match_events").delete().eq("id", realId);
+            return null;
+          }
+
+          // Jika user sempat mengedit event ini sebelum UUID asli diterima
+          const queuedUpdates = this.pendingEventUpdates[tempId];
+          if (queuedUpdates) {
+            delete this.pendingEventUpdates[tempId];
+            const cleanQueued = this.sanitizeEventPayload(queuedUpdates);
+            const { data: updatedData } = await this.supabase
+              .from("match_events")
+              .update(cleanQueued)
+              .eq("id", realId)
+              .select();
+            const merged = (updatedData && updatedData[0]) ? updatedData[0] : Object.assign({}, data[0], cleanQueued);
+            const idx = this.cachedEvents.findIndex(e => e.id === tempId);
+            if (idx !== -1) {
+              this.cachedEvents[idx] = merged;
+              this.broadcastEventsUpdate();
+            }
+            return merged;
+          }
+
           // Ganti event sementara dengan baris asli (ber-UUID valid) dari Supabase
           const idx = this.cachedEvents.findIndex(e => e.id === tempId);
           if (idx !== -1) {
             this.cachedEvents[idx] = data[0];
-            this.saveLocalBackup(null, this.cachedEvents);
-            this.notifyListeners(this.cachedState, this.cachedEvents);
+            this.broadcastEventsUpdate();
           }
+          return data[0];
         }
       } catch (err) {
         console.error("Supabase insert event exception:", err);
       }
     }
+    return newEvent;
+  }
+
+  async updateEvent(eventId, updates) {
+    eventId = this.resolveEventId(eventId);
+    if (!eventId) return;
+    const cleanUpdates = this.sanitizeEventPayload(updates);
+    const idx = this.cachedEvents.findIndex(e => e.id === eventId);
+    if (idx !== -1) {
+      this.cachedEvents[idx] = Object.assign({}, this.cachedEvents[idx], cleanUpdates);
+      this.broadcastEventsUpdate();
+    }
+
+    if (this.supabase && this.isUsingSupabase) {
+      if (String(eventId).startsWith("ev_")) {
+        // Masih menunggu UUID asli dari insert: antrekan update
+        this.pendingEventUpdates[eventId] = Object.assign(
+          this.pendingEventUpdates[eventId] || {},
+          cleanUpdates
+        );
+        return;
+      }
+      try {
+        const { error } = await this.supabase
+          .from("match_events")
+          .update(cleanUpdates)
+          .eq("id", eventId);
+
+        if (error) {
+          console.error("Supabase update event error:", error.message, error.details);
+        }
+      } catch (err) {
+        console.error("Supabase update event exception:", err);
+      }
+    }
   }
 
   async deleteEvent(eventId) {
+    eventId = this.resolveEventId(eventId);
+    if (!eventId) return;
     this.cachedEvents = this.cachedEvents.filter(e => e.id !== eventId);
-    this.saveLocalBackup(null, this.cachedEvents);
-
-    if (this.broadcastChannel) {
-      try {
-        this.broadcastChannel.postMessage({
-          type: "EVENTS_UPDATE",
-          payload: this.cachedEvents
-        });
-      } catch (_) { }
-    }
-
-    if (this.realtimeChannel && this.isConnected) {
-      try {
-        this.realtimeChannel.send({
-          type: "broadcast",
-          event: "EVENTS_UPDATE",
-          payload: this.cachedEvents
-        });
-      } catch (_) { }
-    }
-
-    this.notifyListeners(this.cachedState, this.cachedEvents);
+    this.broadcastEventsUpdate();
 
     if (this.supabase && this.isUsingSupabase) {
+      if (String(eventId).startsWith("ev_")) {
+        this.pendingEventDeletes.add(eventId);
+        return;
+      }
       try {
         await this.supabase
           .from("match_events")

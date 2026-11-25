@@ -8,6 +8,8 @@ class OperatorConsole {
     this.currentEvents = [];
     this.timerInterval = null;
     this.isUnlocked = false;
+    this.editingGoalId = null;
+    this.lastGoalSignatures = { home: "", away: "" };
 
     this.init();
   }
@@ -20,14 +22,23 @@ class OperatorConsole {
     this.populateMatchesDropdown();
 
     // 3. Subscribe ke Realtime Sync Engine
-    window.syncEngine.subscribe((state, events, conn) => {
+    window.syncEngine.subscribe((state, events) => {
       this.currentState = state;
-      this.currentEvents = events;
-      this.renderUI(state, events);
+      this.currentEvents = events || [];
+      this.renderUI(state, this.currentEvents);
     });
 
     // 4. Timer loop lokal untuk tampilan kontrol operator
     this.startLocalTimerLoop();
+  }
+
+  escapeHtml(str) {
+    return String(str ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
   }
 
   async fetchLiveAccTournamentData() {
@@ -75,7 +86,6 @@ class OperatorConsole {
       }
 
       if (Array.isArray(resMatches) && resMatches.length > 0) {
-        // Urutkan jadwal secara berurutan dan teratur: M_SMP_01..33, M_SD_01..32
         resMatches.sort((a, b) => (a.id || '').localeCompare(b.id || '', undefined, { numeric: true }));
 
         window.ACC_MATCHES = resMatches.map(m => {
@@ -109,32 +119,11 @@ class OperatorConsole {
           };
         });
 
-        // Re-populate dropdown dengan data terupdate
         this.populateMatchesDropdown();
       }
     } catch (e) {
       console.warn("Live sync accfutsal notice:", e);
       throw e;
-    }
-  }
-
-  async manualSyncAccData() {
-    const btn = document.getElementById("btnSyncAcc");
-    const origHtml = btn ? btn.innerHTML : "";
-    if (btn) {
-      btn.disabled = true;
-      btn.innerHTML = "⏳ Menyinkronkan...";
-    }
-    try {
-      await this.fetchLiveAccTournamentData();
-      alert("✅ Berhasil! 64 Jadwal Pertandingan & 32 Tim Skuad Resmi berhasil disinkronkan langsung dari server accfutsal2026.");
-    } catch (err) {
-      alert("⚠️ Gagal sinkronisasi data online: " + (err.message || err) + "\nSilakan periksa koneksi internet.");
-    } finally {
-      if (btn) {
-        btn.disabled = false;
-        btn.innerHTML = origHtml || "🔄 Sinkron accfutsal2026";
-      }
     }
   }
 
@@ -200,7 +189,6 @@ class OperatorConsole {
 
     select.innerHTML = '<option value="">-- Pilih Laga Resmi Turnamen (64 Pertandingan) --</option>';
 
-    // Kelompokkan laga SMP dan SD
     const optGroupSMP = document.createElement("optgroup");
     optGroupSMP.label = "🏆 KATEGORI SMP (32 Laga Resmi)";
 
@@ -293,6 +281,8 @@ class OperatorConsole {
       timeout_started_at: null
     };
 
+    this.editingGoalId = null;
+    this.lastGoalSignatures = { home: "", away: "" };
     window.syncEngine.updateState(updates);
     window.syncEngine.clearAllEvents();
   }
@@ -343,6 +333,8 @@ class OperatorConsole {
       timeout_started_at: null
     };
 
+    this.editingGoalId = null;
+    this.lastGoalSignatures = { home: "", away: "" };
     window.syncEngine.updateState(resetPayload);
     window.syncEngine.clearAllEvents();
 
@@ -377,13 +369,13 @@ class OperatorConsole {
     // Timeouts
     const btnHomeTo = document.getElementById("btnHomeTimeout");
     if (btnHomeTo) {
-      btnHomeTo.textContent = state.home_timeout ? "TO: HABIS" : "Minta Timeout";
-      btnHomeTo.style.opacity = state.home_timeout ? "0.6" : "1";
+      btnHomeTo.textContent = state.home_timeout ? "TO Home (HABIS)" : "TO Home";
+      btnHomeTo.style.opacity = state.home_timeout ? "0.55" : "1";
     }
     const btnAwayTo = document.getElementById("btnAwayTimeout");
     if (btnAwayTo) {
-      btnAwayTo.textContent = state.away_timeout ? "TO: HABIS" : "Minta Timeout";
-      btnAwayTo.style.opacity = state.away_timeout ? "0.6" : "1";
+      btnAwayTo.textContent = state.away_timeout ? "TO Away (HABIS)" : "TO Away";
+      btnAwayTo.style.opacity = state.away_timeout ? "0.55" : "1";
     }
 
     // Tombol Play / Pause Timer
@@ -403,7 +395,24 @@ class OperatorConsole {
       btn.classList.toggle("active", btn.dataset.period === state.period);
     });
 
-    // Render Events List
+    // Kontrol Adu Penalti
+    const penBox = document.getElementById("penaltyControlBox");
+    if (penBox) {
+      const showPen = state.period === "penalties" || (state.home_penalties !== null && state.away_penalties !== null && state.home_penalties !== undefined && state.away_penalties !== undefined);
+      penBox.style.display = showPen ? "block" : "none";
+      if (showPen) {
+        this.setText("penHomeLabel", state.home_short || state.home_name || "HOME");
+        this.setText("penAwayLabel", state.away_short || state.away_name || "AWAY");
+        this.setText("ctrlHomePen", state.home_penalties ?? 0);
+        this.setText("ctrlAwayPen", state.away_penalties ?? 0);
+      }
+    }
+
+    // Render Baris Gol (Edit Pencetak per Gol) untuk Home & Away
+    this.renderTeamGoals("home", state, events);
+    this.renderTeamGoals("away", state, events);
+
+    // Render Events Log
     this.renderEventsLog(events);
   }
 
@@ -430,7 +439,7 @@ class OperatorConsole {
     }, 500);
   }
 
-  // --- KONTROL SKOR ---
+  // --- KONTROL SKOR & SISTEM INPUT GOL BARU (TAMBAH SKOR DULU, EDIT BARIS GOL) ---
   changeScore(team, delta) {
     if (!this.currentState) return;
     const key = team === "home" ? "home_score" : "away_score";
@@ -443,19 +452,392 @@ class OperatorConsole {
     window.syncEngine.updateState(updates);
   }
 
+  addGoal(team) {
+    if (!this.currentState) return;
+    const minute = this.getCurrentMatchMinute();
+
+    // 1. Langsung update skor +1 ke layar TV & bunyikan Siuuu!
+    this.changeScore(team, 1);
+    this.playSiuSound();
+
+    // 2. Langsung buat baris gol baru (pencetak kosong -> bisa diedit kapan saja)
+    window.syncEngine.addEvent({
+      type: "goal",
+      team: team,
+      player_name: "",
+      minute: minute,
+      note: ""
+    });
+  }
+
+  removeScoreOrGoal(team) {
+    if (!this.currentState) return;
+    const key = team === "home" ? "home_score" : "away_score";
+    const score = this.currentState[key] || 0;
+    if (score <= 0) return;
+
+    const teamGoals = (this.currentEvents || []).filter(
+      ev => ev.team === team && (ev.type === "goal" || ev.type === "own_goal")
+    );
+
+    // Kurangi skor -1
+    this.changeScore(team, -1);
+
+    // Jika jumlah baris gol >= skor sebelumnya, hapus baris gol terakhir agar sinkron
+    if (teamGoals.length >= score && teamGoals.length > 0) {
+      const lastGoal = teamGoals[teamGoals.length - 1];
+      if (this.editingGoalId === lastGoal.id) {
+        this.editingGoalId = null;
+      }
+      window.syncEngine.deleteEvent(lastGoal.id);
+    }
+  }
+
+  syncMissingGoalRows(team) {
+    if (!this.currentState) return;
+    const key = team === "home" ? "home_score" : "away_score";
+    const score = this.currentState[key] || 0;
+    const teamGoals = (this.currentEvents || []).filter(
+      ev => ev.team === team && (ev.type === "goal" || ev.type === "own_goal")
+    );
+    const missing = score - teamGoals.length;
+    if (missing <= 0) return;
+
+    const minute = this.getCurrentMatchMinute();
+    for (let i = 0; i < missing; i++) {
+      window.syncEngine.addEvent({
+        type: "goal",
+        team: team,
+        player_name: "",
+        minute: minute,
+        note: ""
+      });
+    }
+  }
+
+  toggleGoalEditor(eventId) {
+    const resolved = window.syncEngine.resolveEventId(eventId);
+    this.editingGoalId = (this.editingGoalId === resolved) ? null : resolved;
+    this.lastGoalSignatures = { home: "", away: "" };
+    if (this.currentState) {
+      this.renderTeamGoals("home", this.currentState, this.currentEvents);
+      this.renderTeamGoals("away", this.currentState, this.currentEvents);
+    }
+  }
+
+  buildSquadOptionsHtml(teamKey, selectedCleanName, isOwnGoalMode) {
+    if (!this.currentState) return "";
+    const teamId = teamKey === "home" ? this.currentState.home_id : this.currentState.away_id;
+    const teamObj = this.getTeamData(teamId);
+    const players = (teamObj && Array.isArray(teamObj.players)) ? teamObj.players : [];
+
+    return players.map(p => {
+      const pName = p.name || String(p);
+      const num = p.no ?? p.number ?? "-";
+      const pos = p.pos ?? p.position ?? "Pemain";
+      const isSelected = selectedCleanName && selectedCleanName.toLowerCase() === pName.trim().toLowerCase();
+      const label = isOwnGoalMode
+        ? `[GBD] #${num} ${pName} (${pos})`
+        : `#${num} ${pName} (${pos})`;
+      return `<option value="${this.escapeHtml(pName)}"${isSelected ? " selected" : ""}>${this.escapeHtml(label)}</option>`;
+    }).join("");
+  }
+
+  renderTeamGoals(team, state, events) {
+    const container = document.getElementById(team === "home" ? "homeGoalsList" : "awayGoalsList");
+    if (!container || !state) return;
+
+    if (this.editingGoalId) {
+      this.editingGoalId = window.syncEngine.resolveEventId(this.editingGoalId);
+    }
+
+    const scoreKey = team === "home" ? "home_score" : "away_score";
+    const score = state[scoreKey] || 0;
+    const teamGoals = (events || []).filter(
+      ev => ev.team === team && (ev.type === "goal" || ev.type === "own_goal")
+    );
+
+    // Guard: jangan rebuild DOM jika operator sedang aktif memilih/mengetik di dalam editor tim ini
+    if (this.editingGoalId) {
+      const activeEditor = document.getElementById(`goalEditor_${this.editingGoalId}`);
+      if (activeEditor && container.contains(activeEditor)) {
+        const focused = document.activeElement;
+        if (focused && activeEditor.contains(focused) && (focused.tagName === "INPUT" || focused.tagName === "SELECT")) {
+          return;
+        }
+      }
+    }
+
+    const signature = [
+      score,
+      state.home_id,
+      state.away_id,
+      this.editingGoalId || "",
+      teamGoals.map(e => `${e.id}:${e.type}:${e.player_name || ""}:${e.minute || ""}`).join(";")
+    ].join("|");
+
+    if (this.lastGoalSignatures[team] === signature) return;
+    this.lastGoalSignatures[team] = signature;
+
+    if (teamGoals.length === 0 && score === 0) {
+      container.innerHTML = '<div class="goals-empty-hint">Belum ada gol. Tekan <strong>+1 GOL</strong> saat tim mencetak gol.</div>';
+      return;
+    }
+
+    const ownTeamShort = team === "home"
+      ? (state.home_short || state.home_name || "Tim Sendiri")
+      : (state.away_short || state.away_name || "Tim Sendiri");
+    const oppTeamKey = team === "home" ? "away" : "home";
+    const oppTeamShort = oppTeamKey === "home"
+      ? (state.home_short || state.home_name || "Lawan")
+      : (state.away_short || state.away_name || "Lawan");
+
+    const cardsHtml = teamGoals.map((ev, index) => {
+      const goalNum = index + 1;
+      const isOG = ev.type === "own_goal" || (ev.player_name && ev.player_name.includes("(GBD)"));
+      const rawName = (ev.player_name || "").trim();
+      const cleanName = rawName.replace(/\s*\(GBD\)/gi, "").trim();
+      const isEmpty = !rawName;
+      const isEditing = this.editingGoalId === ev.id;
+
+      let cardClasses = "goal-item-card";
+      if (isEmpty) cardClasses += " pending";
+      if (isOG) cardClasses += " own-goal";
+      if (isEditing) cardClasses += " editing";
+
+      const summaryHtml = isEmpty
+        ? `<span class="goal-scorer-text is-empty">⚠️ Belum diisi — klik Edit</span>`
+        : `<span class="goal-scorer-text">${this.escapeHtml(cleanName || "Gol Bunuh Diri")}${isOG ? '<span class="goal-og-pill">GBD</span>' : ''}</span>`;
+
+      let editorHtml = "";
+      if (isEditing) {
+        const ownOptions = this.buildSquadOptionsHtml(team, !isOG ? cleanName : "", false);
+        const oppOptions = this.buildSquadOptionsHtml(oppTeamKey, isOG ? cleanName : "", true);
+
+        const ownTeamObj = this.getTeamData(team === "home" ? state.home_id : state.away_id);
+        const oppTeamObj = this.getTeamData(oppTeamKey === "home" ? state.home_id : state.away_id);
+        const ownMatched = !isOG && ownTeamObj && Array.isArray(ownTeamObj.players) &&
+          ownTeamObj.players.some(p => (p.name || "").trim().toLowerCase() === cleanName.toLowerCase());
+        const oppMatched = isOG && oppTeamObj && Array.isArray(oppTeamObj.players) &&
+          oppTeamObj.players.some(p => (p.name || "").trim().toLowerCase() === cleanName.toLowerCase());
+        const isOgAnon = isOG && cleanName.toLowerCase() === "gol bunuh diri";
+        const customPrefill = (!ownMatched && !oppMatched && !isOgAnon && cleanName) ? cleanName : "";
+
+        editorHtml = `
+          <div class="goal-editor-panel" id="goalEditor_${this.escapeHtml(ev.id)}">
+            <div class="goal-editor-field is-own">
+              <label>👤 1. Pencetak dari ${this.escapeHtml(ownTeamShort)} (Gol Tim)</label>
+              <select id="goalOwnTeamSelect_${this.escapeHtml(ev.id)}" class="select-input"
+                onchange="operatorConsole.onGoalDropdownChange('${this.escapeHtml(ev.id)}', 'team', this.value)">
+                <option value="">-- Pilih Pemain ${this.escapeHtml(ownTeamShort)} --</option>
+                ${ownOptions}
+              </select>
+            </div>
+
+            <div class="goal-editor-field is-opp">
+              <label>🔄 2. Pemain Lawan / Own Goal (${this.escapeHtml(oppTeamShort)})</label>
+              <select id="goalOppTeamSelect_${this.escapeHtml(ev.id)}" class="select-input"
+                onchange="operatorConsole.onGoalDropdownChange('${this.escapeHtml(ev.id)}', 'opponent', this.value)">
+                <option value="">-- Bukan Own Goal / Pilih Pemain Lawan --</option>
+                <option value="__OG_ANON__"${isOgAnon ? " selected" : ""}>⚽ Gol Bunuh Diri (Tanpa Nama)</option>
+                ${oppOptions}
+              </select>
+            </div>
+
+            <div class="goal-editor-split">
+              <div class="goal-editor-field">
+                <label>✏️ Nama Manual (Opsional)</label>
+                <input type="text" id="goalCustomInput_${this.escapeHtml(ev.id)}" class="text-input"
+                  placeholder="Ketik nama jika tidak ada di daftar" value="${this.escapeHtml(customPrefill)}">
+              </div>
+              <div class="goal-editor-field">
+                <label>⏱️ Menit</label>
+                <input type="text" id="goalMinuteInput_${this.escapeHtml(ev.id)}" class="text-input"
+                  placeholder="14'" value="${this.escapeHtml(ev.minute || '')}">
+              </div>
+            </div>
+
+            <div class="goal-editor-footer">
+              <span class="goal-save-hint" id="goalSaveHint_${this.escapeHtml(ev.id)}"></span>
+              <div style="display: flex; gap: 6px;">
+                <button type="button" class="btn-nav btn-mini-nav"
+                  onclick="operatorConsole.toggleGoalEditor('${this.escapeHtml(ev.id)}')">Tutup</button>
+                <button type="button" class="btn-primary-amber btn-mini-nav"
+                  onclick="operatorConsole.saveGoalRowEditor('${this.escapeHtml(ev.id)}')">✅ Simpan &amp; Tutup</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="${cardClasses}">
+          <div class="goal-item-summary">
+            <span class="goal-num-badge">GOL ${goalNum}</span>
+            <span class="goal-min-pill">${this.escapeHtml(ev.minute || "-")}</span>
+            ${summaryHtml}
+            <div class="goal-row-actions">
+              <button type="button" class="btn-goal-edit"
+                onclick="operatorConsole.toggleGoalEditor('${this.escapeHtml(ev.id)}')">
+                ${isEditing ? "✕ Tutup" : "✏️ Edit"}
+              </button>
+              <button type="button" class="btn-goal-del"
+                onclick="operatorConsole.deleteGoalRow('${this.escapeHtml(ev.id)}', '${team}', ${goalNum})"
+                title="Hapus Gol ${goalNum} &amp; kurangi skor">
+                🗑️
+              </button>
+            </div>
+          </div>
+          ${editorHtml}
+        </div>
+      `;
+    }).join("");
+
+    let missingHtml = "";
+    if (score > teamGoals.length) {
+      const diff = score - teamGoals.length;
+      missingHtml = `
+        <div class="goals-sync-missing">
+          <span>⚠️ Ada ${diff} gol di papan skor yang belum punya baris edit.</span>
+          <button type="button" class="btn-goal-edit" onclick="operatorConsole.syncMissingGoalRows('${team}')">
+            + Buat ${diff} Baris
+          </button>
+        </div>
+      `;
+    }
+
+    container.innerHTML = cardsHtml + missingHtml;
+  }
+
+  onGoalDropdownChange(eventId, sourceKind, selectedVal) {
+    eventId = window.syncEngine.resolveEventId(eventId);
+    const ownSel = document.getElementById(`goalOwnTeamSelect_${eventId}`);
+    const oppSel = document.getElementById(`goalOppTeamSelect_${eventId}`);
+    const customInput = document.getElementById(`goalCustomInput_${eventId}`);
+    const minInput = document.getElementById(`goalMinuteInput_${eventId}`);
+    const hintEl = document.getElementById(`goalSaveHint_${eventId}`);
+    const minute = minInput ? minInput.value.trim() : this.getCurrentMatchMinute();
+
+    if (customInput) customInput.value = "";
+
+    let updates;
+    if (sourceKind === "team") {
+      if (oppSel) oppSel.value = "";
+      updates = {
+        type: "goal",
+        player_name: selectedVal || "",
+        minute: minute,
+        note: ""
+      };
+    } else {
+      if (ownSel) ownSel.value = "";
+      if (!selectedVal) {
+        updates = {
+          type: "goal",
+          player_name: "",
+          minute: minute,
+          note: ""
+        };
+      } else if (selectedVal === "__OG_ANON__") {
+        updates = {
+          type: "own_goal",
+          player_name: "Gol Bunuh Diri (GBD)",
+          minute: minute,
+          note: "Own Goal (GBD)"
+        };
+      } else {
+        updates = {
+          type: "own_goal",
+          player_name: `${selectedVal} (GBD)`,
+          minute: minute,
+          note: "Own Goal (GBD)"
+        };
+      }
+    }
+
+    window.syncEngine.updateEvent(eventId, updates);
+    if (hintEl) {
+      hintEl.textContent = "✅ Tersimpan ke TV!";
+    }
+  }
+
+  saveGoalRowEditor(eventId) {
+    eventId = window.syncEngine.resolveEventId(eventId);
+    const ownSel = document.getElementById(`goalOwnTeamSelect_${eventId}`)?.value || "";
+    const oppSel = document.getElementById(`goalOppTeamSelect_${eventId}`)?.value || "";
+    const customVal = (document.getElementById(`goalCustomInput_${eventId}`)?.value || "").trim();
+    const minuteVal = (document.getElementById(`goalMinuteInput_${eventId}`)?.value || "").trim() || this.getCurrentMatchMinute();
+
+    let updates = { minute: minuteVal };
+
+    if (customVal) {
+      const isOgCustom = Boolean(oppSel) || customVal.toUpperCase().includes("(GBD)");
+      if (isOgCustom) {
+        const withTag = customVal.toUpperCase().includes("(GBD)") ? customVal : `${customVal} (GBD)`;
+        updates.type = "own_goal";
+        updates.player_name = withTag;
+        updates.note = "Own Goal (GBD)";
+      } else {
+        updates.type = "goal";
+        updates.player_name = customVal;
+        updates.note = "";
+      }
+    } else if (oppSel) {
+      updates.type = "own_goal";
+      updates.player_name = oppSel === "__OG_ANON__" ? "Gol Bunuh Diri (GBD)" : `${oppSel} (GBD)`;
+      updates.note = "Own Goal (GBD)";
+    } else if (ownSel) {
+      updates.type = "goal";
+      updates.player_name = ownSel;
+      updates.note = "";
+    } else {
+      updates.type = "goal";
+      updates.player_name = "";
+      updates.note = "";
+    }
+
+    this.editingGoalId = null;
+    this.lastGoalSignatures = { home: "", away: "" };
+    window.syncEngine.updateEvent(eventId, updates);
+  }
+
+  deleteGoalRow(eventId, team, goalNum) {
+    eventId = window.syncEngine.resolveEventId(eventId);
+    const teamName = team === "home"
+      ? (this.currentState?.home_name || "Tim Home")
+      : (this.currentState?.away_name || "Tim Away");
+
+    if (!confirm(`Hapus Gol ${goalNum} dan kurangi skor ${teamName} (-1)?`)) return;
+
+    if (this.editingGoalId === eventId) {
+      this.editingGoalId = null;
+    }
+    this.lastGoalSignatures = { home: "", away: "" };
+    window.syncEngine.deleteEvent(eventId);
+    this.changeScore(team, -1);
+  }
+
+  // --- KONTROL ADU PENALTI ---
+  changePenalty(team, delta) {
+    if (!this.currentState) return;
+    const key = team === "home" ? "home_penalties" : "away_penalties";
+    const cur = this.currentState[key] ?? 0;
+    const updates = {};
+    updates[key] = Math.max(0, cur + delta);
+    window.syncEngine.updateState(updates);
+  }
+
   // --- KONTROL TIMER ---
   toggleTimer() {
     if (!this.currentState) return;
     const isRunning = this.currentState.is_running;
 
     if (!isRunning) {
-      // Start timer
       window.syncEngine.updateState({
         is_running: true,
         timer_started_at: new Date().toISOString()
       });
     } else {
-      // Pause timer
       let sec = this.currentState.timer_seconds || 0;
       if (this.currentState.timer_started_at) {
         const elapsed = (Date.now() - new Date(this.currentState.timer_started_at).getTime()) / 1000;
@@ -513,7 +895,6 @@ class OperatorConsole {
         break;
       case "halftime":
         label = "ISTIRAHAT (HT)";
-        // Pause timer saat istirahat & reset fouls babak 1
         let sec1 = this.currentState.timer_seconds || 0;
         if (this.currentState.is_running && this.currentState.timer_started_at) {
           sec1 += Math.floor((Date.now() - new Date(this.currentState.timer_started_at).getTime()) / 1000);
@@ -521,7 +902,6 @@ class OperatorConsole {
         updates.is_running = false;
         updates.timer_seconds = sec1;
         updates.timer_started_at = null;
-        // Aturan futsal: Fouls di-reset setiap pergantian babak
         updates.home_fouls = 0;
         updates.away_fouls = 0;
         updates.home_timeout = false;
@@ -541,8 +921,8 @@ class OperatorConsole {
         label = "ADU PENALTI";
         updates.is_running = false;
         updates.timer_started_at = null;
-        if (this.currentState.home_penalties === null) updates.home_penalties = 0;
-        if (this.currentState.away_penalties === null) updates.away_penalties = 0;
+        if (this.currentState.home_penalties === null || this.currentState.home_penalties === undefined) updates.home_penalties = 0;
+        if (this.currentState.away_penalties === null || this.currentState.away_penalties === undefined) updates.away_penalties = 0;
         break;
       case "finished":
         label = "SELESAI (FT)";
@@ -611,91 +991,36 @@ class OperatorConsole {
     });
   }
 
-  // --- LOG EVENT GOL & KARTU ---
+  // --- MODAL CATAT KARTU (KUNING / MERAH) ---
   openAddEventModal(type, team) {
     const modal = document.getElementById("addEventModal");
     const titleEl = document.getElementById("addEventModalTitle");
-    const selectPlayer = document.getElementById("selectEventPlayer");
     const inputCustom = document.getElementById("inputCustomPlayer");
     const inputMin = document.getElementById("inputEventMinute");
-    const ownGoalContainer = document.getElementById("ownGoalContainer");
-    const checkIsOwnGoal = document.getElementById("checkIsOwnGoal");
-    const ownGoalDetails = document.getElementById("ownGoalDetails");
-    const ogAwardHome = document.getElementById("ogAwardHome");
-    const ogAwardAway = document.getElementById("ogAwardAway");
-    const ogAwardHomeLabel = document.getElementById("ogAwardHomeLabel");
-    const ogAwardAwayLabel = document.getElementById("ogAwardAwayLabel");
     const selectPlayerLabel = document.getElementById("selectPlayerLabel");
 
-    if (!modal) return;
+    if (!modal || !this.currentState) return;
 
     document.getElementById("hiddenEventType").value = type;
     document.getElementById("hiddenEventTeam").value = team;
 
     const teamName = team === "home" ? this.currentState.home_name : this.currentState.away_name;
 
-    let typeLabel = "Catat Gol";
-    if (type === "card_yellow") typeLabel = "Kartu Kuning";
-    if (type === "card_red") typeLabel = "Kartu Merah";
+    let typeLabel = "Catat Kejadian";
+    if (type === "card_yellow") typeLabel = "🟨 Kartu Kuning";
+    if (type === "card_red") typeLabel = "🟥 Kartu Merah";
 
     if (titleEl) titleEl.textContent = `${typeLabel} - ${teamName}`;
     if (inputMin) inputMin.value = this.getCurrentMatchMinute();
+    if (selectPlayerLabel) selectPlayerLabel.textContent = "Pilih Pemain / Ofisial dari Skuad Resmi:";
 
-    // Reset opsi Gol Bunuh Diri (Own Goal)
-    if (checkIsOwnGoal) checkIsOwnGoal.checked = false;
-    if (ownGoalDetails) ownGoalDetails.style.display = "none";
-    if (selectPlayerLabel) selectPlayerLabel.textContent = "Pilih Pemain dari Skuad Resmi:";
-
-    if (type === "goal") {
-      if (ownGoalContainer) ownGoalContainer.style.display = "block";
-      const homeName = this.currentState ? (this.currentState.home_short || this.currentState.home_name || "Tim Home") : "Tim Home";
-      const awayName = this.currentState ? (this.currentState.away_short || this.currentState.away_name || "Tim Away") : "Tim Away";
-      if (ogAwardHomeLabel) ogAwardHomeLabel.textContent = `${homeName} (+1 Skor)`;
-      if (ogAwardAwayLabel) ogAwardAwayLabel.textContent = `${awayName} (+1 Skor)`;
-      if (team === "home") {
-        if (ogAwardHome) ogAwardHome.checked = true;
-      } else {
-        if (ogAwardAway) ogAwardAway.checked = true;
-      }
-    } else {
-      if (ownGoalContainer) ownGoalContainer.style.display = "none";
-    }
-
-    // Populasi pemain dari skuad tim awal
-    this.populatePlayerDropdown(team, type, false);
+    this.populatePlayerDropdown(team, type);
 
     if (inputCustom) inputCustom.value = "";
     modal.classList.add("show");
   }
 
-  toggleOwnGoal(isChecked) {
-    const ownGoalDetails = document.getElementById("ownGoalDetails");
-    const selectPlayerLabel = document.getElementById("selectPlayerLabel");
-    const inputCustom = document.getElementById("inputCustomPlayer");
-
-    if (ownGoalDetails) ownGoalDetails.style.display = isChecked ? "block" : "none";
-
-    if (isChecked) {
-      if (selectPlayerLabel) selectPlayerLabel.textContent = "Pilih Pemain yang Melakukan Gol Bunuh Diri (GBD):";
-      if (inputCustom) inputCustom.placeholder = "Contoh: Nama Pemain (GBD)";
-      this.onOgAwardTeamChange();
-    } else {
-      if (selectPlayerLabel) selectPlayerLabel.textContent = "Pilih Pemain dari Skuad Resmi:";
-      if (inputCustom) inputCustom.placeholder = "Contoh: Ahmad (#10)";
-      const origTeam = document.getElementById("hiddenEventTeam").value;
-      this.populatePlayerDropdown(origTeam, "goal", false);
-    }
-  }
-
-  onOgAwardTeamChange() {
-    const isHomeAwarded = document.getElementById("ogAwardHome")?.checked;
-    // Jika skor diberikan ke Home, maka pelaku gol bunuh diri berasal dari tim Away!
-    // Sebaliknya jika skor diberikan ke Away, pelaku gol bunuh diri berasal dari tim Home.
-    const offendingTeam = isHomeAwarded ? "away" : "home";
-    this.populatePlayerDropdown(offendingTeam, "goal", true);
-  }
-
-  populatePlayerDropdown(teamKey, eventType, isOwnGoal = false) {
+  populatePlayerDropdown(teamKey, eventType) {
     const selectPlayer = document.getElementById("selectEventPlayer");
     if (!selectPlayer || !this.currentState) return;
 
@@ -703,7 +1028,7 @@ class OperatorConsole {
     const teamObj = this.getTeamData(teamId);
     const teamName = teamKey === "home" ? (this.currentState.home_short || this.currentState.home_name) : (this.currentState.away_short || this.currentState.away_name);
 
-    selectPlayer.innerHTML = `<option value="">-- Pilih Pemain (${teamName}) --</option>`;
+    selectPlayer.innerHTML = `<option value="">-- Pilih Pemain (${this.escapeHtml(teamName)}) --</option>`;
 
     if (teamObj && Array.isArray(teamObj.players) && teamObj.players.length > 0) {
       teamObj.players.forEach(p => {
@@ -711,25 +1036,22 @@ class OperatorConsole {
         const pName = p.name || p;
         const num = p.no ?? p.number ?? '-';
         const pos = p.pos ?? p.position ?? 'Pemain';
-        opt.value = isOwnGoal ? `${pName} (GBD)` : pName;
-        opt.textContent = isOwnGoal
-          ? `[${teamName}] #${num} ${pName} (GBD)`
-          : `#${num} ${pName} (${pos})`;
+        opt.value = pName;
+        opt.textContent = `#${num} ${pName} (${pos})`;
         selectPlayer.appendChild(opt);
       });
     }
 
-    // Tambahkan opsi Pelatih / Manajer jika kartu kuning/merah
     if (eventType === "card_yellow" || eventType === "card_red") {
       const mgr = (teamObj && teamObj.official && teamObj.official.manager) || (teamObj && teamObj.manager);
       const cch = (teamObj && teamObj.official && teamObj.official.coach) || (teamObj && teamObj.coach);
-      if (cch) {
+      if (cch && cch !== "-") {
         const optCoach = document.createElement("option");
         optCoach.value = `${cch} (Pelatih)`;
         optCoach.textContent = `📋 Pelatih: ${cch}`;
         selectPlayer.appendChild(optCoach);
       }
-      if (mgr) {
+      if (mgr && mgr !== "-") {
         const optMgr = document.createElement("option");
         optMgr.value = `${mgr} (Manajer)`;
         optMgr.textContent = `👨‍💼 Manajer: ${mgr}`;
@@ -745,38 +1067,21 @@ class OperatorConsole {
 
   saveEventFromModal() {
     const type = document.getElementById("hiddenEventType").value;
-    const originalTeam = document.getElementById("hiddenEventTeam").value;
-    const isOwnGoal = (type === "goal" && document.getElementById("checkIsOwnGoal")?.checked);
-
-    // Tentukan tim yang berhak mendapatkan skor
-    let targetTeam = originalTeam;
-    if (isOwnGoal) {
-      targetTeam = document.getElementById("ogAwardHome")?.checked ? "home" : "away";
-    }
-
+    const targetTeam = document.getElementById("hiddenEventTeam").value;
     const selPlayer = document.getElementById("selectEventPlayer").value;
     const customPlayer = document.getElementById("inputCustomPlayer").value.trim();
     const minute = document.getElementById("inputEventMinute").value.trim() || this.getCurrentMatchMinute();
 
-    let playerName = customPlayer || selPlayer || (isOwnGoal ? "Gol Bunuh Diri (GBD)" : "Pemain");
-    if (isOwnGoal && !playerName.includes("(GBD)")) {
-      playerName = `${playerName} (GBD)`;
-    }
+    const defaultLabel = type === "card_yellow" ? "Kartu Kuning" : (type === "card_red" ? "Kartu Merah" : "Pemain");
+    const playerName = customPlayer || selPlayer || defaultLabel;
 
-    // 1. Tambah event ke timeline & realtime sync
     window.syncEngine.addEvent({
-      type: isOwnGoal ? "own_goal" : type,
+      type: type,
       team: targetTeam,
       player_name: playerName,
       minute: minute,
-      is_own_goal: isOwnGoal
+      note: ""
     });
-
-    // 2. Jika tipe adalah gol / own goal, otomatis tambahkan skor tim penerima & bunyikan selebrasi Siuu!
-    if (type === "goal" || isOwnGoal) {
-      this.changeScore(targetTeam, 1);
-      this.playSiuSound();
-    }
 
     this.closeAddEventModal();
   }
@@ -822,11 +1127,12 @@ class OperatorConsole {
     container.innerHTML = sorted.map(ev => {
       let icon = "⚽";
       let ogBadge = "";
-      const isOG = ev.type === "own_goal" || ev.is_own_goal || (ev.player_name && ev.player_name.includes("(GBD)"));
+      const isGoal = ev.type === "goal" || ev.type === "own_goal";
+      const isOG = ev.type === "own_goal" || (ev.player_name && ev.player_name.includes("(GBD)"));
 
       if (isOG) {
         icon = "⚽";
-        ogBadge = '<span style="background: #ea580c; color: #fff; font-size: 0.68rem; font-weight: 800; padding: 1px 6px; border-radius: 4px; margin-left: 6px; letter-spacing: 0.5px;">GBD</span>';
+        ogBadge = '<span class="goal-og-pill">GBD</span>';
       } else if (ev.type === "card_yellow") {
         icon = "🟨";
       } else if (ev.type === "card_red") {
@@ -839,16 +1145,20 @@ class OperatorConsole {
         ? (this.currentState ? (this.currentState.home_short || this.currentState.home_name) : "HOME")
         : (this.currentState ? (this.currentState.away_short || this.currentState.away_name) : "AWAY");
 
+      const displayPlayer = (isGoal && !ev.player_name)
+        ? '<span style="color: #fbbf24; font-style: italic;">Belum diisi (edit di box tim)</span>'
+        : `<span style="color: #fff;">${this.escapeHtml(ev.player_name)}</span>${ogBadge}`;
+
       return `
         <div class="event-log-item">
           <div class="event-log-left">
             <span>${icon}</span>
-            <span>${teamName}</span>
+            <span>${this.escapeHtml(teamName)}</span>
             <span>•</span>
-            <span style="color: #fff;">${ev.player_name}</span>${ogBadge}
-            <span style="font-size: 0.75rem; color: var(--text-muted);">(${ev.minute || '-'})</span>
+            ${displayPlayer}
+            <span style="font-size: 0.75rem; color: var(--text-muted);">(${this.escapeHtml(ev.minute || '-')})</span>
           </div>
-          <button type="button" class="btn-trash" onclick="operatorConsole.deleteEvent('${ev.id}')" title="Hapus event ini">
+          <button type="button" class="btn-trash" onclick="operatorConsole.deleteEvent('${this.escapeHtml(ev.id)}')" title="Hapus event ini">
             🗑️
           </button>
         </div>
@@ -857,6 +1167,19 @@ class OperatorConsole {
   }
 
   deleteEvent(id) {
+    id = window.syncEngine.resolveEventId(id);
+    const ev = (this.currentEvents || []).find(e => e.id === id);
+    const isGoal = ev && (ev.type === "goal" || ev.type === "own_goal");
+
+    if (isGoal) {
+      if (!confirm("Hapus gol ini dari timeline? (Skor tim juga akan dikurangi -1)")) return;
+      if (this.editingGoalId === id) this.editingGoalId = null;
+      this.lastGoalSignatures = { home: "", away: "" };
+      window.syncEngine.deleteEvent(id);
+      this.changeScore(ev.team, -1);
+      return;
+    }
+
     if (!confirm("Hapus kejadian ini dari timeline?")) return;
     window.syncEngine.deleteEvent(id);
   }
