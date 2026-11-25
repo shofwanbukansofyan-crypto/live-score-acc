@@ -535,7 +535,7 @@ const ACC_TEAMS = [
     "category": "SMP",
     "badgeColor": "#2563eb",
     "city": "Makassar",
-    "logo": "/assets/habiburrahman_b.jpg",
+    "logo": "/assets/teams/T05/habiburrahman_b.png",
     "group": "C",
     "manager": "Andi Fauzan Fauzi",
     "coach": "Coach Reyfhank AL",
