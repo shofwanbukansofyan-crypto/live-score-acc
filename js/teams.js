@@ -2179,7 +2179,7 @@ const ACC_TEAMS = [
     "category": "SD",
     "badgeColor": "#2563eb",
     "city": "Makassar",
-    "logo": "/assets/teams/T18/asn2angkasa.png",
+    "logo": "/assets/teams/T18/sdn2angkasa.png",
     "group": "D",
     "manager": "Ust. Syarifuddin",
     "coach": "Coach Arsene Wenger",
