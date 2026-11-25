@@ -358,58 +358,54 @@ body {
 }
 
 /* ==============================================================================
-   4. MATCH MOMENTUM SECTION (CENTER TITLE & SPLIT COLUMNS)
+   4. MATCH MOMENTUM SECTION (CLEAN BROADCAST TYPOGRAPHY, NO HEAVY BOXES)
    ============================================================================== */
 .tv-momentum-section {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-  max-width: min(1480px, 96%);
+  max-width: min(1440px, 94%);
   margin: 0 auto;
-  padding: clamp(10px, 1.6vh, 18px) clamp(16px, 2.2vw, 28px);
-  background: linear-gradient(180deg, rgba(15, 23, 42, 0.72) 0%, rgba(9, 14, 28, 0.88) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-top: 1px solid rgba(245, 158, 11, 0.28);
-  border-radius: 20px;
-  backdrop-filter: blur(12px);
-  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  padding: clamp(6px, 1vh, 12px) 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
 }
 
 .momentum-header {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
+  gap: 18px;
   width: 100%;
-  max-width: 960px;
-  margin-bottom: clamp(8px, 1.2vh, 14px);
+  max-width: 720px;
+  margin-bottom: clamp(10px, 1.5vh, 16px);
 }
 
 .momentum-title {
-  font-size: clamp(0.75rem, 1.25vh, 0.95rem);
-  font-weight: 900;
-  letter-spacing: 4px;
-  color: var(--accent-gold);
+  font-size: clamp(0.68rem, 1.1vh, 0.82rem);
+  font-weight: 800;
+  letter-spacing: 5px;
+  color: rgba(245, 158, 11, 0.9);
   text-transform: uppercase;
   white-space: nowrap;
-  padding: 3px 16px;
-  border-radius: 999px;
-  background: rgba(245, 158, 11, 0.08);
-  border: 1px solid rgba(245, 158, 11, 0.22);
-  text-shadow: 0 0 14px rgba(245, 158, 11, 0.45);
+  padding: 0;
+  background: transparent;
+  border: none;
+  text-shadow: none;
 }
 
 .momentum-line {
   flex: 1;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(245, 158, 11, 0.38), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.16), transparent);
 }
 
 .momentum-columns {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
-  gap: clamp(14px, 2.2vw, 32px);
+  gap: clamp(18px, 2.8vw, 44px);
   width: 100%;
   align-items: stretch;
 }
@@ -417,7 +413,7 @@ body {
 .momentum-col {
   display: flex;
   flex-direction: column;
-  min-height: clamp(88px, 12vh, 120px);
+  min-height: clamp(82px, 11vh, 116px);
   justify-content: flex-start;
   width: 100%;
 }
@@ -426,7 +422,7 @@ body {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  gap: clamp(8px, 1.2vw, 16px);
+  gap: clamp(16px, 2.2vw, 32px);
   width: 100%;
 }
 
@@ -441,7 +437,7 @@ body {
 .momentum-subcol {
   display: flex;
   flex-direction: column;
-  gap: clamp(5px, 0.8vh, 9px);
+  gap: clamp(4px, 0.65vh, 7px);
 }
 
 .momentum-subcol.align-right {
@@ -455,7 +451,7 @@ body {
 .momentum-row {
   display: flex;
   align-items: center;
-  min-height: clamp(28px, 3.6vh, 36px);
+  min-height: clamp(22px, 3vh, 28px);
 }
 
 .momentum-row.align-right {
@@ -468,107 +464,109 @@ body {
 
 .momentum-divider {
   width: 1px;
-  min-height: clamp(88px, 12vh, 120px);
-  background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.16), transparent);
+  min-height: clamp(82px, 11vh, 116px);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.06) 75%, transparent);
 }
 
-/* EVENT CHIP (GOAL & CARDS) */
+/* BROADCAST EVENT ITEM (MINIMALIST, TANPA BOX) */
 .event-chip {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 5px 14px;
-  border-radius: 12px;
-  font-size: clamp(0.76rem, 1.18vh, 0.9rem);
-  font-weight: 700;
-  color: #f8fafc;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.12);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  gap: 9px;
+  padding: 2px 0;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  font-size: clamp(0.82rem, 1.32vh, 1rem);
+  font-weight: 600;
+  color: #f1f5f9;
+  letter-spacing: 0.2px;
 }
 
-.event-chip.goal {
-  border: 1px solid rgba(52, 211, 153, 0.55);
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.26) 0%, rgba(5, 150, 105, 0.14) 100%);
-  color: #ecfdf5;
-  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.22), inset 0 1px 0 rgba(167, 243, 208, 0.22);
+.momentum-row.align-right .event-chip {
+  flex-direction: row-reverse;
+  text-align: right;
 }
 
-.event-chip.goal .chip-minute {
-  background: rgba(16, 185, 129, 0.28);
-  color: #6ee7b7;
-  border: 1px solid rgba(52, 211, 153, 0.35);
+.chip-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  flex-shrink: 0;
+  font-size: 0.92em;
+  line-height: 1;
 }
 
-.event-chip.goal.own-goal {
-  border: 1px solid rgba(251, 146, 60, 0.65);
-  background: linear-gradient(135deg, rgba(249, 115, 22, 0.28) 0%, rgba(194, 65, 12, 0.16) 100%);
-  color: #ffedd5;
-  box-shadow: 0 4px 16px rgba(249, 115, 22, 0.22), inset 0 1px 0 rgba(254, 215, 170, 0.2);
-}
-
-.event-chip.goal.own-goal .chip-minute {
-  background: rgba(249, 115, 22, 0.28);
-  color: #fdba74;
-  border: 1px solid rgba(251, 146, 60, 0.35);
-}
-
-.event-chip.goal.own-goal .chip-icon {
-  filter: drop-shadow(0 0 4px rgba(249, 115, 22, 0.6));
-}
-
-.chip-og-tag {
-  background: linear-gradient(135deg, #f97316, #ea580c);
-  color: #ffffff;
-  font-size: 0.7em;
-  font-weight: 900;
-  padding: 2px 6px;
-  border-radius: 5px;
-  margin-left: 2px;
-  letter-spacing: 0.6px;
-  text-transform: uppercase;
+.chip-card-glyph {
   display: inline-block;
-  line-height: 1.2;
+  width: 9px;
+  height: 13px;
+  border-radius: 2px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
 }
 
-.event-chip.card-yellow {
-  border: 1px solid rgba(250, 204, 21, 0.55);
-  background: linear-gradient(135deg, rgba(234, 179, 8, 0.24) 0%, rgba(161, 98, 7, 0.14) 100%);
-  color: #fef9c3;
-  box-shadow: 0 4px 14px rgba(234, 179, 8, 0.16), inset 0 1px 0 rgba(254, 240, 138, 0.2);
+.chip-card-glyph.yellow {
+  background: linear-gradient(160deg, #fde047, #eab308);
 }
 
-.event-chip.card-yellow .chip-minute {
-  background: rgba(234, 179, 8, 0.24);
-  color: #fde047;
-  border: 1px solid rgba(250, 204, 21, 0.32);
-}
-
-.event-chip.card-red {
-  border: 1px solid rgba(248, 113, 113, 0.58);
-  background: linear-gradient(135deg, rgba(239, 68, 68, 0.26) 0%, rgba(185, 28, 28, 0.16) 100%);
-  color: #fee2e2;
-  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.2), inset 0 1px 0 rgba(254, 202, 202, 0.2);
-}
-
-.event-chip.card-red .chip-minute {
-  background: rgba(239, 68, 68, 0.24);
-  color: #fca5a5;
-  border: 1px solid rgba(248, 113, 113, 0.35);
+.chip-card-glyph.red {
+  background: linear-gradient(160deg, #f87171, #dc2626);
 }
 
 .chip-minute {
   font-family: var(--font-mono);
-  font-weight: 800;
-  color: #e2e8f0;
-  font-size: 0.84em;
-  padding: 1px 6px;
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.08);
+  font-weight: 700;
+  font-size: 0.88em;
+  color: rgba(203, 213, 225, 0.72);
+  padding: 0;
+  background: transparent;
+  border: none;
+  min-width: 28px;
+  font-variant-numeric: tabular-nums;
+}
+
+.momentum-row.align-right .chip-minute {
+  text-align: right;
+}
+
+.momentum-row.align-left .chip-minute {
+  text-align: left;
 }
 
 .chip-player {
+  font-weight: 600;
+  color: #f8fafc;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+.event-chip.goal .chip-minute {
+  color: #34d399;
+}
+
+.event-chip.goal.own-goal .chip-minute {
+  color: #fb923c;
+}
+
+.event-chip.goal.own-goal .chip-player {
+  color: #fed7aa;
+}
+
+.event-chip.card-yellow .chip-player {
+  color: #fef08a;
+}
+
+.event-chip.card-red .chip-player {
+  color: #fecaca;
+}
+
+.chip-og-tag {
+  font-size: 0.72em;
   font-weight: 800;
-  letter-spacing: 0.3px;
+  color: #fb923c;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  opacity: 0.95;
 }
 
 /* ==============================================================================

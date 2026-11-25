@@ -201,13 +201,14 @@ class ScoreboardDisplay {
     const awayContainer = document.getElementById("momentumAwayEvents");
     if (!homeContainer || !awayContainer) return;
 
-    // Filter kejadian berdasarkan tim
-    const homeEvents = this.currentEvents.filter(ev => ev.team === "home");
-    const awayEvents = this.currentEvents.filter(ev => ev.team === "away");
+    // Filter kejadian berdasarkan tim (hanya gol & kartu untuk layar TV)
+    const relevantEvents = this.currentEvents.filter(ev => ev.type !== "timeout");
+    const homeEvents = relevantEvents.filter(ev => ev.team === "home");
+    const awayEvents = relevantEvents.filter(ev => ev.team === "away");
 
     const renderEventChips = (list, alignRight = false) => {
       const eventItems = list || [];
-      const MAX_ROWS = 5; // Maksimal 5 baris per kolom sesuai permintaan user
+      const MAX_ROWS = 5; // Maksimal 5 baris per kolom
 
       if (eventItems.length === 0) {
         return "";
@@ -219,7 +220,7 @@ class ScoreboardDisplay {
         subcols.push(eventItems.slice(i, i + MAX_ROWS));
       }
 
-      // Bangun elemen per sub-kolom
+      // Untuk tim Home (rata kanan mendekati garis tengah), balik urutan sub-kolom agar gol terbaru/terawal tetap rapi dari tengah ke luar
       const subcolsHtml = subcols.map((chunk) => {
         const rows = chunk.map((ev) => {
           let icon = "⚽";
@@ -231,13 +232,13 @@ class ScoreboardDisplay {
           if (isOG) {
             chipClass = "goal own-goal";
             defaultLabel = "Gol Bunuh Diri";
-            ogTag = '<span class="chip-og-tag">GBD</span>';
+            ogTag = '<span class="chip-og-tag">(GBD)</span>';
           } else if (ev.type === "card_yellow") {
-            icon = "🟨";
+            icon = '<span class="chip-card-glyph yellow"></span>';
             chipClass = "card-yellow";
             defaultLabel = "Kartu Kuning";
           } else if (ev.type === "card_red") {
-            icon = "🟥";
+            icon = '<span class="chip-card-glyph red"></span>';
             chipClass = "card-red";
             defaultLabel = "Kartu Merah";
           }
@@ -248,15 +249,15 @@ class ScoreboardDisplay {
             : rawPlayer;
           const displayName = this.formatPersonName(cleanName);
 
-          const minuteText = ev.minute ? `<span class="chip-minute">${ev.minute}'</span>` : "";
+          const cleanMin = ev.minute ? String(ev.minute).replace(/'+$/g, "").trim() : "";
+          const minuteText = cleanMin ? `<span class="chip-minute">${cleanMin}'</span>` : "";
 
           return `
             <div class="momentum-row ${alignRight ? 'align-right' : 'align-left'}">
               <div class="event-chip ${chipClass}">
                 <span class="chip-icon">${icon}</span>
                 ${minuteText}
-                <span class="chip-player">${displayName}</span>
-                ${ogTag}
+                <span class="chip-player">${displayName} ${ogTag}</span>
               </div>
             </div>
           `;
