@@ -70,7 +70,8 @@
         Buka Akses Konsol
       </button>
       <div style="margin-top: 14px;">
-        <a href="/" style="color: #94a3b8; font-size: 0.82rem; text-decoration: none;">← Kembali ke Tampilan Layar TV</a>
+        <a href="/" style="color: #94a3b8; font-size: 0.82rem; text-decoration: none;">← Kembali ke Tampilan Layar
+          TV</a>
       </div>
     </div>
   </div>
@@ -92,8 +93,8 @@
       </div>
 
       <div class="nav-actions">
-        <button type="button" class="btn-nav btn-nav-gold"
-          onclick="operatorConsole.playSiuSound()" title="Tes Mainkan Sound Effect Siu Ronaldo">
+        <button type="button" class="btn-nav btn-nav-gold" onclick="operatorConsole.playSiuSound()"
+          title="Tes Mainkan Sound Effect Siu Ronaldo">
           🔊 Tes Siuu
         </button>
         <a href="/" target="_blank" class="btn-nav" title="Buka Mode Display di Tab/Layar Baru">
@@ -126,8 +127,7 @@
             🔄 Reset Laga
           </button>
           <button type="button" class="btn-nav btn-nav-cyan" id="btnForceReload"
-            onclick="operatorConsole.forceReloadOfficialData()"
-            title="Hapus cache & muat ulang 64 laga resmi turnamen">
+            onclick="operatorConsole.forceReloadOfficialData()" title="Hapus cache & muat ulang 64 laga resmi turnamen">
             📡 Refresh Data
           </button>
         </div>
@@ -150,11 +150,16 @@
           </button>
 
           <div class="timer-adjust-row">
-            <button type="button" class="btn-timer-sub" onclick="operatorConsole.adjustTimer(-60)" title="Kurang 1 Menit">-1m</button>
-            <button type="button" class="btn-timer-sub" onclick="operatorConsole.adjustTimer(-10)" title="Kurang 10 Detik">-10s</button>
-            <button type="button" class="btn-timer-sub" onclick="operatorConsole.adjustTimer(10)" title="Tambah 10 Detik">+10s</button>
-            <button type="button" class="btn-timer-sub" onclick="operatorConsole.adjustTimer(60)" title="Tambah 1 Menit">+1m</button>
-            <button type="button" class="btn-timer-sub btn-timer-reset" onclick="operatorConsole.resetTimer()" title="Reset Menjadi 00:00">🔄 Reset</button>
+            <button type="button" class="btn-timer-sub" onclick="operatorConsole.adjustTimer(-60)"
+              title="Kurang 1 Menit">-1m</button>
+            <button type="button" class="btn-timer-sub" onclick="operatorConsole.adjustTimer(-10)"
+              title="Kurang 10 Detik">-10s</button>
+            <button type="button" class="btn-timer-sub" onclick="operatorConsole.adjustTimer(10)"
+              title="Tambah 10 Detik">+10s</button>
+            <button type="button" class="btn-timer-sub" onclick="operatorConsole.adjustTimer(60)"
+              title="Tambah 1 Menit">+1m</button>
+            <button type="button" class="btn-timer-sub btn-timer-reset" onclick="operatorConsole.resetTimer()"
+              title="Reset Menjadi 00:00">🔄 Reset</button>
           </div>
         </div>
 
@@ -163,13 +168,20 @@
           <div class="subpanel-box">
             <div class="subpanel-label">📌 Status Babak Pertandingan</div>
             <div class="period-buttons-grid">
-              <button type="button" class="btn-period" data-period="upcoming" onclick="operatorConsole.setPeriod('upcoming')">Belum Mulai</button>
-              <button type="button" class="btn-period" data-period="1st" onclick="operatorConsole.setPeriod('1st')">Babak 1</button>
-              <button type="button" class="btn-period" data-period="halftime" onclick="operatorConsole.setPeriod('halftime')">Istirahat (HT)</button>
-              <button type="button" class="btn-period" data-period="2nd" onclick="operatorConsole.setPeriod('2nd')">Babak 2</button>
-              <button type="button" class="btn-period" data-period="et" onclick="operatorConsole.setPeriod('et')">Extra Time</button>
-              <button type="button" class="btn-period" data-period="penalties" onclick="operatorConsole.setPeriod('penalties')">Adu Penalti</button>
-              <button type="button" class="btn-period btn-period-ft" data-period="finished" onclick="operatorConsole.setPeriod('finished')">🏁 Selesai Pertandingan (FT)</button>
+              <button type="button" class="btn-period" data-period="upcoming"
+                onclick="operatorConsole.setPeriod('upcoming')">Belum Mulai</button>
+              <button type="button" class="btn-period" data-period="1st"
+                onclick="operatorConsole.setPeriod('1st')">Babak 1</button>
+              <button type="button" class="btn-period" data-period="halftime"
+                onclick="operatorConsole.setPeriod('halftime')">Istirahat (HT)</button>
+              <button type="button" class="btn-period" data-period="2nd"
+                onclick="operatorConsole.setPeriod('2nd')">Babak 2</button>
+              <button type="button" class="btn-period" data-period="et" onclick="operatorConsole.setPeriod('et')">Extra
+                Time</button>
+              <button type="button" class="btn-period" data-period="penalties"
+                onclick="operatorConsole.setPeriod('penalties')">Adu Penalti</button>
+              <button type="button" class="btn-period btn-period-ft" data-period="finished"
+                onclick="operatorConsole.setPeriod('finished')">🏁 Selesai Pertandingan (FT)</button>
             </div>
           </div>
 
@@ -177,7 +189,8 @@
           <div class="subpanel-box penalty-ctrl-box" id="penaltyControlBox" style="display: none;">
             <div class="penalty-header-row">
               <div class="subpanel-label" style="color: #fbbf24; margin-bottom: 0;">🎯 Kontrol Adu Penalti</div>
-              <button type="button" class="btn-nav btn-mini-nav" onclick="operatorConsole.resetPenalties()" title="Reset ulang penalti menjadi 0-0">
+              <button type="button" class="btn-nav btn-mini-nav" onclick="operatorConsole.resetPenalties()"
+                title="Reset ulang penalti menjadi 0-0">
                 🔄 Reset Penalti
               </button>
             </div>
@@ -189,9 +202,12 @@
                   <strong class="pen-score-val" id="ctrlHomePen">0</strong>
                 </div>
                 <div class="penalty-action-row">
-                  <button type="button" class="btn-pen-goal" onclick="operatorConsole.recordPenaltyKick('home', true)">🟢 Gol</button>
-                  <button type="button" class="btn-pen-miss" onclick="operatorConsole.recordPenaltyKick('home', false)">🔴 Gagal</button>
-                  <button type="button" class="btn-pen-undo" onclick="operatorConsole.undoPenaltyKick('home')" title="Batalkan tendangan terakhir">↩️</button>
+                  <button type="button" class="btn-pen-goal"
+                    onclick="operatorConsole.recordPenaltyKick('home', true)">🟢 Gol</button>
+                  <button type="button" class="btn-pen-miss"
+                    onclick="operatorConsole.recordPenaltyKick('home', false)">🔴 Gagal</button>
+                  <button type="button" class="btn-pen-undo" onclick="operatorConsole.undoPenaltyKick('home')"
+                    title="Batalkan tendangan terakhir">↩️</button>
                 </div>
               </div>
 
@@ -202,9 +218,12 @@
                   <strong class="pen-score-val" id="ctrlAwayPen">0</strong>
                 </div>
                 <div class="penalty-action-row">
-                  <button type="button" class="btn-pen-goal" onclick="operatorConsole.recordPenaltyKick('away', true)">🟢 Gol</button>
-                  <button type="button" class="btn-pen-miss" onclick="operatorConsole.recordPenaltyKick('away', false)">🔴 Gagal</button>
-                  <button type="button" class="btn-pen-undo" onclick="operatorConsole.undoPenaltyKick('away')" title="Batalkan tendangan terakhir">↩️</button>
+                  <button type="button" class="btn-pen-goal"
+                    onclick="operatorConsole.recordPenaltyKick('away', true)">🟢 Gol</button>
+                  <button type="button" class="btn-pen-miss"
+                    onclick="operatorConsole.recordPenaltyKick('away', false)">🔴 Gagal</button>
+                  <button type="button" class="btn-pen-undo" onclick="operatorConsole.undoPenaltyKick('away')"
+                    title="Batalkan tendangan terakhir">↩️</button>
                 </div>
               </div>
             </div>
@@ -214,9 +233,12 @@
           <div class="subpanel-box">
             <div class="subpanel-label">⏱️ Kontrol Time Out (1 Menit di Layar TV)</div>
             <div class="timeout-btn-row">
-              <button type="button" class="btn-action-cyan" id="btnHomeTimeout" onclick="operatorConsole.startTimeout('home')">TO Home</button>
-              <button type="button" class="btn-action-cyan" id="btnAwayTimeout" onclick="operatorConsole.startTimeout('away')">TO Away</button>
-              <button type="button" class="btn-timer-sub btn-timer-reset" onclick="operatorConsole.cancelTimeout()" title="Batalkan Countdown Timeout">Batal TO</button>
+              <button type="button" class="btn-action-cyan" id="btnHomeTimeout"
+                onclick="operatorConsole.startTimeout('home')">TO Home</button>
+              <button type="button" class="btn-action-cyan" id="btnAwayTimeout"
+                onclick="operatorConsole.startTimeout('away')">TO Away</button>
+              <button type="button" class="btn-timer-sub btn-timer-reset" onclick="operatorConsole.cancelTimeout()"
+                title="Batalkan Countdown Timeout">Batal TO</button>
             </div>
           </div>
         </div>
@@ -237,7 +259,8 @@
         <!-- TIM HOME -->
         <div class="team-ctrl-box home">
           <div class="team-ctrl-header">
-            <img id="ctrlHomeLogo" src="/assets/teams/T16/logo.jpg" alt="Home Logo" class="team-ctrl-logo" onerror="this.src='/assets/acc_logo.png'">
+            <img id="ctrlHomeLogo" src="/assets/teams/T16/logo.jpg" alt="Home Logo" class="team-ctrl-logo"
+              onerror="this.src='/assets/acc_logo.png'">
             <div class="team-ctrl-title-wrap">
               <span class="team-ctrl-name" id="ctrlHomeName">SMP 5 MANDAI B</span>
               <div class="team-officials-inline">
@@ -302,7 +325,8 @@
         <!-- TIM AWAY -->
         <div class="team-ctrl-box away">
           <div class="team-ctrl-header">
-            <img id="ctrlAwayLogo" src="/assets/teams/T04/logo.svg" alt="Away Logo" class="team-ctrl-logo" onerror="this.src='/assets/acc_logo.png'">
+            <img id="ctrlAwayLogo" src="/assets/teams/T04/logo.svg" alt="Away Logo" class="team-ctrl-logo"
+              onerror="this.src='/assets/acc_logo.png'">
             <div class="team-ctrl-title-wrap">
               <span class="team-ctrl-name" id="ctrlAwayName">SMPIT IBNUL QAYYIM</span>
               <div class="team-officials-inline">
@@ -373,7 +397,8 @@
         <span>📜 4. Log Riwayat Kejadian (Gol, Kartu, Timeout)</span>
       </div>
       <div class="events-log-container" id="eventsLogList">
-        <div style="font-size: 0.85rem; color: var(--text-muted); text-align: center; padding: 12px;">Memuat data kejadian...</div>
+        <div style="font-size: 0.85rem; color: var(--text-muted); text-align: center; padding: 12px;">Memuat data
+          kejadian...</div>
       </div>
     </section>
 
@@ -382,7 +407,8 @@
   <!-- MODAL CATAT KARTU (KUNING / MERAH) -->
   <div class="modal-overlay" id="addEventModal">
     <div class="modal-content">
-      <h3 id="addEventModalTitle" style="color: #fff; margin-bottom: 14px; font-size: 1.15rem; font-weight: 800;">Catat Kejadian</h3>
+      <h3 id="addEventModalTitle" style="color: #fff; margin-bottom: 14px; font-size: 1.15rem; font-weight: 800;">Catat
+        Kejadian</h3>
 
       <input type="hidden" id="hiddenEventType">
       <input type="hidden" id="hiddenEventTeam">
@@ -425,27 +451,32 @@
   <!-- MODAL PENGATURAN SUPABASE & PIN -->
   <div class="modal-overlay" id="settingsModal">
     <div class="modal-content">
-      <h3 style="color: #fff; margin-bottom: 8px; font-size: 1.15rem; font-weight: 800;">⚙️ Pengaturan Supabase &amp; Keamanan</h3>
+      <h3 style="color: #fff; margin-bottom: 8px; font-size: 1.15rem; font-weight: 800;">⚙️ Pengaturan Supabase &amp;
+        Keamanan</h3>
       <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 14px;">
         Masukkan URL &amp; Anon Key dari project Supabase Anda untuk sinkronisasi cloud real-time antar perangkat.
       </p>
 
       <div style="margin-bottom: 12px;">
-        <label style="display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; font-weight: 700;">
+        <label
+          style="display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; font-weight: 700;">
           Supabase Project URL:
         </label>
         <input type="text" id="settingSupabaseUrl" class="text-input" placeholder="https://xyzcompany.supabase.co">
       </div>
 
       <div style="margin-bottom: 12px;">
-        <label style="display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; font-weight: 700;">
+        <label
+          style="display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; font-weight: 700;">
           Supabase Anon / Public Key:
         </label>
-        <input type="password" id="settingSupabaseKey" class="text-input" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...">
+        <input type="password" id="settingSupabaseKey" class="text-input"
+          placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...">
       </div>
 
       <div style="margin-bottom: 18px;">
-        <label style="display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; font-weight: 700;">
+        <label
+          style="display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; font-weight: 700;">
           PIN Akses Operator Baru (Opsional):
         </label>
         <input type="text" id="settingOperatorPin" class="text-input" placeholder="ACCdisplay2026">
