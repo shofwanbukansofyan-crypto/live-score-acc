@@ -19,7 +19,7 @@
     rel="stylesheet">
 
   <!-- CSS Stylesheet -->
-  <link rel="stylesheet" href="/css/display.css?v=20261124_v208">
+  <link rel="stylesheet" href="/css/display.css?v=20261124_v209">
 
   <!-- Cache-Control & Auto-Purge Cache Stale Worker -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -28,7 +28,7 @@
   <script>
     (function () {
       try {
-        var APP_VER = "20261124_v208";
+        var APP_VER = "20261124_v209";
         if (localStorage.getItem("acc_livescore_version") !== APP_VER) {
           localStorage.setItem("acc_livescore_version", APP_VER);
           if ('caches' in window) {
@@ -159,9 +159,7 @@
       <div class="momentum-columns">
         <!-- MOMENTUM KEJADIAN TIM HOME (KIRI) -->
         <div class="momentum-col home">
-          <div class="momentum-events-list" id="momentumHomeEvents">
-            <span class="momentum-empty">-</span>
-          </div>
+          <div class="momentum-events-list" id="momentumHomeEvents"></div>
         </div>
 
         <!-- PEMISAH VERTIKAL -->
@@ -169,9 +167,7 @@
 
         <!-- MOMENTUM KEJADIAN TIM AWAY (KANAN) -->
         <div class="momentum-col away">
-          <div class="momentum-events-list" id="momentumAwayEvents">
-            <span class="momentum-empty">-</span>
-          </div>
+          <div class="momentum-events-list" id="momentumAwayEvents"></div>
         </div>
       </div>
     </section>
@@ -186,10 +182,10 @@
   </div>
 
   <!-- JAVASCRIPT LOGIC -->
-  <script src="/js/config.js?v=20261124_v208"></script>
-  <script src="/js/teams.js?v=20261124_v208"></script>
-  <script src="/js/supabase-sync.js?v=20261124_v208"></script>
-  <script src="/js/app-display.js?v=20261124_v208"></script>
+  <script src="/js/config.js?v=20261124_v209"></script>
+  <script src="/js/teams.js?v=20261124_v209"></script>
+  <script src="/js/supabase-sync.js?v=20261124_v209"></script>
+  <script src="/js/app-display.js?v=20261124_v209"></script>
 
 </body>
 

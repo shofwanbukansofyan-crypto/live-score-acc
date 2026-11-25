@@ -210,14 +210,7 @@ class ScoreboardDisplay {
       const MAX_ROWS = 5; // Maksimal 5 baris per kolom sesuai permintaan user
 
       if (eventItems.length === 0) {
-        // Tampilkan 1 kolom dengan 3 slot kosong jika belum ada kejadian
-        return `
-          <div class="momentum-subcol ${alignRight ? 'align-right' : 'align-left'}">
-            <div class="momentum-row empty ${alignRight ? 'align-right' : 'align-left'}"><div class="event-chip empty-slot"><span class="empty-dash">-</span></div></div>
-            <div class="momentum-row empty ${alignRight ? 'align-right' : 'align-left'}"><div class="event-chip empty-slot"><span class="empty-dash">-</span></div></div>
-            <div class="momentum-row empty ${alignRight ? 'align-right' : 'align-left'}"><div class="event-chip empty-slot"><span class="empty-dash">-</span></div></div>
-          </div>
-        `;
+        return "";
       }
 
       // Bagi daftar kejadian menjadi sub-kolom (maksimal 5 kejadian per sub-kolom)
@@ -228,60 +221,45 @@ class ScoreboardDisplay {
 
       // Bangun elemen per sub-kolom
       const subcolsHtml = subcols.map((chunk) => {
-        // Jika hanya ada 1 kolom dan kejadiannya kurang dari 3, pad ke 3 baris
-        const rowCount = subcols.length === 1 ? Math.max(3, chunk.length) : chunk.length;
-        const rows = [];
+        const rows = chunk.map((ev) => {
+          let icon = "⚽";
+          let chipClass = "goal";
+          let defaultLabel = "Gol";
+          let ogTag = "";
 
-        for (let i = 0; i < rowCount; i++) {
-          const ev = chunk[i];
-          if (ev) {
-            let icon = "⚽";
-            let chipClass = "goal";
-            let defaultLabel = "Gol";
-            let ogTag = "";
-
-            const isOG = ev.type === "own_goal" || ev.is_own_goal || (ev.player_name && ev.player_name.includes("(GBD)"));
-            if (isOG) {
-              chipClass = "goal own-goal";
-              defaultLabel = "Gol Bunuh Diri";
-              ogTag = '<span class="chip-og-tag">GBD</span>';
-            } else if (ev.type === "card_yellow") {
-              icon = "🟨";
-              chipClass = "card-yellow";
-              defaultLabel = "Kartu Kuning";
-            } else if (ev.type === "card_red") {
-              icon = "🟥";
-              chipClass = "card-red";
-              defaultLabel = "Kartu Merah";
-            }
-
-            const rawPlayer = ev.player_name || defaultLabel;
-            const displayName = isOG
-              ? (rawPlayer.replace(/\s*\(GBD\)/gi, '').trim() || "Gol Bunuh Diri")
-              : rawPlayer;
-
-            const minuteText = ev.minute ? `<span class="chip-minute">${ev.minute}'</span>` : "";
-
-            rows.push(`
-              <div class="momentum-row ${alignRight ? 'align-right' : 'align-left'}">
-                <div class="event-chip ${chipClass}">
-                  <span class="chip-icon">${icon}</span>
-                  ${minuteText}
-                  <span class="chip-player">${displayName}</span>
-                  ${ogTag}
-                </div>
-              </div>
-            `);
-          } else {
-            rows.push(`
-              <div class="momentum-row empty ${alignRight ? 'align-right' : 'align-left'}">
-                <div class="event-chip empty-slot">
-                  <span class="empty-dash">-</span>
-                </div>
-              </div>
-            `);
+          const isOG = ev.type === "own_goal" || ev.is_own_goal || (ev.player_name && ev.player_name.includes("(GBD)"));
+          if (isOG) {
+            chipClass = "goal own-goal";
+            defaultLabel = "Gol Bunuh Diri";
+            ogTag = '<span class="chip-og-tag">GBD</span>';
+          } else if (ev.type === "card_yellow") {
+            icon = "🟨";
+            chipClass = "card-yellow";
+            defaultLabel = "Kartu Kuning";
+          } else if (ev.type === "card_red") {
+            icon = "🟥";
+            chipClass = "card-red";
+            defaultLabel = "Kartu Merah";
           }
-        }
+
+          const rawPlayer = ev.player_name || defaultLabel;
+          const displayName = isOG
+            ? (rawPlayer.replace(/\s*\(GBD\)/gi, '').trim() || "Gol Bunuh Diri")
+            : rawPlayer;
+
+          const minuteText = ev.minute ? `<span class="chip-minute">${ev.minute}'</span>` : "";
+
+          return `
+            <div class="momentum-row ${alignRight ? 'align-right' : 'align-left'}">
+              <div class="event-chip ${chipClass}">
+                <span class="chip-icon">${icon}</span>
+                ${minuteText}
+                <span class="chip-player">${displayName}</span>
+                ${ogTag}
+              </div>
+            </div>
+          `;
+        });
 
         return `
           <div class="momentum-subcol ${alignRight ? 'align-right' : 'align-left'}">
