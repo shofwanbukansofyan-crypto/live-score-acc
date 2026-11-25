@@ -297,13 +297,22 @@ class SyncEngine {
   }
 
   async addEvent(eventData) {
-    const newEvent = Object.assign({
-      id: "ev_" + Date.now() + "_" + Math.random().toString(36).substr(2, 4),
-      match_id: "current_match",
-      created_at: new Date().toISOString()
+    // 1. Siapkan payload yang valid untuk database (wajib menyertakan match_id)
+    const dbPayload = Object.assign({
+      match_id: "current_match"
     }, eventData);
 
-    // Update lokal
+    // Pastikan tidak ada id sementara non-UUID yang ikut terkirim ke kolom uuid
+    delete dbPayload.id;
+
+    // 2. Buat objek sementara untuk Optimistic UI lokal
+    const tempId = "ev_" + Date.now() + "_" + Math.random().toString(36).substr(2, 4);
+    const newEvent = Object.assign({
+      id: tempId,
+      created_at: new Date().toISOString()
+    }, dbPayload);
+
+    // Update lokal seketika
     this.cachedEvents.push(newEvent);
     this.saveLocalBackup(null, this.cachedEvents);
 
@@ -328,22 +337,30 @@ class SyncEngine {
 
     this.notifyListeners(this.cachedState, this.cachedEvents);
 
+    // 3. Kirim dbPayload (yang sudah berisi match_id) ke Supabase
     if (this.supabase && this.isUsingSupabase) {
       try {
         const { data, error } = await this.supabase
           .from("match_events")
-          .insert(eventData)
+          .insert([dbPayload])
           .select();
 
-        if (!error && data && data[0]) {
-          // Replace temp id with Supabase UUID
-          const idx = this.cachedEvents.findIndex(e => e.id === newEvent.id);
+        if (error) {
+          console.error("Supabase insert event error:", error.message, error.details);
+          return;
+        }
+
+        if (data && data[0]) {
+          // Ganti event sementara dengan baris asli (ber-UUID valid) dari Supabase
+          const idx = this.cachedEvents.findIndex(e => e.id === tempId);
           if (idx !== -1) {
             this.cachedEvents[idx] = data[0];
+            this.saveLocalBackup(null, this.cachedEvents);
+            this.notifyListeners(this.cachedState, this.cachedEvents);
           }
         }
       } catch (err) {
-        console.error("Supabase insert event error:", err);
+        console.error("Supabase insert event exception:", err);
       }
     }
   }
