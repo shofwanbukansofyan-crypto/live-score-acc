@@ -1236,3 +1236,153 @@ body {
   width: 92%;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
 }
+
+/* ==============================================================================
+   MODE SIANG (DAYLIGHT HIGH-CONTRAST THEME FOR OPERATOR)
+   ============================================================================== */
+body.day-mode {
+  --bg-page: #e2e8f0;
+  --bg-surface: #ffffff;
+  --bg-surface-elevated: #f8fafc;
+  --border-color: rgba(15, 23, 42, 0.14);
+  --text-main: #0f172a;
+  --text-muted: #475569;
+  background-color: #e2e8f0;
+  color: #0f172a;
+}
+
+body.day-mode .operator-navbar,
+body.day-mode .operator-card {
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
+}
+
+body.day-mode .brand-wrap h2,
+body.day-mode .team-ctrl-name,
+body.day-mode .score-display-box,
+body.day-mode .goal-scorer-text,
+body.day-mode .pen-team-lbl {
+  color: #0f172a;
+}
+
+body.day-mode .team-officials-inline strong {
+  color: #1e293b;
+}
+
+body.day-mode .btn-nav {
+  background: rgba(15, 23, 42, 0.06);
+  color: #1e293b;
+}
+
+body.day-mode .btn-nav:hover {
+  background: rgba(15, 23, 42, 0.12);
+  color: #0f172a;
+}
+
+body.day-mode .btn-nav-gold {
+  background: rgba(234, 179, 8, 0.22);
+  color: #854d0e;
+}
+
+body.day-mode .btn-nav-cyan {
+  background: rgba(14, 165, 233, 0.16);
+  color: #0369a1;
+}
+
+body.day-mode .btn-reset-match {
+  color: #b91c1c;
+  background: rgba(239, 68, 68, 0.12);
+}
+
+body.day-mode .select-input,
+body.day-mode .text-input {
+  background: #ffffff;
+  color: #0f172a;
+  border-color: rgba(15, 23, 42, 0.2);
+}
+
+body.day-mode .timer-digits-wrap {
+  background: #ffffff;
+  color: #0f172a;
+  border-color: rgba(15, 23, 42, 0.18);
+}
+
+body.day-mode .timer-digits-wrap.running {
+  color: #059669;
+  border-color: #10b981;
+}
+
+body.day-mode .btn-timer-sub,
+body.day-mode .btn-period,
+body.day-mode .btn-stat-mini,
+body.day-mode .btn-score-minus,
+body.day-mode .btn-pen-undo {
+  background: #ffffff;
+  color: #1e293b;
+  border-color: rgba(15, 23, 42, 0.18);
+}
+
+body.day-mode .btn-period.active {
+  background: rgba(245, 158, 11, 0.22);
+  color: #b45309;
+  border-color: #f59e0b;
+}
+
+body.day-mode .team-ctrl-score-row,
+body.day-mode .goals-editor-section,
+body.day-mode .stat-pill-row,
+body.day-mode .penalty-team-card {
+  background: rgba(15, 23, 42, 0.04);
+}
+
+body.day-mode .goal-item-card,
+body.day-mode .event-log-item {
+  background: #ffffff;
+  border-color: rgba(15, 23, 42, 0.14);
+}
+
+body.day-mode .goal-editor-panel {
+  background: #f1f5f9;
+  border-top-color: rgba(15, 23, 42, 0.1);
+}
+
+body.day-mode .goal-min-pill {
+  background: rgba(15, 23, 42, 0.08);
+  color: #334155;
+}
+
+body.day-mode .goal-num-badge {
+  color: #047857;
+}
+
+body.day-mode .goal-item-card.pending .goal-num-badge,
+body.day-mode .goal-scorer-text.is-empty {
+  color: #b45309;
+}
+
+body.day-mode .btn-goal-edit {
+  color: #b45309;
+}
+
+body.day-mode .btn-goal-del {
+  color: #dc2626;
+}
+
+body.day-mode .btn-action-yellow {
+  color: #854d0e;
+}
+
+body.day-mode .btn-action-red {
+  color: #b91c1c;
+}
+
+body.day-mode .btn-action-cyan {
+  color: #0e7490;
+}
+
+body.day-mode .event-log-item span[style*="color: #fff"] {
+  color: #0f172a !important;
+}
+
+body.day-mode .modal-content h3 {
+  color: #0f172a !important;
+}

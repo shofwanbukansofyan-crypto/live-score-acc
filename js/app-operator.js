@@ -27,6 +27,9 @@ class OperatorConsole {
       this.currentEvents = events || [];
       this.renderUI(state, this.currentEvents);
     });
+    window.syncEngine.subscribeTheme((mode) => {
+      this.applyTheme(mode);
+    });
 
     // 4. Timer loop lokal untuk tampilan kontrol operator
     this.startLocalTimerLoop();
@@ -1320,6 +1323,21 @@ class OperatorConsole {
 
     alert("Pengaturan Supabase & PIN berhasil disimpan!\nHalaman akan dimuat ulang untuk menghubungkan ke Supabase.");
     window.location.reload();
+  }
+
+  toggleTheme() {
+    const isDay = document.body.classList.contains("day-mode");
+    const next = isDay ? "night" : "day";
+    window.syncEngine.setThemeMode(next);
+  }
+
+  applyTheme(mode) {
+    const isDay = mode === "day";
+    document.body.classList.toggle("day-mode", isDay);
+    const btn = document.getElementById("btnThemeToggle");
+    if (btn) {
+      btn.textContent = isDay ? "🌙 Mode Malam" : "☀️ Mode Siang";
+    }
   }
 
   setText(id, text) {

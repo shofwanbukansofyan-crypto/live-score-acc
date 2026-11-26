@@ -19,7 +19,7 @@
     rel="stylesheet">
 
   <!-- CSS Stylesheet -->
-  <link rel="stylesheet" href="/css/display.css?v=20261126_v214">
+  <link rel="stylesheet" href="/css/display.css?v=20261126_v215">
 
   <!-- Cache-Control & Auto-Purge Cache Stale Worker -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -28,7 +28,7 @@
   <script>
     (function () {
       try {
-        var APP_VER = "20261126_v214";
+        var APP_VER = "20261126_v215";
         if (localStorage.getItem("acc_livescore_version") !== APP_VER) {
           localStorage.setItem("acc_livescore_version", APP_VER);
           if ('caches' in window) {
@@ -54,6 +54,12 @@
 
   <!-- CONTAINER UTAMA LAYAR TV -->
   <main class="tv-scoreboard-container">
+
+    <!-- TOMBOL TOGGLE MODE SIANG / MALAM -->
+    <button type="button" class="tv-theme-toggle" id="tvThemeToggle"
+      onclick="scoreboardDisplay.toggleTheme()" title="Ganti Mode Siang / Malam (Tekan T)">
+      ☀️ Mode Siang
+    </button>
 
     <!-- 1. DETAIL LOGO DI TENGAH ATAS (BERSIH DARI TULISAN PELENGKAP) & FASE GRUP SESUAI -->
     <header class="tv-top-center">
@@ -180,10 +186,10 @@
   </div>
 
   <!-- JAVASCRIPT LOGIC -->
-  <script src="/js/config.js?v=20261126_v214"></script>
-  <script src="/js/teams.js?v=20261126_v214"></script>
-  <script src="/js/supabase-sync.js?v=20261126_v214"></script>
-  <script src="/js/app-display.js?v=20261126_v214"></script>
+  <script src="/js/config.js?v=20261126_v215"></script>
+  <script src="/js/teams.js?v=20261126_v215"></script>
+  <script src="/js/supabase-sync.js?v=20261126_v215"></script>
+  <script src="/js/app-display.js?v=20261126_v215"></script>
 
 </body>
 

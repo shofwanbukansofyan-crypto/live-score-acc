@@ -16,6 +16,8 @@ class SyncEngine {
     this.pendingEventUpdates = {};
     this.pendingEventDeletes = new Set();
     this.idAliases = {};
+    this.themeMode = localStorage.getItem("acc_theme_mode") || "night";
+    this.themeListeners = [];
 
     this.initBroadcastChannel();
     this.initSupabase();
@@ -70,6 +72,8 @@ class SyncEngine {
           } else if (type === "EVENTS_UPDATE") {
             this.cachedEvents = payload;
             this.notifyListeners(this.cachedState, this.cachedEvents);
+          } else if (type === "THEME_UPDATE" && payload) {
+            this.applyRemoteTheme(payload);
           }
         };
       } catch (e) {
@@ -141,6 +145,12 @@ class SyncEngine {
       }
     });
 
+    channel.on("broadcast", { event: "THEME_UPDATE" }, ({ payload }) => {
+      if (payload && payload.mode) {
+        this.applyRemoteTheme(payload.mode);
+      }
+    });
+
     channel.on("broadcast", { event: "SYNC_REQUEST" }, () => {
       if (this.cachedState && this.realtimeChannel) {
         try {
@@ -153,6 +163,11 @@ class SyncEngine {
             type: "broadcast",
             event: "EVENTS_UPDATE",
             payload: this.cachedEvents
+          });
+          this.realtimeChannel.send({
+            type: "broadcast",
+            event: "THEME_UPDATE",
+            payload: { mode: this.themeMode }
           });
         } catch (_) { }
       }
@@ -513,6 +528,42 @@ class SyncEngine {
       if (state) localStorage.setItem("acc_live_state", JSON.stringify(state));
       if (events) localStorage.setItem("acc_live_events", JSON.stringify(events));
     } catch (_) { }
+  }
+
+  applyRemoteTheme(mode) {
+    this.themeMode = mode === "day" ? "day" : "night";
+    try { localStorage.setItem("acc_theme_mode", this.themeMode); } catch (_) { }
+    this.themeListeners.forEach(fn => {
+      try { fn(this.themeMode); } catch (_) { }
+    });
+  }
+
+  setThemeMode(mode) {
+    const next = mode === "day" ? "day" : "night";
+    this.applyRemoteTheme(next);
+
+    if (this.broadcastChannel) {
+      try {
+        this.broadcastChannel.postMessage({ type: "THEME_UPDATE", payload: next });
+      } catch (_) { }
+    }
+
+    if (this.realtimeChannel && this.isConnected) {
+      try {
+        this.realtimeChannel.send({
+          type: "broadcast",
+          event: "THEME_UPDATE",
+          payload: { mode: next }
+        });
+      } catch (_) { }
+    }
+  }
+
+  subscribeTheme(fn) {
+    if (typeof fn === "function") {
+      this.themeListeners.push(fn);
+      fn(this.themeMode);
+    }
   }
 
   subscribe(listener) {
