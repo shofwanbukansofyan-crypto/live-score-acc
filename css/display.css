@@ -684,32 +684,8 @@ body {
 }
 
 /* ==============================================================================
-   6. TOMBOL TOGGLE & TEMA MODE SIANG (DAYLIGHT HIGH-CONTRAST)
+   6. TEMA MODE SIANG (DAYLIGHT HIGH-CONTRAST - DIKENDALIKAN OPERATOR)
    ============================================================================== */
-.tv-theme-toggle {
-  position: fixed;
-  bottom: 14px;
-  right: 18px;
-  z-index: 60;
-  background: rgba(15, 23, 42, 0.65);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  color: #e2e8f0;
-  padding: 6px 13px;
-  border-radius: 999px;
-  font-family: var(--font-family);
-  font-size: 0.74rem;
-  font-weight: 700;
-  cursor: pointer;
-  opacity: 0.35;
-  backdrop-filter: blur(8px);
-  transition: opacity 0.25s ease, transform 0.15s ease, background 0.25s ease;
-}
-
-.tv-theme-toggle:hover {
-  opacity: 1;
-  transform: translateY(-1px);
-}
-
 body.day-mode {
   --bg-main: #eef2f6;
   --bg-card: rgba(255, 255, 255, 0.85);
@@ -724,13 +700,6 @@ body.day-mode {
     radial-gradient(circle at 85% 50%, rgba(59, 130, 246, 0.08) 0%, transparent 45%),
     linear-gradient(180deg, #ffffff 0%, #e2e8f0 100%);
   color: #0f172a;
-}
-
-body.day-mode .tv-theme-toggle {
-  background: rgba(255, 255, 255, 0.88);
-  border-color: rgba(15, 23, 42, 0.16);
-  color: #0f172a;
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.1);
 }
 
 body.day-mode .tv-tournament-logo {

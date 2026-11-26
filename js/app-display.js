@@ -71,12 +71,10 @@ class ScoreboardDisplay {
   }
 
   setupListeners() {
-    // Keyboard shortcut F untuk layar penuh, T untuk Mode Siang/Malam
+    // Keyboard shortcut F atau F11 untuk layar penuh
     document.addEventListener("keydown", (e) => {
       if (e.key === "f" || e.key === "F") {
         this.toggleFullscreen();
-      } else if (e.key === "t" || e.key === "T") {
-        this.toggleTheme();
       }
     });
 
@@ -533,23 +531,8 @@ class ScoreboardDisplay {
     } catch (_) { }
   }
 
-  toggleTheme() {
-    const isDay = document.body.classList.contains("day-mode");
-    const next = isDay ? "night" : "day";
-    if (window.syncEngine && typeof window.syncEngine.setThemeMode === "function") {
-      window.syncEngine.setThemeMode(next);
-    } else {
-      this.applyTheme(next);
-    }
-  }
-
   applyTheme(mode) {
-    const isDay = mode === "day";
-    document.body.classList.toggle("day-mode", isDay);
-    const btn = document.getElementById("tvThemeToggle");
-    if (btn) {
-      btn.textContent = isDay ? "🌙 Mode Malam" : "☀️ Mode Siang";
-    }
+    document.body.classList.toggle("day-mode", mode === "day");
   }
 
   updateText(id, text) {
