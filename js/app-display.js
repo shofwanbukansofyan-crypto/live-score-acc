@@ -130,8 +130,12 @@ class ScoreboardDisplay {
       }
     }
 
-    // Render Data Fase Turnamen
-    this.updateText("stagePillText", state.stage || "FASE GRUP");
+    // Render Data Fase & Kategori Turnamen
+    let stageDisplay = state.stage || "FASE GRUP";
+    if (state.category && !stageDisplay.toUpperCase().includes(String(state.category).toUpperCase())) {
+      stageDisplay = `${stageDisplay} (${String(state.category).toUpperCase()})`;
+    }
+    this.updateText("stagePillText", stageDisplay);
 
     // Resolusi Logo Tim Resmi (Gunakan logo tim asli dari ACC_TEAMS jika logo masih default)
     let homeLogo = state.home_logo;

@@ -19,7 +19,7 @@
     rel="stylesheet">
 
   <!-- CSS Stylesheet -->
-  <link rel="stylesheet" href="/css/display.css?v=20261126_v215">
+  <link rel="stylesheet" href="/css/display.css?v=20261126_v216">
 
   <!-- Cache-Control & Auto-Purge Cache Stale Worker -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -28,7 +28,7 @@
   <script>
     (function () {
       try {
-        var APP_VER = "20261126_v215";
+        var APP_VER = "20261126_v216";
         if (localStorage.getItem("acc_livescore_version") !== APP_VER) {
           localStorage.setItem("acc_livescore_version", APP_VER);
           if ('caches' in window) {
@@ -61,14 +61,25 @@
       ☀️ Mode Siang
     </button>
 
-    <!-- 1. DETAIL LOGO DI TENGAH ATAS (BERSIH DARI TULISAN PELENGKAP) & FASE GRUP SESUAI -->
-    <header class="tv-top-center">
-      <img src="/assets/acc_logo.png" alt="ACC 2026 Logo" class="tv-tournament-logo"
-        onerror="this.src='/assets/logo.png'">
-      <div class="tv-stage-indicator" id="stagePillText">FASE GRUP</div>
+    <!-- 1. TOP BAR: LOGO KIRI | LIVE WAKTU TENGAH ATAS | KATEGORI KANAN -->
+    <header class="tv-top-bar">
+      <div class="tv-top-left">
+        <img src="/assets/acc_logo.png" alt="ACC 2026 Logo" class="tv-tournament-logo"
+          onerror="this.src='/assets/logo.png'">
+      </div>
+
+      <div class="tv-top-center-clock">
+        <div class="tv-digital-clock-wrap">
+          <div class="tv-digital-clock" id="tvDigitalClock">00:00</div>
+        </div>
+      </div>
+
+      <div class="tv-top-right">
+        <div class="tv-stage-indicator" id="stagePillText">FASE GRUP</div>
+      </div>
     </header>
 
-    <!-- 2. MAIN SCOREBOARD ARENA (MINIMALIS, KURANGI BOX, FOKUS DATA UTAMA) -->
+    <!-- 2. MAIN SCOREBOARD ARENA (LOGO KIRI | SKOR BESAR TENGAH | LOGO KANAN) -->
     <section class="tv-main-arena">
 
       <!-- PANEL TIM HOME (KIRI) -->
@@ -96,13 +107,8 @@
         </div>
       </article>
 
-      <!-- CENTER HUB: DIGITAL CLOCK (LIVE MINUTE) & GIANT SCORE -->
+      <!-- CENTER HUB: GIANT SCORE DI TENGAH PAS -->
       <div class="tv-center-hub">
-        <!-- LIVE DIGITAL TIMER (HANYA LIVE MINUTE, TULISAN STATUS DIHAPUS) -->
-        <div class="tv-digital-clock-wrap">
-          <div class="tv-digital-clock" id="tvDigitalClock">00:00</div>
-        </div>
-
         <!-- GIANT SCORE -->
         <div class="tv-score-display">
           <div class="score-digit" id="homeScoreDigits">0</div>
@@ -186,10 +192,10 @@
   </div>
 
   <!-- JAVASCRIPT LOGIC -->
-  <script src="/js/config.js?v=20261126_v215"></script>
-  <script src="/js/teams.js?v=20261126_v215"></script>
-  <script src="/js/supabase-sync.js?v=20261126_v215"></script>
-  <script src="/js/app-display.js?v=20261126_v215"></script>
+  <script src="/js/config.js?v=20261126_v216"></script>
+  <script src="/js/teams.js?v=20261126_v216"></script>
+  <script src="/js/supabase-sync.js?v=20261126_v216"></script>
+  <script src="/js/app-display.js?v=20261126_v216"></script>
 
 </body>
 
