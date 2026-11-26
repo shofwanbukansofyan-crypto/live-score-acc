@@ -2205,7 +2205,7 @@ const ACC_TEAMS = [
       },
       {
         "no": 3,
-        "name": "Eric Abidal",
+        "name": "Danish",
         "pos": "Anchor",
         "goals": 0,
         "yc": 0,
