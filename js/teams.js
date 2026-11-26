@@ -2196,7 +2196,7 @@ const ACC_TEAMS = [
     "players": [
       {
         "no": 1,
-        "name": "Fabien Barthez",
+        "name": "Fayyadh Raevan",
         "pos": "Kiper",
         "goals": 0,
         "yc": 1,

@@ -4301,7 +4301,7 @@ const ACC_MATCHES = [
               "Karim Benzema"
             ],
             "onCourt": [
-              "Fabien Barthez",
+              "Fayyadh Raevan",
               "Eric Abidal",
               "Zinedine Zidane (C)",
               "Thierry Henry",
