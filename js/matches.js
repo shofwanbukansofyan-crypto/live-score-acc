@@ -683,29 +683,28 @@ const ACC_MATCHES = [
       {
         "team": "T06",
         "assist": "",
-        "minute": "1'",
-        "player": "JIBRIL AZ ZUHRI ARIS",
-        "isOwnGoal": false
-      },
-      {
-        "team": "T06",
-        "assist": "",
         "minute": "3'",
-        "player": "MUHAMMAD FADLAN FATAYYA",
+        "player": "Muhammad Fadlan Fatayya",
         "isOwnGoal": false
       },
       {
         "team": "T06",
         "assist": "",
         "minute": "12'",
-        "player": "MUSTAJAB",
+        "player": "Mustajab",
         "isOwnGoal": false
       },
       {
         "team": "T06",
         "assist": "",
         "minute": "19'",
-        "player": "AQIL ‘ALLAMAH",
+        "player": "Aqil ‘Allamah",
+        "isOwnGoal": false
+      },
+      {
+        "team": "T06",
+        "minute": "1'",
+        "player": "Muhammad Jibril",
         "isOwnGoal": false
       }
     ],
@@ -2318,12 +2317,43 @@ const ACC_MATCHES = [
     "awayLogo": "/assets/teams/T13/alfayyadh_b.png",
     "homeColor": "#d97706",
     "awayColor": "#15803d",
-    "status": "upcoming",
-    "homeScore": 0,
-    "awayScore": 0,
-    "homeScoreLive": 0,
-    "awayScoreLive": 0,
-    "scorers": [],
+    "status": "finished",
+    "homeScore": 1,
+    "awayScore": 4,
+    "homeScoreLive": 1,
+    "awayScoreLive": 4,
+    "scorers": [
+      {
+        "team": "T04",
+        "minute": "5'",
+        "player": "Muhammad Alif Afreiza",
+        "isOwnGoal": false
+      },
+      {
+        "team": "T13",
+        "minute": "17'",
+        "player": "Muh. Asyraf Kurniawan Sabara",
+        "isOwnGoal": false
+      },
+      {
+        "team": "T13",
+        "minute": "25'",
+        "player": "Muh. Asyraf Kurniawan Sabara",
+        "isOwnGoal": false
+      },
+      {
+        "team": "T13",
+        "minute": "27'",
+        "player": "Muh. Asyraf Kurniawan Sabara",
+        "isOwnGoal": false
+      },
+      {
+        "team": "T13",
+        "minute": "29'",
+        "player": "Muh. Asyraf Kurniawan Sabara",
+        "isOwnGoal": false
+      }
+    ],
     "cards": [
       {
         "_meta": true,
@@ -2386,12 +2416,67 @@ const ACC_MATCHES = [
     "awayLogo": "/assets/teams/T09/spansa.png",
     "homeColor": "#b91c1c",
     "awayColor": "#0d9488",
-    "status": "upcoming",
-    "homeScore": 0,
-    "awayScore": 0,
-    "homeScoreLive": 0,
-    "awayScoreLive": 0,
-    "scorers": [],
+    "status": "finished",
+    "homeScore": 3,
+    "awayScore": 6,
+    "homeScoreLive": 3,
+    "awayScoreLive": 6,
+    "scorers": [
+      {
+        "team": "T09",
+        "minute": "6'",
+        "player": "Tompo",
+        "isOwnGoal": false
+      },
+      {
+        "team": "T12",
+        "minute": "9'",
+        "player": "Risky Pratama",
+        "isOwnGoal": false
+      },
+      {
+        "team": "T09",
+        "minute": "13'",
+        "player": "Tompo",
+        "isOwnGoal": false
+      },
+      {
+        "team": "T09",
+        "minute": "20'",
+        "player": "Tompo",
+        "isOwnGoal": false
+      },
+      {
+        "team": "T09",
+        "minute": "22'",
+        "player": "Tompo",
+        "isOwnGoal": false
+      },
+      {
+        "team": "T09",
+        "minute": "26'",
+        "player": "Tompo",
+        "isOwnGoal": false
+      },
+      {
+        "team": "T09",
+        "minute": "26'",
+        "player": "Aan",
+        "isOwnGoal": false
+      },
+      {
+        "team": "T12",
+        "minute": "29'",
+        "player": "A. Khaerul",
+        "isOwnGoal": false
+      },
+      {
+        "team": "T12",
+        "minute": "29'",
+        "player": "Reyhan Alfarthin",
+        "isOwnGoal": false
+      }
+    ],
     "cards": [
       {
         "_meta": true,
@@ -2450,12 +2535,37 @@ const ACC_MATCHES = [
     "awayLogo": "/assets/teams/T11/hjhaniah.png",
     "homeColor": "#0284c7",
     "awayColor": "#0284c7",
-    "status": "upcoming",
-    "homeScore": 0,
-    "awayScore": 0,
-    "homeScoreLive": 0,
-    "awayScoreLive": 0,
-    "scorers": [],
+    "status": "finished",
+    "homeScore": 1,
+    "awayScore": 3,
+    "homeScoreLive": 1,
+    "awayScoreLive": 3,
+    "scorers": [
+      {
+        "team": "T11",
+        "minute": "5'",
+        "player": "Ubaidillah Ashim Ahmad (GBD)",
+        "isOwnGoal": true
+      },
+      {
+        "team": "T11",
+        "minute": "12'",
+        "player": "Wira Noval",
+        "isOwnGoal": false
+      },
+      {
+        "team": "T07",
+        "minute": "17'",
+        "player": "Naufal Dzikran Ahmad",
+        "isOwnGoal": false
+      },
+      {
+        "team": "T11",
+        "minute": "19'",
+        "player": "Wira Noval",
+        "isOwnGoal": false
+      }
+    ],
     "cards": [
       {
         "_meta": true,
@@ -2518,12 +2628,49 @@ const ACC_MATCHES = [
     "awayLogo": "/assets/teams/T08/muba.png",
     "homeColor": "#dc2626",
     "awayColor": "#9333ea",
-    "status": "upcoming",
-    "homeScore": 0,
-    "awayScore": 0,
-    "homeScoreLive": 0,
-    "awayScoreLive": 0,
-    "scorers": [],
+    "status": "finished",
+    "homeScore": 5,
+    "awayScore": 1,
+    "homeScoreLive": 5,
+    "awayScoreLive": 1,
+    "scorers": [
+      {
+        "team": "T06",
+        "minute": "12'",
+        "player": "Mustajab",
+        "isOwnGoal": false
+      },
+      {
+        "team": "T06",
+        "minute": "19'",
+        "player": "Aqil ‘Allamah",
+        "isOwnGoal": false
+      },
+      {
+        "team": "T06",
+        "minute": "20'",
+        "player": "Aqil ‘Allamah",
+        "isOwnGoal": false
+      },
+      {
+        "team": "T06",
+        "minute": "21'",
+        "player": "Mustajab",
+        "isOwnGoal": false
+      },
+      {
+        "team": "T08",
+        "minute": "23'",
+        "player": "Muhammad Afif Akhdan",
+        "isOwnGoal": false
+      },
+      {
+        "team": "T06",
+        "minute": "25'",
+        "player": "Mustajab",
+        "isOwnGoal": false
+      }
+    ],
     "cards": [
       {
         "_meta": true,
@@ -2577,17 +2724,17 @@ const ACC_MATCHES = [
     "group": null,
     "pitch": "Lapangan 1 (Utama Vinyl)",
     "date": "28 Nov 2026",
-    "time": "09:20 - 10:00 WITA",
-    "homeId": "",
-    "awayId": "",
-    "homeName": "Pemenang QF 1",
-    "awayName": "Pemenang QF 3",
-    "homeShort": "Pemen",
-    "awayShort": "Pemen",
-    "homeLogo": "/assets/logo.png",
-    "awayLogo": "/assets/logo.png",
-    "homeColor": "#10b981",
-    "awayColor": "#f59e0b",
+    "time": "16:00 - 16:40 WITA",
+    "homeId": "T13",
+    "awayId": "T09",
+    "homeName": "SMP AL-FAYYADH A",
+    "awayName": "SMPN 1 Maros",
+    "homeShort": "AL-FAYYADH A",
+    "awayShort": "SMPN 1 MAROS",
+    "homeLogo": "/assets/teams/T13/alfayyadh_b.png",
+    "awayLogo": "/assets/teams/T09/spansa.png",
+    "homeColor": "#15803d",
+    "awayColor": "#0d9488",
     "status": "upcoming",
     "homeScore": 0,
     "awayScore": 0,
@@ -2641,17 +2788,17 @@ const ACC_MATCHES = [
     "group": null,
     "pitch": "Lapangan 1 (Utama Vinyl)",
     "date": "28 Nov 2026",
-    "time": "16:00 - 16:40 WITA",
-    "homeId": "",
-    "awayId": "",
-    "homeName": "Pemenang QF 2",
-    "awayName": "Pemenang QF 4",
-    "homeShort": "Pemen",
-    "awayShort": "Pemen",
-    "homeLogo": "/assets/logo.png",
-    "awayLogo": "/assets/logo.png",
-    "homeColor": "#10b981",
-    "awayColor": "#f59e0b",
+    "time": "16:40 - 17:20 WITA",
+    "homeId": "T11",
+    "awayId": "T06",
+    "homeName": "Pesantren Hj. Haniah Maros",
+    "awayName": "SMP AL-FAYYADH B",
+    "homeShort": "MTs HJ HANIAH",
+    "awayShort": "AL-FAYYADH B",
+    "homeLogo": "/assets/teams/T11/hjhaniah.png",
+    "awayLogo": "/assets/teams/T06/alfayyadh_a.png",
+    "homeColor": "#0284c7",
+    "awayColor": "#dc2626",
     "status": "upcoming",
     "homeScore": 0,
     "awayScore": 0,
@@ -4846,12 +4993,61 @@ const ACC_MATCHES = [
     "awayLogo": "/assets/teams/T30/bulu-bulu.png",
     "homeColor": "#c50202",
     "awayColor": "#0284c7",
-    "status": "upcoming",
-    "homeScore": 0,
-    "awayScore": 0,
-    "homeScoreLive": 0,
-    "awayScoreLive": 0,
-    "scorers": [],
+    "status": "finished",
+    "homeScore": 3,
+    "awayScore": 5,
+    "homeScoreLive": 3,
+    "awayScoreLive": 5,
+    "scorers": [
+      {
+        "team": "T17",
+        "minute": "3'",
+        "player": "Arsyaka Siraj Ahmad Yusuf",
+        "isOwnGoal": false
+      },
+      {
+        "team": "T17",
+        "minute": "5'",
+        "player": "Arsyaka Siraj Ahmad Yusuf",
+        "isOwnGoal": false
+      },
+      {
+        "team": "T30",
+        "minute": "14'",
+        "player": "Muh. Fakhar Zhafar Rahmat",
+        "isOwnGoal": false
+      },
+      {
+        "team": "T30",
+        "minute": "18'",
+        "player": "Muh. Ayyub",
+        "isOwnGoal": false
+      },
+      {
+        "team": "T30",
+        "minute": "24'",
+        "player": "Muh. Farhan Habibi",
+        "isOwnGoal": false
+      },
+      {
+        "team": "T17",
+        "minute": "27'",
+        "player": "Raziq Gibranaldan Adibramantya",
+        "isOwnGoal": false
+      },
+      {
+        "team": "T30",
+        "minute": "28'",
+        "player": "Adam Faiz Al Arkhan",
+        "isOwnGoal": false
+      },
+      {
+        "team": "T30",
+        "minute": "30'",
+        "player": "Muhammad Arifin A",
+        "isOwnGoal": false
+      }
+    ],
     "cards": []
   },
   {
@@ -4872,12 +5068,73 @@ const ACC_MATCHES = [
     "awayLogo": "/assets/teams/T18/sdn2angkasa.png",
     "homeColor": "#0284c7",
     "awayColor": "#2563eb",
-    "status": "upcoming",
-    "homeScore": 0,
-    "awayScore": 0,
-    "homeScoreLive": 0,
-    "awayScoreLive": 0,
-    "scorers": [],
+    "status": "finished",
+    "homeScore": 7,
+    "awayScore": 3,
+    "homeScoreLive": 7,
+    "awayScoreLive": 3,
+    "scorers": [
+      {
+        "team": "T29",
+        "minute": "2'",
+        "player": "Edwin",
+        "isOwnGoal": false
+      },
+      {
+        "team": "T29",
+        "minute": "3'",
+        "player": "Faried",
+        "isOwnGoal": false
+      },
+      {
+        "team": "T29",
+        "minute": "10'",
+        "player": "Maliq Taro Alkhatiri (GBD)",
+        "isOwnGoal": true
+      },
+      {
+        "team": "T18",
+        "minute": "15'",
+        "player": "Muh Syawal Ghufran",
+        "isOwnGoal": false
+      },
+      {
+        "team": "T29",
+        "minute": "17'",
+        "player": "Edwin",
+        "isOwnGoal": false
+      },
+      {
+        "team": "T29",
+        "minute": "20'",
+        "player": "Adwin",
+        "isOwnGoal": false
+      },
+      {
+        "team": "T18",
+        "minute": "24'",
+        "player": "Audra Julian Putra Adyatama",
+        "isOwnGoal": false
+      },
+      {
+        "team": "T29",
+        "minute": "25'",
+        "player": "Ozil",
+        "isOwnGoal": false
+      },
+      {
+        "team": "T18",
+        "minute": "26'",
+        "player": "Audra Julian Putra Adyatama",
+        "isOwnGoal": false
+      },
+      {
+        "team": "T29",
+        "minute": "29'",
+        "player": "Ikhsan",
+        "isOwnGoal": false
+      }
+    ],
     "cards": []
   },
   {
@@ -4898,12 +5155,49 @@ const ACC_MATCHES = [
     "awayLogo": "/assets/teams/T31/barambang1.png",
     "homeColor": "#dc2626",
     "awayColor": "#0284c7",
-    "status": "upcoming",
-    "homeScore": 0,
-    "awayScore": 0,
-    "homeScoreLive": 0,
-    "awayScoreLive": 0,
-    "scorers": [],
+    "status": "finished",
+    "homeScore": 3,
+    "awayScore": 3,
+    "homeScoreLive": 3,
+    "awayScoreLive": 3,
+    "scorers": [
+      {
+        "team": "T31",
+        "minute": "5'",
+        "player": "Mirza Ukail",
+        "isOwnGoal": false
+      },
+      {
+        "team": "T31",
+        "minute": "13'",
+        "player": "Muh Fitrah Ramadhan",
+        "isOwnGoal": false
+      },
+      {
+        "team": "T19",
+        "minute": "19'",
+        "player": "Muh. Naufal Azka",
+        "isOwnGoal": false
+      },
+      {
+        "team": "T19",
+        "minute": "21'",
+        "player": "Muh. Naufal Azka",
+        "isOwnGoal": false
+      },
+      {
+        "team": "T31",
+        "minute": "24'",
+        "player": "Mirza Ukail",
+        "isOwnGoal": false
+      },
+      {
+        "team": "T19",
+        "minute": "29'",
+        "player": "Moch Badrus Zaman",
+        "isOwnGoal": false
+      }
+    ],
     "cards": [
       {
         "_meta": true,
@@ -4933,12 +5227,31 @@ const ACC_MATCHES = [
     "awayLogo": "/assets/teams/T28/barambang2.png",
     "homeColor": "#7c3aed",
     "awayColor": "#b91c1c",
-    "status": "upcoming",
-    "homeScore": 0,
-    "awayScore": 0,
-    "homeScoreLive": 0,
-    "awayScoreLive": 0,
-    "scorers": [],
+    "status": "finished",
+    "homeScore": 2,
+    "awayScore": 1,
+    "homeScoreLive": 2,
+    "awayScoreLive": 1,
+    "scorers": [
+      {
+        "team": "T23",
+        "minute": "5'",
+        "player": "Fayyadh Erdogan",
+        "isOwnGoal": false
+      },
+      {
+        "team": "T23",
+        "minute": "12'",
+        "player": "Muh. Fathan Asy-Syauqi",
+        "isOwnGoal": false
+      },
+      {
+        "team": "T28",
+        "minute": "19'",
+        "player": "Afif Putra Mubarak",
+        "isOwnGoal": false
+      }
+    ],
     "cards": [
       {
         "_meta": true,
@@ -4958,16 +5271,16 @@ const ACC_MATCHES = [
     "pitch": "Lapangan 1 (Utama Vinyl)",
     "date": "28 Nov 2026",
     "time": "08:00 - 08:40 WITA",
-    "homeId": "",
-    "awayId": "",
-    "homeName": "Pemenang QF 1",
-    "awayName": "Pemenang QF 3",
-    "homeShort": "Pemen",
-    "awayShort": "Pemen",
-    "homeLogo": "/assets/logo.png",
-    "awayLogo": "/assets/logo.png",
-    "homeColor": "#3b82f6",
-    "awayColor": "#f59e0b",
+    "homeId": "T30",
+    "awayId": "T29",
+    "homeName": "UPTD SDN 57 BULU-BULU",
+    "awayName": "SDN 2 MAROS (TIM A)",
+    "homeShort": "SDN 57 BULU-BULU",
+    "awayShort": "SDN 2  A",
+    "homeLogo": "/assets/teams/T30/bulu-bulu.png",
+    "awayLogo": "/assets/teams/T29/sdn2maros_a.png",
+    "homeColor": "#0284c7",
+    "awayColor": "#0284c7",
     "status": "upcoming",
     "homeScore": 0,
     "awayScore": 0,
@@ -4993,16 +5306,16 @@ const ACC_MATCHES = [
     "pitch": "Lapangan 1 (Utama Vinyl)",
     "date": "28 Nov 2026",
     "time": "08:40 - 09:20 WITA",
-    "homeId": "",
-    "awayId": "",
-    "homeName": "Pemenang QF 2",
-    "awayName": "Pemenang QF 4",
-    "homeShort": "Pemen",
-    "awayShort": "Pemen",
-    "homeLogo": "/assets/logo.png",
-    "awayLogo": "/assets/logo.png",
-    "homeColor": "#3b82f6",
-    "awayColor": "#f59e0b",
+    "homeId": "T19",
+    "awayId": "T23",
+    "homeName": "SDN 82 PATTENE (TIM A)",
+    "awayName": "SDIT AL HIKMAH",
+    "homeShort": "PATTENE A",
+    "awayShort": "AL-HIKMAH SD",
+    "homeLogo": "/assets/teams/T19/pattene_a.png",
+    "awayLogo": "/assets/teams/T23/hikmah.png",
+    "homeColor": "#dc2626",
+    "awayColor": "#7c3aed",
     "status": "upcoming",
     "homeScore": 0,
     "awayScore": 0,
