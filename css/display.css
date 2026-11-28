@@ -311,6 +311,14 @@ body {
   text-shadow: 0 0 28px rgba(16, 185, 129, 0.6);
 }
 
+.tv-digital-clock.status-mode {
+  font-size: clamp(2.4rem, 6.2vh, 4.4rem);
+  letter-spacing: 3px;
+  white-space: nowrap;
+  color: #f59e0b;
+  border-color: rgba(245, 158, 11, 0.45);
+}
+
 /* GIANT SCOREBOARD NUMBERS (DISERAGAMKAN TINGGINYA DENGAN LOGO TIM 20vh) */
 .tv-score-display {
   display: flex;

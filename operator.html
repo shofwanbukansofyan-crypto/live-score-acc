@@ -25,7 +25,7 @@
     rel="stylesheet">
 
   <!-- CSS -->
-  <link rel="stylesheet" href="/css/operator.css?v=20261128_v220">
+  <link rel="stylesheet" href="/css/operator.css?v=20261128_v225">
 
   <!-- Cache-Control & Auto-Purge Cache Stale Worker -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -34,7 +34,7 @@
   <script>
     (function () {
       try {
-        var APP_VER = "20261128_v220";
+        var APP_VER = "20261128_v225";
         if (localStorage.getItem("acc_livescore_version") !== APP_VER) {
           localStorage.setItem("acc_livescore_version", APP_VER);
           if ('caches' in window) {
@@ -180,12 +180,11 @@
                 onclick="operatorConsole.setPeriod('halftime')">Istirahat (HT)</button>
               <button type="button" class="btn-period" data-period="2nd"
                 onclick="operatorConsole.setPeriod('2nd')">Babak 2</button>
-              <button type="button" class="btn-period" data-period="et" onclick="operatorConsole.setPeriod('et')">Extra
-                Time</button>
               <button type="button" class="btn-period" data-period="penalties"
                 onclick="operatorConsole.setPeriod('penalties')">Adu Penalti</button>
-              <button type="button" class="btn-period btn-period-ft" data-period="finished"
-                onclick="operatorConsole.setPeriod('finished')">🏁 Selesai Pertandingan (FT)</button>
+              <button type="button" class="btn-period" data-period="finished"
+                style="color: #fca5a5; border-color: rgba(239, 68, 68, 0.35);"
+                onclick="operatorConsole.setPeriod('finished')">🏁 Selesai (FT)</button>
             </div>
           </div>
 
@@ -496,11 +495,11 @@
   </div>
 
   <!-- JAVASCRIPT LOGIC -->
-  <script src="/js/config.js?v=20261128_v220"></script>
-  <script src="/js/teams.js?v=20261128_v220"></script>
-  <script src="/js/matches.js?v=20261128_v220"></script>
-  <script src="/js/supabase-sync.js?v=20261128_v220"></script>
-  <script src="/js/app-operator.js?v=20261128_v220"></script>
+  <script src="/js/config.js?v=20261128_v225"></script>
+  <script src="/js/teams.js?v=20261128_v225"></script>
+  <script src="/js/matches.js?v=20261128_v225"></script>
+  <script src="/js/supabase-sync.js?v=20261128_v225"></script>
+  <script src="/js/app-operator.js?v=20261128_v225"></script>
 
   <!-- PWA SERVICE WORKER REGISTRATION -->
   <script>

@@ -980,8 +980,9 @@ class OperatorConsole {
         break;
       case "1st":
         label = "BABAK 1";
-        updates.is_running = true;
-        updates.timer_started_at = new Date().toISOString();
+        updates.timer_seconds = 0;
+        updates.is_running = false;
+        updates.timer_started_at = null;
         break;
       case "halftime":
         label = "ISTIRAHAT (HT)";
@@ -999,13 +1000,9 @@ class OperatorConsole {
         break;
       case "2nd":
         label = "BABAK 2";
-        updates.is_running = true;
-        updates.timer_started_at = new Date().toISOString();
-        break;
-      case "et":
-        label = "BABAK TAMBAHAN";
-        updates.is_running = true;
-        updates.timer_started_at = new Date().toISOString();
+        updates.timer_seconds = 15 * 60;
+        updates.is_running = false;
+        updates.timer_started_at = null;
         break;
       case "penalties":
         label = "ADU PENALTI";

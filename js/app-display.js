@@ -310,6 +310,22 @@ class ScoreboardDisplay {
       const state = this.currentState;
       if (!state) return;
 
+      if (state.period === "halftime") {
+        clockEl.classList.remove("running");
+        clockEl.classList.add("status-mode");
+        clockEl.textContent = "HALF TIME";
+        return;
+      }
+
+      if (state.period === "finished") {
+        clockEl.classList.remove("running");
+        clockEl.classList.add("status-mode");
+        clockEl.textContent = "FULL TIME";
+        return;
+      }
+
+      clockEl.classList.remove("status-mode");
+
       let totalSec = state.timer_seconds || 0;
 
       if (state.is_running && state.timer_started_at) {
