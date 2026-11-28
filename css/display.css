@@ -289,17 +289,17 @@ body {
 
 .tv-digital-clock {
   font-family: var(--font-mono);
-  font-size: clamp(3.2rem, 7.5vh, 5.6rem);
+  font-size: clamp(4.2rem, 11vh, 8.2rem);
   font-weight: 900;
-  letter-spacing: 4px;
-  line-height: 1.05;
+  letter-spacing: 5px;
+  line-height: 1;
   color: #ffffff;
   text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
   background: rgba(0, 0, 0, 0.4);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: clamp(6px, 1vh, 12px) clamp(24px, 3vw, 44px);
-  border-radius: 20px;
-  min-width: clamp(220px, 24vw, 340px);
+  padding: clamp(8px, 1.2vh, 16px) clamp(28px, 3.5vw, 54px);
+  border-radius: 22px;
+  min-width: clamp(260px, 28vw, 420px);
   text-align: center;
   box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.6);
   transition: all 0.3s ease;
